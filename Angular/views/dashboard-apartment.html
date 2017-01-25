@@ -1,0 +1,46 @@
+<!-- Filter for apartment stuff -->    
+
+<!--Apartment-->
+<div ng-controller="AptCtrl">
+    <div ng-repeat="apt in aptList">
+        Apartment:{{apt.RoomNumber}}
+        Max Capacity: {{apt.MaxCapacity}}
+        Current Capacity: {{apt.CurrentCapacity}}
+        <button ng-model=" delApt = apt ; deleteApt()">Delete</button> 
+    </div>
+
+ <!--this will be a modal-->   
+<div>
+    <div>
+        Apartment Name: <input type ="text" ng-model="roomNum"/>
+    </div>
+
+     <div>
+        Capacity: <input type ="number" ng-model="maxCap"/>
+    </div>
+
+    <h1>Male or Female Apartment</h1>
+    <div class="radio">
+              <label>
+                <input type="radio" name="model.GenderID" data-ng-model="GenderID" id="optionsRadios1" value="1" checked>
+                Male
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="model.GenderID" data-ng-model="GenderID" id="optionsRadios2" value="2">
+                Female
+              </label>
+            </div>
+              <div class="radio">
+                  <label>
+                      <input type="radio" name="model.GenderID" data-ng-model="GenderID" id="optionsRadios3" value="29">
+                      Not Specified
+                  </label>
+              </div>
+
+    <button ng-click="newApt()" >Add New Apartment</button>
+  
+  </div>
+
+</div>
