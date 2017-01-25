@@ -1,5 +1,3 @@
-<html>
-
 <!-- Filter for apartment stuff -->    
 
 <!--Apartment-->
@@ -8,6 +6,7 @@
         Apartment:{{apt.RoomNumber}}
         Max Capacity: {{apt.MaxCapacity}}
         Current Capacity: {{apt.CurrentCapacity}}
+        <button ng-model=" delApt = apt ; deleteApt()">Delete</button> 
     </div>
 
  <!--this will be a modal-->   
@@ -40,21 +39,54 @@
                   </label>
               </div>
 
-    <button ng-click="newApt()" >Add a New Apartment</button>
+    <button ng-click="newApt()" >Add New Apartment</button>
   
   </div>
+
 </div>
 
+<hr>
+<!--Complex -->
 
 <div ng-controller="ComplexCtrl">
-    <div ng-repeat="complex in compList">
-        Complex Name: {{complex.Name}}
-        Address:{{complex.Address}}
-        Phone Number: {{complex.PhoneNumber}}
+    <div ng-repeat="comp in compList">
+        Complex Name: {{comp.Name}}
+        Address:{{comp.Address}}
+        Phone Number: {{comp.PhoneNumber}}
+        <button ng-click ="delComp = comp; deleteComp()">Delete Complex </button>
     </div>
 
-    <button>Add New Complex</button>
-    <button>Delete Complex</button>
+<!-- Add a Complex-->
+<div>
+    <div>
+        Complex Name: <input type ="text" ng-model="compName"/>
+    </div>
+
+    <div>
+        Address: <input type ="text" ng-model="compAddress"/>
+    </div>
+
+    <div>
+       Phone Number: <input type ="text" ng-model="compNumber"/>
+    </div>
+    <div>
+       Hotel: 
+    <label>
+       <input type="radio" name="model.IsHotel" data-ng-model="IsHotel" id="optionsRadios1" data-ng-value="true" checked>
+        Yes
+    </label>
+     <br>
+    <label>
+    <input type="radio" name="model.IsHotel" data-ng-model="IsHotel" id="optionsRadios1" data-ng-value="false" checked>
+      No
+    </label>
+    </div>
+    <button ng-click="addComp()">Add New Complex</button>
+</div>   
+
+
+
+
 </div>
 
 
@@ -62,6 +94,3 @@
 
 
 
-
-
-</html>
