@@ -1,4 +1,4 @@
-angular.module('housing', ['ui.router'])
+angular.module('HousingApp', ['ui.router'])
 .config(function ($stateProvider) {
     $stateProvider
     .state('home', {
