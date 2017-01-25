@@ -5,7 +5,7 @@ angular.module('HousingApp', ['ui.router'])
         url: "",
         templateUrl: "views/home.html",
     })
-     .state('associates', {
+    .state('associates', {
         url: "/associates",
         templateUrl: "views/associates.html",
     });
