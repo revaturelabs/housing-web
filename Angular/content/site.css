@@ -37,3 +37,39 @@
 .nav.navbar-nav.navbar-right li.logged {
     visibility: hidden;
 }
+
+.col-lg-9 h1 {
+    font-size: 4em;
+    font-variant: small-caps;
+    font-weight: 500;
+}
+
+.col-lg-3.col-btn {
+    padding: 3em 0em 1em 0em;
+}
+
+.col-lg-3.col-btn .btn.btn-default {
+    background: none;
+    font-size: .8em;
+}
+
+.col-lg-3.col-btn .btn.btn-default:hover {
+    background: hsla(0, 0%, 0%, .1);
+}
+
+.panel {
+    border-radius: .1em; 
+}
+
+.panel-info .panel-heading {
+    display: grid;
+    height: 3.5em;
+    background-image: none;
+}
+
+.panel-heading a {
+    align-self: center;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
