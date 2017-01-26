@@ -34,5 +34,9 @@ angular.module('HousingApp', ['ui.router'])
                 templateUrl:"views/dashboard-complex.html"
             }
         }
-      });
+      })
+    .state('analytics', {
+        url: "/analytics",
+        templateUrl: "views/analytics.html",
+    });
 });
