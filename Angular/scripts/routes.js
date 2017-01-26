@@ -12,5 +12,9 @@ angular.module('HousingApp', ['ui.router'])
     .state('housing', {
         url: "/housing",
         templateUrl: "views/housing.html",
+    })
+    .state('analytics', {
+        url: "/analytics",
+        templateUrl: "views/analytics.html",
     });
 });
