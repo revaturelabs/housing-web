@@ -8,5 +8,9 @@ angular.module('HousingApp', ['ui.router'])
     .state('associates', {
         url: "/associates",
         templateUrl: "views/associates.html",
+    })
+    .state('housing', {
+        url: "/housing",
+        templateUrl: "views/housing.html",
     });
 });
