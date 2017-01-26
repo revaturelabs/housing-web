@@ -1,12 +1,12 @@
 var app = module.angular('HousingApp',[]);
 
-app.controller('AptCtrl', function($scope,$http){
+app.controller('huCtrl', function($scope,$http){
    
  $scope.aptList = [];
- $scope.roomNum;
+ $scope.unitNum;
  $scope.maxCap;
- $scope.delApt;
- $scope.GenderId;
+ $scope.delUnit;
+ $scope.GenderID;
 
 
     $http({
@@ -18,25 +18,25 @@ app.controller('AptCtrl', function($scope,$http){
     })
 
 
-      $scope.newApt = function(){
+      $scope.newUnit = function(){
         $http({
             method: 'POST',
             url: '/workforce-housing-rest/api/apartment/',
             data:{
-                AptNumber: $scope.roomNum,
+                AptNumber: $scope.unitNum,
                 MaxCapacity:$scope.maxCap,
-                GenderId: $scope.GenderId
+                GenderId: $scope.GenderID
 
             }
 
         })
     }
 
-    $scope.deleteApt = function (){
+    $scope.deleteUnit = function (){
         $http({
             method:"DELETE",
             url:'/workforce-housing-rest/api/apartment/',
-            data:$scope.delApt,
+            data:$scope.delUnit,
             headers:{
                 'Content Type': 'application/json'
             }

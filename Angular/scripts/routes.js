@@ -3,7 +3,16 @@ angular.module('HousingApp', ['ui.router'])
     $stateProvider
     .state('home', {
         url: "",
-        templateUrl: "views/home.html",
+           views: {
+            
+            '':{
+                templateUrl:"views/home.html"
+            },
+        
+            'complex@home': {
+                templateUrl:"views/dashboard-complex.html"
+            }
+        },
     })
     .state('associates', {
         url: "/associates",
@@ -12,5 +21,18 @@ angular.module('HousingApp', ['ui.router'])
     .state('housing', {
         url: "/housing",
         templateUrl: "views/housing.html",
-    });
+    })
+    .state('complex',{
+        url:"/complex",
+        views: {
+            
+            '':{
+                templateUrl:"views/home.html"
+            },
+        
+            'complex@complex': {
+                templateUrl:"views/dashboard-complex.html"
+            }
+        }
+      });
 });
