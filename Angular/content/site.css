@@ -90,3 +90,30 @@
         transform: rotate(360deg);
     }
 }
+
+#dashboard-left{
+    border-right: 1px solid rgba(0,0,0,.4);
+    height: 100%;
+}
+
+#dashboard-right{
+    border-left:1px solid rgba(0,0,0,.4);
+    height: 100%;
+}
+
+#dashboard-complex h1 {
+    font-size: 3em;
+    font-variant: small-caps;
+    font-weight: 500;
+    margin: 0;
+}
+
+.filter-search{
+    height: inherit;
+    display: table-cell;
+}
+
+.filter-search .input-group{
+    vertical-align: center;
+    display: flex;
+}

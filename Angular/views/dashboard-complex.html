@@ -1,65 +1,55 @@
-<!--Complex -->
-<div ng-controller="ComplexCtrl">
-    <div ng-repeat="comp in compList">
-        Complex Name: {{comp.Name}}
-        Address:{{comp.Address}}
-        Phone Number: {{comp.PhoneNumber}}
-        <button ng-click ="goToApt()"> View Apartments /</button>
-        <button ng-click ="delComp = comp; deleteComp()">Delete Complex </button>
+<div class="row">
+    <div id="dashboard-complex" class="col-md-6">
+        <h1>Complexes</h1>
     </div>
-
-
-<button type="button" data-target="#complexModal">
-     <span class="glyphicon glyphicon-plus"></span> Add Complex</button>
-
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">New Complex</h3>
+    <div class="col-md-6 filter-search">
+        <div class="input-group">
+            <input type="text" class="form-control" list="filters">
+            <datalist id="filters">
+                <option>Complex</option>
+                <option>Availablilty</option>
+                <option>Capacity</option>
+            </datalist>
+            <button class="btn btn-default form-control" style="width: initial;">
+                <span class="glyphicon glyphicon-search"> </span>
+            </button>
         </div>
-        <div class="modal-body" id="modal-body">
-        <div class="form-group">
-            <label for="Complex"> Complex Name: </label>
-             <div>
-                   <input type ="text" ng-model="compName"/>
-             </div>
-        </div>
-
-        <div class="form-group">
-             <label for ="Address"> Address: </label>
-             <div>
-                 <input type ="text" ng-model="compAddress"/>
-             </div>
+    </div>
+</div>
+<br>
+<div class="container-fluid">
+    <div class ="col-md-5">
+        <div class="panel panel-success">
+        <div class="panel-heading">
+            Complex
         </div>
 
-        <div class="form-group">
-             <label for ="Phone Number"> Phone Number: </label>
-            <div>
-                <input type ="text" ng-model="compNumber"/>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    Name:
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    Address:
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        Phone Number:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        Current Capacity:
+                    </div>
+                </div>
             </div>
         </div>
-
-    <div class="form-group">
-        <div>
-         <label for="Hotel">Hotel:</label>
-        <label>
-             <input type="radio" name="model.IsHotel" data-ng-model="IsHotel" id="optionsRadios1" data-ng-value="true" checked>
-            Yes
-        </label>
-         <br>
-    <label>
-    <input type="radio" name="model.IsHotel" data-ng-model="IsHotel" id="optionsRadios1" data-ng-value="false" checked>
-      No
-    </label>
     </div>
 </div>
-    <div class="modal-footer">
-            <button class="btn btn-primary" type="button" data-target= "#myModal" ng-click="addComp()">Create New Complex</button>
-            <button class="btn btn-warning" type="button" data-target="#myModal">Close</button>
-        </div>
-    <button ng-click="addComp()">Create New Complex</button>
-</div>   
-</div>
+   
 
 
       

@@ -1,4 +1,4 @@
-var app = module.angular('HousingApp', []);
+//var app = module.angular('HousingApp', []);
 
 app.controller ('ComplexCtrl',function($scope,$http){
 
@@ -19,7 +19,7 @@ app.controller ('ComplexCtrl',function($scope,$http){
 
 
     $scope.addComp = function(){
-
+        console.log("function called")
         $http({
             method: "POST",
             url: '/workforce-housing-rest/api/housingcomplex',
@@ -46,9 +46,18 @@ app.controller ('ComplexCtrl',function($scope,$http){
             }
 
 
+        });
+
+
+    }
+
+    $scope.goToApt() = function(){
+
+        $http({
+            method:'GET'
+
         })
-
-
+    
     }
   
 

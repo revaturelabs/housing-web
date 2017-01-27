@@ -1,96 +1,12 @@
-<!-- Filter for apartment stuff -->    
+<!-- Main UI view -->
 
-<!--Apartment-->
-<div ng-controller="AptCtrl">
-    <div ng-repeat="apt in aptList">
-        Apartment:{{apt.RoomNumber}}
-        Max Capacity: {{apt.MaxCapacity}}
-        Current Capacity: {{apt.CurrentCapacity}}
-        <button ng-model=" delApt = apt ; deleteApt()">Delete</button> 
+<!-- get both dashboard complex and dashboard associate view through routing  -->
+
+<!--root element be a div tag -->
+
+<article class="container">
+    <div class="col-md-10">
+        <div id="dashboard-left" class="col-md-9" ui-view ="complexes"> </div>
+        <div id="dashboard-right" class="col-md-3" ui-view ="associates"> </div>
     </div>
-
- <!--this will be a modal-->   
-<div>
-    <div>
-        Apartment Name: <input type ="text" ng-model="roomNum"/>
-    </div>
-
-     <div>
-        Capacity: <input type ="number" ng-model="maxCap"/>
-    </div>
-
-    <h1>Male or Female Apartment</h1>
-    <div class="radio">
-              <label>
-                <input type="radio" name="model.GenderID" data-ng-model="GenderID" id="optionsRadios1" value="1" checked>
-                Male
-              </label>
-            </div>
-            <div class="radio">
-              <label>
-                <input type="radio" name="model.GenderID" data-ng-model="GenderID" id="optionsRadios2" value="2">
-                Female
-              </label>
-            </div>
-              <div class="radio">
-                  <label>
-                      <input type="radio" name="model.GenderID" data-ng-model="GenderID" id="optionsRadios3" value="29">
-                      Not Specified
-                  </label>
-              </div>
-
-    <button ng-click="newApt()" >Add New Apartment</button>
-  
-  </div>
-
-</div>
-
-<hr>
-<!--Complex -->
-
-<div ng-controller="ComplexCtrl">
-    <div ng-repeat="comp in compList">
-        Complex Name: {{comp.Name}}
-        Address:{{comp.Address}}
-        Phone Number: {{comp.PhoneNumber}}
-        <button ng-click ="delComp = comp; deleteComp()">Delete Complex </button>
-    </div>
-
-<!-- Add a Complex-->
-<div>
-    <div>
-        Complex Name: <input type ="text" ng-model="compName"/>
-    </div>
-
-    <div>
-        Address: <input type ="text" ng-model="compAddress"/>
-    </div>
-
-    <div>
-       Phone Number: <input type ="text" ng-model="compNumber"/>
-    </div>
-    <div>
-       Hotel: 
-    <label>
-       <input type="radio" name="model.IsHotel" data-ng-model="IsHotel" id="optionsRadios1" data-ng-value="true" checked>
-        Yes
-    </label>
-     <br>
-    <label>
-    <input type="radio" name="model.IsHotel" data-ng-model="IsHotel" id="optionsRadios1" data-ng-value="false" checked>
-      No
-    </label>
-    </div>
-    <button ng-click="addComp()">Add New Complex</button>
-</div>   
-
-
-
-
-</div>
-
-
-
-
-
-
+</article>
