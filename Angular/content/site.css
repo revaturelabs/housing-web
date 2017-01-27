@@ -90,3 +90,11 @@
         transform: rotate(360deg);
     }
 }
+
+#dashboard-complex{
+    border-right: 1px solid rgba(0,0,0,.4);
+}
+
+#dashboard-associate{
+    border-left:1px solid rgba(0,0,0,.4);
+}

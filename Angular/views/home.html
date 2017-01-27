@@ -1,9 +1,12 @@
 <!-- Main UI view -->
 
- <!-- get both dashboard complex and dashboard associate view through routing  -->
+<!-- get both dashboard complex and dashboard associate view through routing  -->
 
- <!--root element be a div tag -->
+<!--root element be a div tag -->
 
-
- <div ui-view ="complexes"> </div>
-<div ui-view ="associates"> </div>
+<article class="container">
+    <div class="col-md-10 ">
+        <div id="dashboard-complex" class="col-md-9" ui-view ="complexes"> </div>
+        <div id="dashboard-associate" class="col-md-3" ui-view ="associates"> </div>
+    </div>
+</article>
