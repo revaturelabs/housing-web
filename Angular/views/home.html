@@ -4,9 +4,14 @@
 
 <!--root element be a div tag -->
 
-<article class="container">
-    <div class="col-md-10">
-        <div id="dashboard-left" class="col-md-9" ui-view ="complexes"> </div>
-        <div id="dashboard-right" class="col-md-3" ui-view ="associates"> </div>
+<article class="fluid-container">
+    <div class="row">
+        <hr />
+    </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div id="dashboard-left" class="col-md-8" ui-view ="complexes"> </div>
+            <div id="dashboard-right" class="col-md-4" ui-view ="associates"> </div>
+        </div>
     </div>
 </article>

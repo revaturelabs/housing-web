@@ -58,14 +58,14 @@
 }
 
 .panel-revature {
-    border-color: #f26925;
+    border-color: rgba(242, 106, 37, .5);
 }
 
 .panel-revature .panel-heading {
     display: grid;
     height: 3.5em;
-    background-color: #f26925;
-    border-color: #f26925;
+    background-color: rgba(242, 106, 37, .5);
+    border-color: rgba(242, 106, 37, .5);
     background-image: none;
 }
 
@@ -92,17 +92,21 @@
 }
 
 #dashboard-left{
-    border-right: 1px solid rgba(0,0,0,.4);
+    border-right: 1px solid rgba(0,0,0,.2);
     height: 100%;
 }
 
 #dashboard-right{
-    border-left:1px solid rgba(0,0,0,.4);
+    border-left: 1px solid rgba(0,0,0,.2);
     height: 100%;
 }
 
-#dashboard-complex h1 {
-    font-size: 3em;
+#dashboard-complex, #dashboard-associate {
+    height: 3.2em;
+}
+
+#dashboard-complex h1, #dashboard-associate h1 {
+    font-size: 2.5em;
     font-variant: small-caps;
     font-weight: 500;
     margin: 0;
@@ -110,10 +114,9 @@
 
 .filter-search{
     height: inherit;
-    display: table-cell;
 }
 
 .filter-search .input-group{
-    vertical-align: center;
+    padding: .4em 0em;
     display: flex;
 }
