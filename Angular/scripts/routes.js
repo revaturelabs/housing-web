@@ -1,5 +1,6 @@
 angular.module('HousingApp', ['ui.router'])
-.config(function ($stateProvider) {
+.config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('');
     $stateProvider
     .state('home', {
         url: "",
@@ -9,10 +10,13 @@ angular.module('HousingApp', ['ui.router'])
                 templateUrl:"views/home.html"
             },
         
-            'complex@home': {
+            'complexes@home': {
                 templateUrl:"views/dashboard-complex.html"
+            },
+            'associates@home':{
+                templateUrl:"views/dashboard-associates.html"
             }
-        },
+        }
     })
     .state('associates', {
         url: "/associates",
@@ -22,19 +26,6 @@ angular.module('HousingApp', ['ui.router'])
         url: "/housing",
         templateUrl: "views/housing.html",
     })
-    .state('complex',{
-        url:"/complex",
-        views: {
-            
-            '':{
-                templateUrl:"views/home.html"
-            },
-        
-            'complex@complex': {
-                templateUrl:"views/dashboard-complex.html"
-            }
-        }
-      })
     .state('analytics', {
         url: "/analytics",
         templateUrl: "views/analytics.html",
