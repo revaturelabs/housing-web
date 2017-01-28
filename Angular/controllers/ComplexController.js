@@ -1,66 +1,30 @@
-//var app = module.angular('HousingApp', []);
-
-app.controller ('ComplexCtrl',function($scope,$http){
-
-    $scope.compList = [];
-    $scope.compName;
-    $scope.compAddress;
-    $scope.compNumber;
-    $scope.IsHotel;
-   
-
-    $http({
-        method:'GET',
-        url: '/workforce-housing-rest/api/housingcomplex'
-    })
-    .then(function(response){
-        $scope.compList = response.data;
-    })
-
-
-    $scope.addComp = function(){
-        console.log("function called")
-        $http({
-            method: "POST",
-            url: '/workforce-housing-rest/api/housingcomplex',
-            data:{
-                Name: $scope.compName,
-                Address: $scope.compAddress,
-                PhoneNumber: $scope.compNumber
-
+angular.module("HousingApp")
+.constant("complexesURL", "fakedata/HousingComplexes.json")
+.filter('address', function() {
+    return function(x) {
+        for (var i = 0; i < x.length; i++) {
+            if (x[i] === ',') {
+                var start = x.slice(0, i);
+                var end = x.slice(i+2);
+                x = start + '\n' + end;
+                i = x.length;
             }
+        }
+        return x;
+    }
+})
+.controller("ComplexCtrl", function($scope, $http, complexesURL) {
+    var request = new XMLHttpRequest();
+    $scope.complexes = [];
 
-        })
-
+    request.onreadystatechange = function () {
+        if(request.readyState == 4 && request.status == 200) {
+            $scope.complexes = JSON.parse(request.responseText);
+        }
     }
 
+    request.open("GET", complexesURL, false);
+    request.send();
 
-    $scope.deleteComp = function(){
-
-        $http({
-            method:'DELETE',
-            url: '/workforce-housing-rest/api/housingcomplex',
-            data: $scope.delComp,
-            headers:{
-                'Content Type': 'application/json'
-            }
-
-
-        });
-
-
-    }
-
-    $scope.goToApt() = function(){
-
-        $http({
-            method:'GET'
-
-        })
-    
-    }
-  
-
-
-
+    console.log($scope.complexes);
 });
