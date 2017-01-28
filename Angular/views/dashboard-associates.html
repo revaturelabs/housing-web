@@ -1,54 +1,42 @@
-<h1>Associates</h1>
-
-<div class="row">
-    <div class= "col-md-10 col-md-offset-9">
-        <div class="input-group" style="display: flex;">
-            <input type="text" class="form-control" list="filters">
-                <datalist id="filters">
-                    <option>Name</option>
-                    <option>Technology</option>
-                    <option>Gender</option>
-                    <option>Assigned</option>
-                </datalist>
+<div id="dashboard-associate" class="row">
+    <div class="col-md-6">
+        <h1>Associates</h1>
+    </div>
+    <div class="col-md-6 filter-search">
+        <div class="input-group">
+            <input type="text" class="form-control" list="associate-filters">
+            <datalist id="associate-filters">
+                <option>Name</option>
+                <option>Technology</option>
+                <option>Gender</option>
+                <option>Assigned</option>
+            </datalist>
             <button class="btn btn-default form-control" style="width:initial;">
-                    <span class="glyphicon glyphicon-search"></span>
+                <span class="glyphicon glyphicon-search"></span>
             </button>
         </div>
     </div>
 </div>
-<br>
+<div class="row hr-row">
+    <hr/>
+</div>
 <div class="container-fluid">
     <div class="col-md-12">
-        <div class= "panel-primary">
+        <div class="panel panel-revature">
             <div class="panel-heading"> 
                 Associate
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        Name:
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        Phone Number:
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        Gender:
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        Technology:
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        House Assigned:
-                    </div>
-                </div>
+                <p>Name</p>
+                <p>PhoneNumber</p>
+                <p>Gender</p>
+                <p>Technology</p>
+                <p>HouseAssigned</p>
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-plus"></span> Assign Complex
+                </button>
             </div>
         </div>
     </div>
