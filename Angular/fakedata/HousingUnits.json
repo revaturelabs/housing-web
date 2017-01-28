@@ -1,1 +1,22 @@
-[{"AptNumber" : "1409", "MaxCapacity" : 6, "Gender" : Female, "Complex" : {"Name" : "Camden Dulles Station", "Address" : "2320 Dulles Station Blvd, Herndon, VA", "PhoneNumber" : "555-555-5555"}}, {"AptNumber" : "1450", "MaxCapacity" : 6, "Gender" : Male, "Complex" : {"Name" : "Camden Dulles Station", "Address" : "2320 Dulles Station Blvd, Herndon, VA", "PhoneNumber" : "555-555-5555"}}]
+[
+  {
+    "AptNumber": "1409",
+    "MaxCapacity": 6,
+    "Gender": "Female",
+    "Complex": {
+      "Name": "Camden Dulles Station",
+      "Address": "2320 Dulles Station Blvd, Herndon, VA",
+      "PhoneNumber": "555-555-5555"
+    }
+  },
+  {
+    "AptNumber": "1450",
+    "MaxCapacity": 6,
+    "Gender": "Male",
+    "Complex": {
+      "Name": "Camden Dulles Station",
+      "Address": "2320 Dulles Station Blvd, Herndon, VA",
+      "PhoneNumber": "555-555-5555"
+    }
+  }
+]

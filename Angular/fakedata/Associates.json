@@ -1,1 +1,87 @@
-[{"FirstName" : "Sigourney", "LastName" : "Weaver", "Gender" : "Female", "Batch" : {"Name" : "1702-feb6-net", "Instructor" : "Instructor Gamma", "StartDate" : "20170206", "EndDate" : "20170421", "Technology" : ".NET"}, "PhoneNumber" : "555-555-5555", "Email" : "spacequeen@gmail.com" , "DateOfBirth" : "19800101", "HasCar" : True, "HasKeys" : True}, {"FirstName" : "Kate", "LastName" : "McKinnon", "Gender" : "Female", "Batch" : {Name" : "1703-mar6-java", "Instructor" : "Instructor Beta", "StartDate" : "20170306", "EndDate" : "20170519", "Technology" : "Java"}, "PhoneNumber" : "555-555-5555", "Email" : "bustdemghosts@gmail.com", "DateOfBirth" : "19800101", "HasCar" : False, "HasKeys" : False}, {"FirstName" : "Anna", "LastName" : "Torv", "Gender" : "Female", "Batch" : {Name" : "1703-mar6-java", "Instructor" : "Instructor Beta", "StartDate" : "20170306", "EndDate" : "20170519", "Technology" : "Java"}, "PhoneNumber" : "555-555-5555", "Email" : "fringe@gmail.com", "DateOfBirth" : "19800101", "HasCar" : True, "HasKeys" : False}, {"FirstName" : "Ruby", "LastName" : "Rose", "Gender" : "Female", "Batch" : {"Name" : "1702-feb6-net", "Instructor" : "Instructor Gamma", "StartDate" : "20170206", "EndDate" : "20170421", "Technology" : ".NET"}, "PhoneNumber" : "555-555-5555", "Email" : "tattooedaussie@gmail.com" , "DateOfBirth" : "19800101", "HasCar" : False, "HasKeys" : True}, {"FirstName" : "Martha", "LastName" : "Van Rensselaer", "Gender" : "Female", "Batch" : {"Name" : "1702-feb6-net", "Instructor" : "Instructor Gamma", "StartDate" : "20170206", "EndDate" : "20170421", "Technology" : ".NET"}, "PhoneNumber" : "555-555-5555", "Email" : "beforeitwascool@gmail.com", "DateOfBirth" : "18600101", "HasCar" : True, "HasKeys" : True}]
+[
+  {
+    "FirstName": "Sigourney",
+    "LastName": "Weaver",
+    "Gender": "Female",
+    "Batch": {
+      "Name": "1702-feb6-net",
+      "Instructor": "Instructor Gamma",
+      "StartDate": "20170206",
+      "EndDate": "20170421",
+      "Technology": ".NET"
+    },
+    "PhoneNumber": "555-555-5555",
+    "Email": "spacequeen@gmail.com",
+    "DateOfBirth": "19800101",
+    "HasCar": true,
+    "HasKeys": true
+  },
+  {
+    "FirstName": "Kate",
+    "LastName": "McKinnon",
+    "Gender": "Female",
+    "Batch": {
+      "Name": "1703-mar6-java",
+      "Instructor": "Instructor Beta",
+      "StartDate": "20170306",
+      "EndDate": "20170519",
+      "Technology": "Java"
+    },
+    "PhoneNumber": "555-555-5555",
+    "Email": "bustdemghosts@gmail.com",
+    "DateOfBirth": "19800101",
+    "HasCar": false,
+    "HasKeys": false
+  },
+  {
+    "FirstName": "Anna",
+    "LastName": "Torv",
+    "Gender": "Female",
+    "Batch": {
+      "Name": "1703-mar6-java",
+      "Instructor": "Instructor Beta",
+      "StartDate": "20170306",
+      "EndDate": "20170519",
+      "Technology": "Java"
+    },
+    "PhoneNumber": "555-555-5555",
+    "Email": "fringe@gmail.com",
+    "DateOfBirth": "19800101",
+    "HasCar": true,
+    "HasKeys": false
+  },
+  {
+    "FirstName": "Ruby",
+    "LastName": "Rose",
+    "Gender": "Female",
+    "Batch": {
+      "Name": "1702-feb6-net",
+      "Instructor": "Instructor Gamma",
+      "StartDate": "20170206",
+      "EndDate": "20170421",
+      "Technology": ".NET"
+    },
+    "PhoneNumber": "555-555-5555",
+    "Email": "tattooedaussie@gmail.com",
+    "DateOfBirth": "19800101",
+    "HasCar": false,
+    "HasKeys": true
+  },
+  {
+    "FirstName": "Martha",
+    "LastName": "Van Rensselaer",
+    "Gender": "Female",
+    "Batch": {
+      "Name": "1702-feb6-net",
+      "Instructor": "Instructor Gamma",
+      "StartDate": "20170206",
+      "EndDate": "20170421",
+      "Technology": ".NET"
+    },
+    "PhoneNumber": "555-555-5555",
+    "Email": "beforeitwascool@gmail.com",
+    "DateOfBirth": "18600101",
+    "HasCar": true,
+    "HasKeys": true
+  }
+]
