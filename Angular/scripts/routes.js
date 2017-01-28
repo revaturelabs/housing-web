@@ -4,26 +4,28 @@ angular.module('HousingApp', ['ui.router'])
     $stateProvider
     .state('home', {
         url: "",
-           views: {
-            
-            '':{
-                templateUrl:"views/home.html"
+        views: {
+            '': {
+                templateUrl: "views/home.html"
             },
-        
             'complexes@home': {
-                templateUrl:"views/dashboard-complex.html"
+                controller: "ComplexCtrl",
+                templateUrl: "views/dashboard-complex.html"
             },
-            'associates@home':{
-                templateUrl:"views/dashboard-associates.html"
+            'associates@home': {
+                controller: "AssociatesCtrl",
+                templateUrl: "views/dashboard-associates.html"
             }
         }
     })
     .state('associates', {
         url: "/associates",
+        controller: "AssociatesCtrl",
         templateUrl: "views/associates.html",
     })
     .state('housing', {
         url: "/housing",
+        controller: "ComplexCtrl",
         templateUrl: "views/housing.html",
     })
     .state('analytics', {

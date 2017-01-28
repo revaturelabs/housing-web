@@ -19,17 +19,15 @@
 <div class="row hr-row">
     <hr/>
 </div>
-<div class="container-fluid">
-    <div class ="col-md-5">
+<div class="fluid-container">
+    <div class ="col-md-4" ng-repeat="item in complexes">
         <div class="panel panel-revature">
             <div class="panel-heading">
-                Complex
+                {{item.Name}}
             </div>
             <div class="panel-body">
-                <p>Name</p>
-                <p>Address</p>
-                <p>PhoneNumber</p>
-                <p>CurrentCapacity</p>
+                <p class="address">{{item.Address | address}}</p>
+                <p>{{item.PhoneNumber}}</p>
             </div>
             <div class="panel-footer">
                 <button type="button" class="btn btn-default btn-sm">
