@@ -20,18 +20,16 @@
 <div class="row hr-row">
     <hr/>
 </div>
-<div class="container-fluid">
-    <div class="col-md-12">
+<div class="fluid-container">
+    <div class="col-md-12" ng-repeat="item in associates">
         <div class="panel panel-revature">
             <div class="panel-heading"> 
-                Associate
+                {{item.FirstName + " " + item.LastName}}
             </div>
             <div class="panel-body">
-                <p>Name</p>
-                <p>PhoneNumber</p>
-                <p>Gender</p>
-                <p>Technology</p>
-                <p>HouseAssigned</p>
+                <p>{{item.Gender}}</p>
+                <p>{{item.PhoneNumber}}</p>
+                <p>{{item.Batch.Technology}}</p>
             </div>
             <div class="panel-footer">
                 <button type="button" class="btn btn-default btn-sm">

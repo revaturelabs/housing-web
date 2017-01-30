@@ -14,16 +14,25 @@
             <hr />
         </section>
         <section class="row">
-            <div class="col-md-6">
+            <div class="col-md-4" ng-repeat="item in associates">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <a ui-sref="">
-                            <h3 class="panel-title">FirstName LastName</h3>
+                            <h3 class="panel-title">{{item.FirstName + " " + item.LastName}}</h3>
                         </a>
                     </div>
                     <div class="panel-body">
-                        <p>Gender</p>
-                        <p>Email</p>
+                        <p>Gender: {{item.Gender}}</p>
+                        <p>Batch: {{item.Batch.Name}}</p>
+                        <p>Instructor: {{item.Batch.Instructor}}</p>
+                        <p>Start Date: {{item.Batch.StartDate | date}}</p>
+                        <p>End Date: {{item.Batch.EndDate | date}}</p>
+                        <p>Technology: {{item.Batch.Technology}}</p>
+                        <p>Phone: {{item.PhoneNumber}}</p>
+                        <p>Email: {{item.Email}}</p>
+                        <p>DOB: {{item.DateOfBirth | date}}</p>
+                        <p>Has a Car: {{item.HasCar | bool}}</p>
+                        <p>Has keys: {{item.HasKeys | bool}}</p>
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-default btn-sm">

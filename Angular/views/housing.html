@@ -14,16 +14,16 @@
             <hr />
         </section>
         <section class="row">
-            <div class="col-md-6">
+            <div class="col-md-4" ng-repeat="item in complexes">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <a ui-sref="">
-                            <h3 class="panel-title">ComplexName</h3>
+                            <h3 class="panel-title">{{item.Name}}</h3>
                         </a>
                     </div>
                     <div class="panel-body">
-                        <p>Address</p>
-                        <p>PhoneNumber</p>
+                        <p class="address">{{item.Address | address}}</p>
+                        <p>{{item.PhoneNumber}}</p>
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-default btn-sm">

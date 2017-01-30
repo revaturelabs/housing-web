@@ -1,46 +1,15 @@
-var app = module.angular('HousingApp',[]);
+angular.module('HousingApp')
+.constant("unitsURL", "fakedata/HousingUnits.json")
+.controller('UnitCtrl', function($scope, $http, unitsURL){
+    var request = new XMLHttpRequest();
+    $scope.units = [];
 
-app.controller('huCtrl', function($scope,$http){
-   
- $scope.aptList = [];
- $scope.unitNum;
- $scope.maxCap;
- $scope.delUnit;
- $scope.GenderID;
-
-
-    $http({
-        method:"GET",
-        url:'/workforce-housing-rest/api/filteraptsbycomplex/'
-    })
-    .then(function(response){
-        $scope.aptList=response.data;
-    })
-
-
-      $scope.newUnit = function(){
-        $http({
-            method: 'POST',
-            url: '/workforce-housing-rest/api/apartment/',
-            data:{
-                AptNumber: $scope.unitNum,
-                MaxCapacity:$scope.maxCap,
-                GenderId: $scope.GenderID
-
-            }
-
-        })
+    request.onreadystatechange = function () {
+        if(request.readyState == 4 && request.status == 200) {
+            $scope.units = JSON.parse(request.responseText);
+        }
     }
 
-    $scope.deleteUnit = function (){
-        $http({
-            method:"DELETE",
-            url:'/workforce-housing-rest/api/apartment/',
-            data:$scope.delUnit,
-            headers:{
-                'Content Type': 'application/json'
-            }
-        })
-    }
-
+    request.open("GET", unitsURL, false);
+    request.send();
 });
