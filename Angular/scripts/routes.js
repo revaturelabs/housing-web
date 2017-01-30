@@ -6,10 +6,15 @@ angular.module('HousingApp', ['ui.router'])
         url: "",
         views: {
             '': {
+                controller: "DashboardCtrl",
                 templateUrl: "views/home.html"
             },
             'complexes@home': {
                 controller: "ComplexCtrl",
+                templateUrl: "views/dashboard-complex.html"
+            },
+            'units@home': {
+                controller: "UnitCtrl",
                 templateUrl: "views/dashboard-complex.html"
             },
             'associates@home': {
