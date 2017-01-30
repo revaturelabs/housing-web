@@ -7,7 +7,7 @@ angular.module("HousingApp")
 
         for(var i = 0; i < sections.length; i++)
         {
-            if(sections[i].id.toLowerCase().includes("dashboard"))
+            if(sections[i].id.includes("dashboard"))
             {
                 if(sections[i].classList.contains("expanded"))
                 {

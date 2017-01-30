@@ -115,7 +115,7 @@ html, body {
 #expand-btn {
     position: absolute;
     z-index: 2;
-    transform: translate(-15px, 70px);
+    transform: translate(-20px, 64px);
 }
 
 .address {
