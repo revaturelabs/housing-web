@@ -2,6 +2,10 @@ html, body {
     overflow-x: hidden;
 }
 
+.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+    transition: all 1s;
+}
+
 .navbar.navbar-default {
     background: none !important;
     box-shadow: none !important;
@@ -92,14 +96,12 @@ html, body {
     }
 }
 
-#dashboard {
-}
-
 #dashboard-left{
     border: 2px solid rgba(0,0,0,.1);
     padding-top: 15px;
     border-left: none;
     height: 46em;
+    transition: all 1s;
 }
 
 #dashboard-right{
@@ -107,6 +109,13 @@ html, body {
     padding-top: 15px;
     border-right: none;
     height: 46em;
+    transition: all 1s;
+}
+
+#expand-btn {
+    position: absolute;
+    z-index: 2;
+    transform: translate(-15px, 70px);
 }
 
 .address {

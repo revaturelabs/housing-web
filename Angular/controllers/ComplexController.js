@@ -25,6 +25,4 @@ angular.module("HousingApp")
 
     request.open("GET", complexesURL, false);
     request.send();
-
-    console.log($scope.complexes);
 });

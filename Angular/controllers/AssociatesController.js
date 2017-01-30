@@ -30,6 +30,4 @@ angular.module("HousingApp")
 
     request.open("GET", associatesURL, false);
     request.send();
-
-    console.log($scope.associates);
 });

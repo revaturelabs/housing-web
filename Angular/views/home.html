@@ -7,8 +7,13 @@
 <article class="fluid-container">
     <div id="dashboard" class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div id="dashboard-left" class="col-md-8" ui-view ="complexes"> </div>
-            <div id="dashboard-right" class="col-md-4" ui-view ="associates"> </div>
+            <section id="dashboard-left" class="col-md-8 expanded">
+                <div ui-view ="complexes"></div>
+            </section>
+            <button type="button" id="expand-btn" ng-click="expandView()">&harr;</button>
+            <section id="dashboard-right" class="col-md-4">
+                <div ui-view ="associates"></div>
+            </section>
         </div>
     </div>
 </article>
