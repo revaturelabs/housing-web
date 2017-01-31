@@ -18,6 +18,21 @@ angular.module("HousingApp")
         return txt;
     }
 })
+.filter('hasKeys', function() {
+    return function(x) {
+        var result = [];
+        var count = 0;
+        
+        x.forEach(function(element) {
+            if(!element.HasKeys)
+            {
+                result[count] = element;
+                count++;
+            }
+        }, this);
+        return result;
+    }
+})
 .controller("AssociatesCtrl", function($scope, $http, associatesURL) {
     var request = new XMLHttpRequest();
     $scope.associates = [];
@@ -30,4 +45,20 @@ angular.module("HousingApp")
 
     request.open("GET", associatesURL, false);
     request.send();
+
+    $scope.toggleFilters = function() {
+        var filters = document.getElementById("associate-filters");
+        var list = document.getElementById("associate-list");
+
+        if(filters.style.height == "5em")
+        {
+            filters.style.height = "0em";
+            list.style.height = "37em";
+        }
+        else if(filters.style.height == "0em")
+        {
+            filters.style.height = "5em";
+            list.style.height = "32em";
+        }
+    }
 });

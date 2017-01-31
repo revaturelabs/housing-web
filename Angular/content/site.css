@@ -123,15 +123,16 @@ html, body {
 }
 
 #dashboard-right .fluid-container {
+    transition: all .5s;
     overflow-y: scroll;
     height: 37em;
 }
 
-#dashboard-complex, #dashboard-associate {
+#dashboard-housing, #dashboard-associate {
     height: 3.2em;
 }
 
-#dashboard-complex h1, #dashboard-associate h1 {
+#dashboard-housing h1, #dashboard-associate h1 {
     font-size: 2.5em;
     font-variant: small-caps;
     font-weight: 500;
@@ -147,7 +148,34 @@ html, body {
     display: flex;
 }
 
+.btn-filter {
+    float: right;
+}
+
+#associate-filters, #housing-filters {
+    overflow-y: hidden;
+    height: 0em;
+    transition: all .5s;
+}
+
 .row.hr-row {
     margin-right: 0;
     margin-left: 0;  
+}
+
+progress {
+    height: 1.5em;
+    width: 100%;
+}
+
+.progress {
+    margin-bottom: 0;
+}
+
+progress[value]::-webkit-progress-bar {
+    background-color: #ddd;
+}
+
+progress[value]::-webkit-progress-value {
+    background-color: #5bf;
 }

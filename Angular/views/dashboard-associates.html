@@ -3,38 +3,20 @@
         <h1>Associates</h1>
     </div>
     <div class="col-md-6 filter-search">
-        <div class="input-group">
-            <input type="text" class="form-control" list="associate-filters">
-            <datalist id="associate-filters">
-                <option>Name</option>
-                <option>Technology</option>
-                <option>Gender</option>
-                <option>Assigned</option>
-            </datalist>
-            <button class="btn btn-default form-control" style="width:initial;">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </div>
+        <button class="btn btn-default btn-filter" ng-click="toggleFilters()">Filters</button>
     </div>
+</div>
+<div class="row" id="associate-filters" style="height: 0em;">
+    <h1>This is where the filters go!</h1>
 </div>
 <div class="row hr-row">
     <hr/>
 </div>
-<div class="fluid-container">
-    <div class="col-md-12" ng-repeat="item in associates">
+<div class="fluid-container" id="associate-list">
+    <div class="col-md-12" ng-repeat="item in associates | hasKeys">
         <div class="panel panel-revature">
             <div class="panel-heading"> 
                 {{item.FirstName + " " + item.LastName}}
-            </div>
-            <div class="panel-body">
-                <p>{{item.Gender}}</p>
-                <p>{{item.PhoneNumber}}</p>
-                <p>{{item.Batch.Technology}}</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-plus"></span> Assign Complex
-                </button>
             </div>
         </div>
     </div>

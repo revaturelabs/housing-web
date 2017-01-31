@@ -31,36 +31,12 @@ angular.module("HousingApp")
         var divcolumns = document.querySelectorAll('div[class^="col-md-"]');
 
         for(var i = 0; i < divcolumns.length; i++) {
-            if(divcolumns[i].classList.contains("col-md-9"))
-            {
-                divcolumns[i].classList.remove("col-md-9");
-                divcolumns[i].classList.add("col-md-6");
-            }
-            else if (divcolumns[i].classList.contains("col-md-3"))
-            {
-                divcolumns[i].classList.remove("col-md-3");
-                divcolumns[i].classList.remove("filter-search");
-                divcolumns[i].classList.add("col-md-6");
-                divcolumns[i].classList.add("filter-search");
-            }
-            else if (divcolumns[i].classList.contains("col-md-4"))
+            if (divcolumns[i].classList.contains("col-md-4"))
             {
                 divcolumns[i].classList.remove("col-md-4");
                 divcolumns[i].classList.remove("ng-scope");
                 divcolumns[i].classList.add("col-md-12");
                 divcolumns[i].classList.add("ng-scope");
-            }
-            else if(divcolumns[i].classList.contains("col-md-6") && !divcolumns[i].classList.contains("filter-search"))
-            {
-                divcolumns[i].classList.remove("col-md-6");
-                divcolumns[i].classList.add("col-md-9");
-            }
-            else if (divcolumns[i].classList.contains("col-md-6") && divcolumns[i].classList.contains("filter-search"))
-            {
-                divcolumns[i].classList.remove("col-md-6");
-                divcolumns[i].classList.remove("filter-search");
-                divcolumns[i].classList.add("col-md-3");
-                divcolumns[i].classList.add("filter-search");
             }
             else if (divcolumns[i].classList.contains("col-md-12"))
             {

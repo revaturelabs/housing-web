@@ -9,13 +9,9 @@ angular.module('HousingApp', ['ui.router'])
                 controller: "DashboardCtrl",
                 templateUrl: "views/home.html"
             },
-            'complexes@home': {
-                controller: "ComplexCtrl",
-                templateUrl: "views/dashboard-complex.html"
-            },
             'units@home': {
-                controller: "UnitCtrl",
-                templateUrl: "views/dashboard-complex.html"
+                controller: "HousingCtrl",
+                templateUrl: "views/dashboard-housing.html"
             },
             'associates@home': {
                 controller: "AssociatesCtrl",
@@ -30,7 +26,7 @@ angular.module('HousingApp', ['ui.router'])
     })
     .state('housing', {
         url: "/housing",
-        controller: "ComplexCtrl",
+        controller: "HousingCtrl",
         templateUrl: "views/housing.html",
     })
     .state('analytics', {
