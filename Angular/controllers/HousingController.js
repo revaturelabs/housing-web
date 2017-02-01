@@ -50,28 +50,35 @@ angular.module("HousingApp")
 
     $scope.units.forEach(function(element1) {
         var currentCap = 0;
+        var currentCars = 0;
         $scope.data.forEach(function(element2) {
             if(element2.HousingUnit.AptNumber == element1.AptNumber && element2.HousingUnit.Complex.Name == element1.Complex.Name)
             {
                 currentCap++;
+                
+                if(element2.Associate.HasCar)
+                {
+                    currentCars++;
+                }
             }
         }, this);
         element1['Capacity'] = currentCap;
+        element1['Cars'] = currentCars;
     }, this);
 
     $scope.toggleFilters = function() {
         var filters = document.getElementById("housing-filters");
         var list = document.getElementById("housing-list");
 
-        if(filters.style.height == "5em")
+        if(filters.style.height == "15em")
         {
             filters.style.height = "0em";
             list.style.height = "37em";
         }
         else if(filters.style.height == "0em")
         {
-            filters.style.height = "5em";
-            list.style.height = "32em";
+            filters.style.height = "15em";
+            list.style.height = "22em";
         }
     }
 });

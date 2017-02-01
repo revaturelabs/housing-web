@@ -50,15 +50,15 @@ angular.module("HousingApp")
         var filters = document.getElementById("associate-filters");
         var list = document.getElementById("associate-list");
 
-        if(filters.style.height == "5em")
+        if(filters.style.height == "15em")
         {
             filters.style.height = "0em";
             list.style.height = "37em";
         }
         else if(filters.style.height == "0em")
         {
-            filters.style.height = "5em";
-            list.style.height = "32em";
+            filters.style.height = "15em";
+            list.style.height = "22em";
         }
     }
 });

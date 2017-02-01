@@ -1,9 +1,10 @@
 html, body {
     overflow-x: hidden;
+    overflow-y: hidden;
 }
 
-.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
-    transition: all 1s;
+.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .container, .fluid-container {
+    transition: all .5s;
 }
 
 .navbar.navbar-default {
@@ -101,7 +102,7 @@ html, body {
     padding-top: 15px;
     border-left: none;
     height: 46em;
-    transition: all 1s;
+    transition: all .5s;
 }
 
 #dashboard-right{
@@ -109,7 +110,7 @@ html, body {
     padding-top: 15px;
     border-right: none;
     height: 46em;
-    transition: all 1s;
+    transition: all .5s;
 }
 
 #expand-btn {
@@ -154,8 +155,71 @@ html, body {
 
 #associate-filters, #housing-filters {
     overflow-y: hidden;
-    height: 0em;
+    height: 0;
     transition: all .5s;
+    margin: 0em 1em;
+}
+
+progress[value]::-webkit-progress-bar {
+    background-color: #ddd;
+}
+
+progress[value]::-webkit-progress-value {
+    background-color: #5bf;
+}
+
+#housing-filters h3, #associate-filters h3 {
+    font-size: 17px;
+    font-variant: small-caps;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 0.55em;
+}
+
+#housing-filters .fluid-container, #associate-filters .fluid-container {
+    width: 56.5em;
+}
+
+#housing-filters .fluid-container .col-md-6, #housing-filters .fluid-container .col-md-12,
+#associate-filters .fluid-container .col-md-6, #associate-filters .fluid-container .col-md-12 {
+    margin-top: 0.15em;
+}
+
+#housing-filters .fluid-container .col-md-4, #housing-filters .fluid-container .col-md-2,
+#associate-filters .fluid-container .col-md-4, #associate-filters .fluid-container .col-md-2 {
+    width: 8.75em;
+}
+
+.pill {
+    background-color: rgba(220, 220, 220, 1);
+    border-radius: 4px;
+    height: 2.6em;
+    width: 100%;
+    padding: .5em 1em;
+    margin: .2em;
+    font-size: 10px;
+    font-weight: 900;
+    font-variant: small-caps;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+input[type=radio]:checked+.pill {
+    background-color: rgba(242, 106, 37, 1);
+}
+
+.input-group {
+    display: flex;
+}
+
+.btn.btn-default.form-control {
+    width: 3em !important;
+}
+
+select.form-control {
+    width: 8em !important;
 }
 
 .row.hr-row {
@@ -170,12 +234,4 @@ progress {
 
 .progress {
     margin-bottom: 0;
-}
-
-progress[value]::-webkit-progress-bar {
-    background-color: #ddd;
-}
-
-progress[value]::-webkit-progress-value {
-    background-color: #5bf;
 }
