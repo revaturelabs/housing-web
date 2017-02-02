@@ -22,6 +22,13 @@ angular.module("HousingApp")
     $scope.units = [];
     $scope.data = [];
     $scope.complexes = [];
+    $scope.HousingFilters = {
+        srcChoice: "name",
+        srcString: "",
+        radTech: "all",
+        radGender: "all",
+        radCar: "all"
+    };
 
     request1.onreadystatechange = function () {
         if(request1.readyState == 4 && request1.status == 200) {
@@ -80,5 +87,99 @@ angular.module("HousingApp")
             filters.style.height = "15em";
             list.style.height = "22em";
         }
+    }
+})
+.filter('hfilters', function(){
+    return function(units, HousingFilters, data) {
+        if(!HousingFilters || !data)
+        {
+            return units;
+        }
+
+        var result = [];
+        var count = 0;
+
+        units.forEach(function(unit) {
+            var checks = 0;
+            var techs = [];
+            var batches = [];
+            var countTech = 0;
+            var countBatch = 0;
+
+            var inArray = function(array, item, mode)
+            {
+                if(mode == 1)
+                {
+                    for(var i = 0; i < array.length; i++)
+                    {
+                        if(array[i] == item)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                else if(mode == 2)
+                {
+                    for(var i = 0; i < array.length; i++)
+                    {
+                        if(array[i].toLowerCase().includes(item.toLowerCase()))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                
+                return false;
+            }
+
+            data.forEach(function(item) {
+                if (item.HousingUnit.AptNumber == unit.AptNumber && item.HousingUnit.Complex.Name == unit.Complex.Name)
+                {
+                    if (!inArray(techs, item.Associate.Batch.Technology, 1))
+                    {
+                        techs[countTech] = item.Associate.Batch.Technology;
+                        countTech++;
+                    }
+
+                    if (!inArray(techs, item.Associate.Batch.Name, 1))
+                    {
+                        batches[countBatch] = item.Associate.Batch.Name;
+                        countBatch++;
+                    }
+                }
+            }, this);
+            
+            if (HousingFilters.srcChoice == "name" && (HousingFilters.srcString == "" || (unit.AptNumber + " " + unit.Complex.Name.toLowerCase()).includes(HousingFilters.srcString.toLowerCase())))
+            {
+                checks++;
+            }
+            else if (HousingFilters.srcChoice == "batch" && (HousingFilters.srcString == "" || inArray(batches, HousingFilters.srcString, 2)))
+            {
+                checks++;
+            }
+
+            if ((HousingFilters.radTech == "all") || (inArray(techs, HousingFilters.radTech, 2)))
+            {
+                checks++;
+            }
+
+            if ((HousingFilters.radGender == "all") || (HousingFilters.radGender == unit.Gender.toLowerCase()))
+            {
+                checks++;
+            }
+            
+            if ((HousingFilters.radCar == "all") || (HousingFilters.radCar == "yes" && unit.Cars < 2) || (HousingFilters.radCar == "no" && unit.Cars >= 2))
+            {
+                checks++;
+            }
+
+            if (checks == 4)
+            {
+                result[count] = unit;
+                count++;
+            }
+        }, this);
+
+        return result;
     }
 });

@@ -7,16 +7,15 @@
     </div>
 </div>
 <div class="row" id="associate-filters" style="height: 0em;">
-    <div class="fluid-container" style="width: 56em; margin: 0em 1.5em;">
+    <div class="fluid-container" style="width: 24.25em; margin: 0em 1.5em;">
         <div class="row">
-            <div class="col-md-6 col-md-offset-6">
+            <div class="col-md-12">
                 <div class="input-group">
-                    <select name="housing-search-mod" id="housing-search" class="form-control">
-                        <option value="0">Name</option>
-                        <option value="1">Batch</option>
+                    <select ng-model="AssociateFilters.srcChoice" id="housing-search" class="form-control">
+                        <option value="name">Name</option>
+                        <option value="batch">Batch</option>
                     </select>
-                    <input type="text" class="form-control">
-                    <button type="button" class="btn btn-default form-control"><span class="glyphicon glyphicon-search"></span></button>
+                    <input type="text" ng-model="AssociateFilters.srcString" class="form-control">
                 </div>
             </div>
         </div>
@@ -24,50 +23,50 @@
             <div class="col-md-2">
                 <h3>Technology</h3>
                 <div>
-                    <input type="radio" name="radTech" id="techAll" value="all" checked="checked" />
-                    <label for="techAll" class="pill">All</label>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechAll" value="all" />
+                    <label for="aTechAll" class="pill">All</label>
                 </div>
                 <div>
-                    <input type="radio" name="radTech" id="techJava" value="java" />
-                    <label for="techJava" class="pill">Java</label>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechJava" value="java" />
+                    <label for="aTechJava" class="pill">Java</label>
                 </div>
                 <div>
-                    <input type="radio" name="radTech" id="techNet" value="net" />
-                    <label for="techNet" class="pill">.NET</label>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechNet" value="net" />
+                    <label for="aTechNet" class="pill">.NET</label>
                 </div>
                 <div>
-                    <input type="radio" name="radTech" id="techSdet" value="sdet" />
-                    <label for="techSdet" class="pill">SDET</label>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechSdet" value="sdet" />
+                    <label for="aTechSdet" class="pill">SDET</label>
                 </div>
             </div>
             <div class="col-md-2">
                 <h3>Gender</h3>
                 <div>
-                    <input type="radio" name="radGender" id="genderAll" value="all" checked="checked" />
-                    <label for="genderAll" class="pill">All</label>
+                    <input type="radio" ng-model="AssociateFilters.radGender" id="aGenderAll" value="all" />
+                    <label for="aGenderAll" class="pill">All</label>
                 </div>
                 <div>
-                    <input type="radio" name="radGender" id="genderMale" value="male" />
-                    <label for="genderMale" class="pill">Male</label>
+                    <input type="radio" ng-model="AssociateFilters.radGender" id="aGenderMale" value="male" />
+                    <label for="aGenderMale" class="pill">Male</label>
                 </div>
                 <div>
-                    <input type="radio" name="radGender" id="genderFemale" value="female" />
-                    <label for="genderFemale" class="pill">Female</label>
+                    <input type="radio" ng-model="AssociateFilters.radGender" id="aGenderFemale" value="female" />
+                    <label for="aGenderFemale" class="pill">Female</label>
                 </div>
             </div>
             <div class="col-md-2">
-                <h3>Needs Car</h3>
+                <h3>Has Car</h3>
                 <div>
-                    <input type="radio" name="radCar" id="carAll" value="all" checked="checked" />
-                    <label for="carAll" class="pill">N/A</label>
+                    <input type="radio" ng-model="AssociateFilters.radCar" id="aCarAll" value="all" />
+                    <label for="aCarAll" class="pill">N/A</label>
                 </div>
                 <div>
-                    <input type="radio" name="radCar" id="carYes" value="yes" />
-                    <label for="carYes" class="pill">Yes</label>
+                    <input type="radio" ng-model="AssociateFilters.radCar" id="aCarYes" value="yes" />
+                    <label for="aCarYes" class="pill">Yes</label>
                 </div>
                 <div>
-                    <input type="radio" name="radCar" id="carNo" value="no" />
-                    <label for="carNo" class="pill">No</label>
+                    <input type="radio" ng-model="AssociateFilters.radCar" id="aCarNo" value="no" />
+                    <label for="aCarNo" class="pill">No</label>
                 </div>
             </div>
         </div>
@@ -77,7 +76,7 @@
     <hr/>
 </div>
 <div class="fluid-container" id="associate-list">
-    <div class="col-md-12" ng-repeat="item in associates | hasKeys">
+    <div class="col-md-12" ng-repeat="item in associates | hasKeys | afilters:AssociateFilters">
         <div class="panel panel-revature">
             <div class="panel-heading"> 
                 {{item.FirstName + " " + item.LastName}}

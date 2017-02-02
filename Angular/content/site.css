@@ -123,12 +123,6 @@ html, body {
     white-space: pre;
 }
 
-#dashboard-right .fluid-container {
-    transition: all .5s;
-    overflow-y: scroll;
-    height: 37em;
-}
-
 #dashboard-housing, #dashboard-associate {
     height: 3.2em;
 }

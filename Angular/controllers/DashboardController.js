@@ -73,12 +73,11 @@ angular.module("HousingApp")
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-12");
-            hfilters.childNodes[1].childNodes[3].childNodes[1].classList.remove("col-md-2");
-            hfilters.childNodes[1].childNodes[3].childNodes[3].classList.remove("col-md-2");
-            hfilters.childNodes[1].childNodes[3].childNodes[5].classList.remove("col-md-2");
-            hfilters.childNodes[1].childNodes[3].childNodes[1].classList.add("col-md-4");
-            hfilters.childNodes[1].childNodes[3].childNodes[3].classList.add("col-md-4");
-            hfilters.childNodes[1].childNodes[3].childNodes[5].classList.add("col-md-4");
+            for (var i = 0; i < 3; i++)
+            {
+                hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-2");
+                hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-4");
+            }
         }
         else
         {
@@ -87,12 +86,38 @@ angular.module("HousingApp")
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-12");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-offset-6");
-            hfilters.childNodes[1].childNodes[3].childNodes[1].classList.remove("col-md-4");
-            hfilters.childNodes[1].childNodes[3].childNodes[3].classList.remove("col-md-4");
-            hfilters.childNodes[1].childNodes[3].childNodes[5].classList.remove("col-md-4");
-            hfilters.childNodes[1].childNodes[3].childNodes[1].classList.add("col-md-2");
-            hfilters.childNodes[1].childNodes[3].childNodes[3].classList.add("col-md-2");
-            hfilters.childNodes[1].childNodes[3].childNodes[5].classList.add("col-md-2");
+            for (var i = 0; i < 3; i++)
+            {
+                hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-4");
+                hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-2");
+            }
+        }
+        
+        if (afilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
+        {
+            afilters.childNodes[1].style.width = "24.25em";
+            afilters.childNodes[1].style.margin = "0em 1.5em";
+            afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
+            afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
+            afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-12");
+            for (var i = 0; i < 3; i++)
+            {
+                afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-2");
+                afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-4");
+            }
+        }
+        else
+        {
+            afilters.childNodes[1].style.width = "56em";
+            afilters.childNodes[1].style.margin = "0em 1.5em";
+            afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-12");
+            afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-6");
+            afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-offset-6");
+            for (var i = 0; i < 3; i++)
+            {
+                afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-4");
+                afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-2");
+            }
         }
     }
 });
