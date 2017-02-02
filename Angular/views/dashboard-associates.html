@@ -3,38 +3,83 @@
         <h1>Associates</h1>
     </div>
     <div class="col-md-6 filter-search">
-        <div class="input-group">
-            <input type="text" class="form-control" list="associate-filters">
-            <datalist id="associate-filters">
-                <option>Name</option>
-                <option>Technology</option>
-                <option>Gender</option>
-                <option>Assigned</option>
-            </datalist>
-            <button class="btn btn-default form-control" style="width:initial;">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
+        <button class="btn btn-default btn-filter" ng-click="toggleFilters()">Filters</button>
+    </div>
+</div>
+<div class="row" id="associate-filters" style="height: 0em;">
+    <div class="fluid-container" style="width: 24.25em; margin: 0em 1.5em;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                    <select ng-model="AssociateFilters.srcChoice" id="housing-search" class="form-control">
+                        <option value="name">Name</option>
+                        <option value="batch">Batch</option>
+                    </select>
+                    <input type="text" ng-model="AssociateFilters.srcString" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <h3>Technology</h3>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechAll" value="all" />
+                    <label for="aTechAll" class="pill">All</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechJava" value="java" />
+                    <label for="aTechJava" class="pill">Java</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechNet" value="net" />
+                    <label for="aTechNet" class="pill">.NET</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radTech" id="aTechSdet" value="sdet" />
+                    <label for="aTechSdet" class="pill">SDET</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h3>Gender</h3>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radGender" id="aGenderAll" value="all" />
+                    <label for="aGenderAll" class="pill">All</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radGender" id="aGenderMale" value="male" />
+                    <label for="aGenderMale" class="pill">Male</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radGender" id="aGenderFemale" value="female" />
+                    <label for="aGenderFemale" class="pill">Female</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <h3>Has Car</h3>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radCar" id="aCarAll" value="all" />
+                    <label for="aCarAll" class="pill">N/A</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radCar" id="aCarYes" value="yes" />
+                    <label for="aCarYes" class="pill">Yes</label>
+                </div>
+                <div>
+                    <input type="radio" ng-model="AssociateFilters.radCar" id="aCarNo" value="no" />
+                    <label for="aCarNo" class="pill">No</label>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <div class="row hr-row">
     <hr/>
 </div>
-<div class="fluid-container">
-    <div class="col-md-12" ng-repeat="item in associates">
+<div class="fluid-container" id="associate-list">
+    <div class="col-md-12" ng-repeat="item in associates | hasKeys | afilters:AssociateFilters">
         <div class="panel panel-revature">
             <div class="panel-heading"> 
                 {{item.FirstName + " " + item.LastName}}
-            </div>
-            <div class="panel-body">
-                <p>{{item.Gender}}</p>
-                <p>{{item.PhoneNumber}}</p>
-                <p>{{item.Batch.Technology}}</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-plus"></span> Assign Complex
-                </button>
             </div>
         </div>
     </div>
