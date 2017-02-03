@@ -15,10 +15,12 @@ angular.module("HousingApp")
         return x;
     }
 })
-.controller("HousingCtrl", function($scope, $http, complexURL, dataURL, unitURL) {
+.controller("HousingCtrl", function($scope, $http, $stateParams, complexURL, dataURL, unitURL) {
     var request1 = new XMLHttpRequest();
     var request2 = new XMLHttpRequest();
     var request3 = new XMLHttpRequest();
+    $scope.CurrentComplex = $stateParams.Name;
+    $scope.CurrentUnits = [];
     $scope.units = [];
     $scope.data = [];
     $scope.complexes = [];
@@ -55,22 +57,77 @@ angular.module("HousingApp")
     request2.send();
     request3.send();
 
-    $scope.units.forEach(function(element1) {
+    var inArray = function(array, item)
+    {
+        for(var i = 0; i < array.length; i++)
+        {
+            if(array[i] == item)
+            {
+                return true;
+            }
+        }
+    }
+
+    var count = 0;
+
+    $scope.units.forEach(function(unit) {
         var currentCap = 0;
         var currentCars = 0;
-        $scope.data.forEach(function(element2) {
-            if(element2.HousingUnit.AptNumber == element1.AptNumber && element2.HousingUnit.Complex.Name == element1.Complex.Name)
+        
+        if ($stateParams.Name != undefined)
+        {
+            var techs = [];
+            var batches = [];
+            var countTech = 0;
+            var countBatch = 0;
+            if(unit.Complex.Name == $scope.CurrentComplex)
             {
-                currentCap++;
-                
-                if(element2.Associate.HasCar)
-                {
-                    currentCars++;
-                }
+                $scope.data.forEach(function(data) {
+                    if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.CurrentComplex)
+                    {
+                        currentCap++;
+                        
+                        if(data.Associate.HasCar)
+                        {
+                            currentCars++;
+                        }
+                        if(!inArray(techs, data.Associate.Batch.Technology))
+                        {
+                            techs[countTech] = data.Associate.Batch.Technology;
+                        }
+                        if(!inArray(batches, data.Associate.Batch.Name))
+                        {
+                            batches[countBatch] = data.Associate.Batch.Name;
+                        }
+                    }
+                }, this);
+
+                unit['Capacity'] = currentCap;
+                unit['Cars'] = currentCars;
+                unit['Tech'] = techs;
+                unit['Batch'] = batches;
+
+                $scope.CurrentUnits[count] = unit;
+                count++;
             }
-        }, this);
-        element1['Capacity'] = currentCap;
-        element1['Cars'] = currentCars;
+        }
+        else
+        {
+            $scope.data.forEach(function(data) {
+                if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == unit.Complex.Name)
+                {
+                    currentCap++;
+                    
+                    if(data.Associate.HasCar)
+                    {
+                        currentCars++;
+                    }
+                }
+            }, this);
+
+            unit['Capacity'] = currentCap;
+            unit['Cars'] = currentCars;
+        }
     }, this);
 
     $scope.toggleFilters = function() {
@@ -181,5 +238,31 @@ angular.module("HousingApp")
         }, this);
 
         return result;
+    }
+})
+.filter('array', function(){
+    return function(array) {
+        var str = "";
+
+        if (array.length > 0)
+        {
+            for (var i = 0; i < array.length; i++)
+            {
+                if(i != array.length - 1)
+                {
+                    str += array[i] + ", ";
+                }
+                else
+                {
+                    str += array[i];
+                }
+            }
+        }
+        else
+        {
+            str = "None";
+        }
+
+        return str;
     }
 });
