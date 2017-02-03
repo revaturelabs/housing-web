@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 html, body {
     overflow-x: hidden;
     overflow-y: hidden;
@@ -45,6 +47,11 @@ html, body {
     visibility: hidden;
 }
 
+.btn.btn.btn-default {
+    font-variant: small-caps;
+    font-weight: 500;
+}
+
 .col-md-9 h1 {
     font-size: 4em;
     font-variant: small-caps;
@@ -53,6 +60,11 @@ html, body {
 
 .col-md-3.col-btn {
     padding: 3em 0em 1em 0em;
+}
+
+.col-md-3.col-btn.back {
+    position: absolute;
+    transform: translate(-10em);
 }
 
 .col-md-3.col-btn .btn.btn-default {
@@ -117,6 +129,8 @@ html, body {
     position: absolute;
     z-index: 2;
     transform: translate(-20px, 64px);
+    -moz-transform: translate(-33.8em, 64px);
+    transition: all .5s;
 }
 
 .address {
@@ -154,8 +168,16 @@ html, body {
     margin: 0em 1em;
 }
 
+.progress {
+    background-color: #ddd;
+}
+
 progress[value]::-webkit-progress-bar {
     background-color: #ddd;
+}
+
+.progress::-moz-progress-bar {
+    background-color: #5bf;
 }
 
 progress[value]::-webkit-progress-value {

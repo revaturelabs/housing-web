@@ -2,6 +2,7 @@ angular.module("HousingApp")
 .controller("DashboardCtrl", function($scope, $http) {
     $scope.expandView = function() {
         var sections = document.getElementsByTagName("section");
+        var expandBtn = document.getElementById("expand-btn");
         var section1;
         var section2;
 
@@ -16,6 +17,15 @@ angular.module("HousingApp")
                 else
                 {
                     section2 = sections[i];
+                }
+                
+                if(sections[i].id == "dashboard-left" && section1 == sections[i])
+                {
+                    expandBtn.style.MozTransform = "translate(-66.1em, 64px)";
+                }
+                else if(sections[i].id == "dashboard-left" && section2 == sections[i])
+                {
+                    expandBtn.style.MozTransform = "translate(-33.8em, 64px)";
                 }
             }
         }
