@@ -1,5 +1,5 @@
 angular.module("HousingApp")
-.controller("DashboardCtrl", function($scope, $http) {
+.controller("DashboardCtrl", function($scope, $http, $state) {
     $scope.expandView = function() {
         var sections = document.getElementsByTagName("section");
         var expandBtn = document.getElementById("expand-btn");
@@ -18,7 +18,7 @@ angular.module("HousingApp")
                 {
                     section2 = sections[i];
                 }
-                
+
                 if(sections[i].id == "dashboard-left" && section1 == sections[i])
                 {
                     expandBtn.style.MozTransform = "translate(-66.1em, 64px)";

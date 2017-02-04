@@ -251,3 +251,20 @@ progress {
 .progress {
     margin-bottom: 0;
 }
+
+.pagination li .btn-revature {
+    background-color: rgba(242, 106, 37, 1);
+    color: white;
+}
+
+.pagination li .btn-revature:hover {
+    background-color: rgba(225, 90, 20, 1);
+}
+
+.text-center .input-group {
+    display: inline-block;
+}
+
+.text-center .input-group li {
+    border-radius: 2px;
+}

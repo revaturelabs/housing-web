@@ -14,7 +14,7 @@
             <hr />
         </section>
         <section class="row">
-            <div class="col-md-4" ng-repeat="item in associates">
+            <div class="col-md-4" ng-repeat="item in associates | range:selectedPage:pageSize">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <a href="">
@@ -24,9 +24,6 @@
                     <div class="panel-body">
                         <p>Gender: {{item.Gender}}</p>
                         <p>Batch: {{item.Batch.Name}}</p>
-                        <p>Instructor: {{item.Batch.Instructor}}</p>
-                        <p>Start Date: {{item.Batch.StartDate | date}}</p>
-                        <p>End Date: {{item.Batch.EndDate | date}}</p>
                         <p>Technology: {{item.Batch.Technology}}</p>
                         <p>Phone: {{item.PhoneNumber}}</p>
                         <p>Email: {{item.Email}}</p>
@@ -42,5 +39,16 @@
                 </div>
             </div>
         </section>
+        <div class="row">
+            <div class="text-center">
+                <ul class="pagination input-group">
+                    <li ng-repeat="item in associates | pageCount:pageSize">
+                        <a class="btn btn-default form-control" ng-click="selectPage($index + 1)" ng-class="getPageClass($index + 1)">
+                             {{$index + 1}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </article>
