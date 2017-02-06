@@ -11,7 +11,7 @@
         </section>
         <section class="row">
             <div class="col-md-9">
-                <h1>{{CurrentComplex}}</h1>
+                <h1>{{HousingScope.CurrentComplex}}</h1>
             </div>
             <div class="col-md-3 col-btn">
                 <button type="button" class="btn btn-default">
@@ -23,7 +23,7 @@
             <hr />
         </section>
         <section class="row">
-            <div class="col-md-4" ng-repeat="item in CurrentUnits">
+            <div class="col-md-4" ng-repeat="item in HousingScope.CurrentUnits">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{item.AptNumber}}</h3>

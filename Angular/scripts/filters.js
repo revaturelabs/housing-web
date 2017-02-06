@@ -45,11 +45,11 @@ angular.module("HousingApp")
         return result;
     }
 })
-.filter("pageCount", function () {
-    return function (data, pageSize) {
+.filter("pagecount", function () {
+    return function (data, size) {
         if (angular.isArray(data)) {
             var result = [];
-            for (var i = 0; i < Math.ceil(data.length / pageSize); i++) {
+            for (var i = 0; i < Math.ceil(data.length / size); i++) {
                 result.push(i);
             }
             return result;
@@ -59,14 +59,14 @@ angular.module("HousingApp")
         }
     }
 })
-.filter("range", function () {
+.filter("pagerange", function () {
     return function (data, page, size) {
-        var start_index = (page - 1) * size;
-        if (data.length < start_index) {
+        var start = (page - 1) * size;
+        if (data.length < start) {
             return [];
         }
         else {
-            return data.slice(start_index, size + start_index);
+            return data.slice(start, size + start);
         }
     }
 })
@@ -97,8 +97,8 @@ angular.module("HousingApp")
     }
 })
 .filter('afilters', function(){
-    return function(associates, AssociateFilters) {
-        if(!AssociateFilters)
+    return function(associates, filters) {
+        if(!filters)
         {
             return associates;
         }
@@ -109,26 +109,26 @@ angular.module("HousingApp")
         associates.forEach(function(associate) {
             var checks = 0;
             
-            if (AssociateFilters.srcChoice == "name" && (AssociateFilters.srcString == "" || (associate.FirstName + " " + associate.LastName).toLowerCase().includes(AssociateFilters.srcString.toLowerCase())))
+            if (filters.SrcChoice == "name" && (filters.SrcString == "" || (associate.FirstName + " " + associate.LastName).toLowerCase().includes(filters.SrcString.toLowerCase())))
             {
                 checks++;
             }
-            else if (AssociateFilters.srcChoice == "batch" && (AssociateFilters.srcString == "" || associate.Batch.Name.toLowerCase().includes(AssociateFilters.srcString.toLowerCase())))
-            {
-                checks++;
-            }
-
-            if ((AssociateFilters.radTech == "all") || (AssociateFilters.radTech == associate.Batch.Technology.toLowerCase()))
+            else if (filters.SrcChoice == "batch" && (filters.SrcString == "" || associate.Batch.Name.toLowerCase().includes(filters.SrcString.toLowerCase())))
             {
                 checks++;
             }
 
-            if ((AssociateFilters.radGender == "all") || (AssociateFilters.radGender == associate.Gender.toLowerCase()))
+            if ((filters.RadTech == "all") || (filters.RadTech == associate.Batch.Technology.toLowerCase()))
+            {
+                checks++;
+            }
+
+            if ((filters.RadGender == "all") || (filters.RadGender == associate.Gender.toLowerCase()))
             {
                 checks++;
             }
             
-            if ((AssociateFilters.radCar == "all") || (AssociateFilters.radCar == "yes" && associate.HasCar) || (AssociateFilters.radCar == "no" && !associate.HasCar))
+            if ((filters.RadCar == "all") || (filters.RadCar == "yes" && associate.HasCar) || (filters.RadCar == "no" && !associate.HasCar))
             {
                 checks++;
             }
@@ -144,8 +144,8 @@ angular.module("HousingApp")
     }
 })
 .filter('hfilters', function(){
-    return function(units, HousingFilters, data) {
-        if(!HousingFilters || !data)
+    return function(units, filters, data) {
+        if(!filters || !data)
         {
             return units;
         }
@@ -203,26 +203,26 @@ angular.module("HousingApp")
                 }
             }, this);
             
-            if (HousingFilters.srcChoice == "name" && (HousingFilters.srcString == "" || (unit.AptNumber + " " + unit.Complex.Name.toLowerCase()).includes(HousingFilters.srcString.toLowerCase())))
+            if (filters.SrcChoice == "name" && (filters.SrcString == "" || (unit.AptNumber + " " + unit.Complex.Name.toLowerCase()).includes(filters.SrcString.toLowerCase())))
             {
                 checks++;
             }
-            else if (HousingFilters.srcChoice == "batch" && (HousingFilters.srcString == "" || inArray(batches, HousingFilters.srcString, 2)))
-            {
-                checks++;
-            }
-
-            if ((HousingFilters.radTech == "all") || (inArray(techs, HousingFilters.radTech, 2)))
+            else if (filters.SrcChoice == "batch" && (filters.SrcString == "" || inArray(batches, filters.SrcString, 2)))
             {
                 checks++;
             }
 
-            if ((HousingFilters.radGender == "all") || (HousingFilters.radGender == unit.Gender.toLowerCase()))
+            if ((filters.RadTech == "all") || (inArray(techs, filters.RadTech, 2)))
+            {
+                checks++;
+            }
+
+            if ((filters.RadGender == "all") || (filters.RadGender == unit.Gender.toLowerCase()))
             {
                 checks++;
             }
             
-            if ((HousingFilters.radCar == "all") || (HousingFilters.radCar == "yes" && unit.Cars < 2) || (HousingFilters.radCar == "no" && unit.Cars >= 2))
+            if ((filters.RadCar == "all") || (filters.RadCar == "yes" && unit.Cars < 2) || (filters.RadCar == "no" && unit.Cars >= 2))
             {
                 checks++;
             }

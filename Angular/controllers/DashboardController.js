@@ -1,6 +1,7 @@
 angular.module("HousingApp")
 .controller("DashboardCtrl", function($scope, $http, $state) {
-    $scope.expandView = function() {
+    $scope.DashboardScope = [];
+    $scope.DashboardScope.ExpandView = function() {
         var sections = document.getElementsByTagName("section");
         var expandBtn = document.getElementById("expand-btn");
         var section1;

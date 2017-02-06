@@ -1,48 +1,47 @@
 angular.module("HousingApp")
-.constant("complexURL", "fakedata/HousingComplexes.json")
-.constant("dataURL", "fakedata/HousingData.json")
-.constant("unitURL", "fakedata/HousingUnits.json")
 .controller("HousingCtrl", function($scope, $http, $stateParams, complexURL, dataURL, unitURL) {
-    var request1 = new XMLHttpRequest();
-    var request2 = new XMLHttpRequest();
-    var request3 = new XMLHttpRequest();
-    $scope.CurrentComplex = $stateParams.Name;
-    $scope.CurrentUnits = [];
-    $scope.units = [];
-    $scope.data = [];
-    $scope.complexes = [];
-    $scope.HousingFilters = {
-        srcChoice: "name",
-        srcString: "",
-        radTech: "all",
-        radGender: "all",
-        radCar: "all"
+    var requestComplex = new XMLHttpRequest();
+    var requestData = new XMLHttpRequest();
+    var requestUnit = new XMLHttpRequest();
+
+    $scope.HousingScope = [];
+    $scope.HousingScope.CurrentComplex = $stateParams.Name;
+    $scope.HousingScope.CurrentUnits = [];
+    $scope.HousingScope.Units = [];
+    $scope.HousingScope.Data = [];
+    $scope.HousingScope.Complexes = [];
+    $scope.HousingScope.HousingFilters = {
+        SrcChoice: "name",
+        SrcString: "",
+        RadTech: "all",
+        RadGender: "all",
+        RadCar: "all"
     };
 
-    request1.onreadystatechange = function () {
-        if(request1.readyState == 4 && request1.status == 200) {
-            $scope.units = JSON.parse(request1.responseText);
+    requestComplex.onreadystatechange = function () {
+        if(requestComplex.readyState == 4 && requestComplex.status == 200) {
+            $scope.HousingScope.Complexes = JSON.parse(requestComplex.responseText);
         }
     }
 
-    request2.onreadystatechange = function () {
-        if(request2.readyState == 4 && request2.status == 200) {
-            $scope.data = JSON.parse(request2.responseText);
+    requestData.onreadystatechange = function () {
+        if(requestData.readyState == 4 && requestData.status == 200) {
+            $scope.HousingScope.Data = JSON.parse(requestData.responseText);
         }
     }
     
-    request3.onreadystatechange = function () {
-        if(request3.readyState == 4 && request3.status == 200) {
-            $scope.complexes = JSON.parse(request3.responseText);
+    requestUnit.onreadystatechange = function () {
+        if(requestUnit.readyState == 4 && requestUnit.status == 200) {
+            $scope.HousingScope.Units = JSON.parse(requestUnit.responseText);
         }
     }
 
-    request1.open("GET", unitURL, false);
-    request2.open("GET", dataURL, false);
-    request3.open("GET", complexURL, false);
-    request1.send();
-    request2.send();
-    request3.send();
+    requestComplex.open("GET", complexURL, false);
+    requestData.open("GET", dataURL, false);
+    requestUnit.open("GET", unitURL, false);
+    requestComplex.send();
+    requestData.send();
+    requestUnit.send();
 
     var inArray = function(array, item)
     {
@@ -57,7 +56,7 @@ angular.module("HousingApp")
 
     var count = 0;
 
-    $scope.units.forEach(function(unit) {
+    $scope.HousingScope.Units.forEach(function(unit) {
         var currentCap = 0;
         var currentCars = 0;
         
@@ -69,8 +68,8 @@ angular.module("HousingApp")
             var countBatch = 0;
             if(unit.Complex.Name == $scope.CurrentComplex)
             {
-                $scope.data.forEach(function(data) {
-                    if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.CurrentComplex)
+                $scope.HousingScope.Data.forEach(function(data) {
+                    if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.HousingScope.CurrentComplex)
                     {
                         currentCap++;
                         
@@ -94,13 +93,13 @@ angular.module("HousingApp")
                 unit['Tech'] = techs;
                 unit['Batch'] = batches;
 
-                $scope.CurrentUnits[count] = unit;
+                $scope.HousingScope.CurrentUnits[count] = unit;
                 count++;
             }
         }
         else
         {
-            $scope.data.forEach(function(data) {
+            $scope.HousingScope.Data.forEach(function(data) {
                 if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == unit.Complex.Name)
                 {
                     currentCap++;
@@ -117,7 +116,7 @@ angular.module("HousingApp")
         }
     }, this);
 
-    $scope.toggleFilters = function() {
+    $scope.HousingScope.ToggleFilters = function() {
         var filters = document.getElementById("housing-filters");
         var list = document.getElementById("housing-list");
 

@@ -3,7 +3,7 @@
         <h1>Housing</h1>
     </div>
     <div class="col-md-6 filter-search">
-        <button class="btn btn-default btn-filter" ng-click="toggleFilters()">Filters</button>
+        <button class="btn btn-default btn-filter" ng-click="HousingScope.ToggleFilters()">Filters</button>
     </div>
 </div>
 <div class="row" id="housing-filters" style="height: 0em;">
@@ -11,11 +11,11 @@
         <div class="row">
             <div class="col-md-6 col-md-offset-6">
                 <div class="input-group">
-                    <select ng-model="HousingFilters.srcChoice" id="housing-search" class="form-control">
+                    <select ng-model="HousingScope.HousingFilters.SrcChoice" id="housing-search" class="form-control">
                         <option value="name">Name</option>
                         <option value="batch">Batch</option>
                     </select>
-                    <input type="text" ng-model="HousingFilters.srcString" class="form-control">
+                    <input type="text" ng-model="HousingScope.HousingFilters.SrcString" class="form-control">
                 </div>
             </div>
         </div>
@@ -23,49 +23,49 @@
             <div class="col-md-2">
                 <h3>Technology</h3>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radTech" id="hTechAll" value="all" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechAll" value="all" />
                     <label for="hTechAll" class="pill">All</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radTech" id="hTechJava" value="java" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechJava" value="java" />
                     <label for="hTechJava" class="pill">Java</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radTech" id="hTechNet" value="net" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechNet" value="net" />
                     <label for="hTechNet" class="pill">.NET</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radTech" id="hTechSdet" value="sdet" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechSdet" value="sdet" />
                     <label for="hTechSdet" class="pill">SDET</label>
                 </div>
             </div>
             <div class="col-md-2">
                 <h3>Gender</h3>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radGender" id="hGenderAll" value="all" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderAll" value="all" />
                     <label for="hGenderAll" class="pill">All</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radGender" id="hGenderMale" value="male" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderMale" value="male" />
                     <label for="hGenderMale" class="pill">Male</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radGender" id="hGenderFemale" value="female" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.radGender" id="hGenderFemale" value="female" />
                     <label for="hGenderFemale" class="pill">Female</label>
                 </div>
             </div>
             <div class="col-md-2">
                 <h3>Needs Car</h3>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radCar" id="hCarAll" value="all" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarAll" value="all" />
                     <label for="hCarAll" class="pill">N/A</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radCar" id="hCarYes" value="yes" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarYes" value="yes" />
                     <label for="hCarYes" class="pill">Yes</label>
                 </div>
                 <div>
-                    <input type="radio" ng-model="HousingFilters.radCar" id="hCarNo" value="no" />
+                    <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarNo" value="no" />
                     <label for="hCarNo" class="pill">No</label>
                 </div>
             </div>
@@ -76,7 +76,7 @@
     <hr/>
 </div>
 <div class="fluid-container" id="housing-list">
-    <div class ="col-md-4" ng-repeat="item in units | hfilters:HousingFilters:data">
+    <div class ="col-md-4" ng-repeat="item in HousingScope.Units | hfilters:HousingScope.HousingFilters:HousingScope.Data">
         <div class="panel panel-revature">
             <div class="panel-heading">
                 {{item.AptNumber + " " + item.Complex.Name}}

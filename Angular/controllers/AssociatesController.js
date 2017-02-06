@@ -1,36 +1,37 @@
 angular.module("HousingApp")
-.constant("associatesURL", "fakedata/Associates.json")
 .controller("AssociatesCtrl", function($scope, $http, associatesURL) {
-    var request = new XMLHttpRequest();
-    $scope.pageSize = 3;
-    $scope.selectedPage = 1;
-    $scope.associates = [];
-    $scope.AssociateFilters = {
-        srcChoice: "name",
-        srcString: "",
-        radTech: "all",
-        radGender: "all",
-        radCar: "all"
+    var requestAssociate = new XMLHttpRequest();
+
+    $scope.AssociateScope = [];
+    $scope.AssociateScope.PageSize = 3;
+    $scope.AssociateScope.CurrentPage = 1;
+    $scope.AssociateScope.Associates = [];
+    $scope.AssociateScope.AssociateFilters = {
+        SrcChoice: "name",
+        SrcString: "",
+        RadTech: "all",
+        RadGender: "all",
+        RadCar: "all"
     };
 
-    $scope.selectPage = function (newPage) {
-        $scope.selectedPage = newPage;
-    }
-
-    $scope.getPageClass = function (page) {
-        return $scope.selectedPage == page ? "btn-revature" : "";
-    }
-
-    request.onreadystatechange = function () {
-        if(request.readyState == 4 && request.status == 200) {
-            $scope.associates = JSON.parse(request.responseText);
+    requestAssociate.onreadystatechange = function () {
+        if(requestAssociate.readyState == 4 && requestAssociate.status == 200) {
+            $scope.AssociateScope.Associates = JSON.parse(requestAssociate.responseText);
         }
     }
 
-    request.open("GET", associatesURL, false);
-    request.send();
+    requestAssociate.open("GET", associatesURL, false);
+    requestAssociate.send();
 
-    $scope.toggleFilters = function() {
+    $scope.AssociateScope.GoToPage = function (page) {
+        $scope.AssociateScope.CurrentPage = page;
+    }
+
+    $scope.AssociateScope.GetPageClass = function (page) {
+        return $scope.AssociateScope.CurrentPage == page ? "btn-revature" : "";
+    }
+
+    $scope.AssociateScope.ToggleFilters = function() {
         var filters = document.getElementById("associate-filters");
         var list = document.getElementById("associate-list");
 
