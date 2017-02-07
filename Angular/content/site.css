@@ -3,6 +3,7 @@
 html, body {
     overflow-x: hidden;
     overflow-y: hidden;
+    height: 100%;
 }
 
 .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .container, .fluid-container {
@@ -47,7 +48,7 @@ html, body {
     visibility: hidden;
 }
 
-.btn.btn.btn-default {
+.btn.btn-default {
     font-variant: small-caps;
     font-weight: 500;
 }
@@ -77,15 +78,23 @@ html, body {
 }
 
 .panel-revature {
-    border-color: rgba(242, 106, 37, .5);
+    border-color: rgba(242, 106, 37, 1);
 }
 
 .panel-revature .panel-heading {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     height: 3.5em;
     padding: 1.15em 1em;
-    background-color: rgba(242, 106, 37, .5);
-    border-color: rgba(242, 106, 37, .5);
+    background-color: rgba(242, 106, 37, 1);
+    border-color: rgba(242, 106, 37, 1);
     background-image: none;
+}
+
+.panel-revature .panel-heading, .panel-revature .panel-heading a h3 {
+    color: white;
+    font-weight: bold;
 }
 
 .panel-heading a {
@@ -113,7 +122,7 @@ html, body {
     border: 2px solid rgba(0,0,0,.1);
     padding-top: 15px;
     border-left: none;
-    height: 46em;
+    height: 100%;
     transition: all .5s;
 }
 
@@ -121,8 +130,13 @@ html, body {
     border: 2px solid rgba(0,0,0,.1);
     padding-top: 15px;
     border-right: none;
-    height: 46em;
+    height: 100%;
     transition: all .5s;
+}
+
+.view-content {
+    border-top: 2px solid rgba(0,0,0,.1);
+    border-bottom: 2px solid rgba(0,0,0,.1);
 }
 
 #expand-btn {
@@ -148,6 +162,11 @@ html, body {
     margin: 0;
 }
 
+#housing-content, #associate-content {
+    overflow-y: hidden;
+    transition: all .5s;
+}
+
 .filter-search{
     height: inherit;
 }
@@ -169,23 +188,23 @@ html, body {
 }
 
 .progress {
-    background-color: #ddd;
+    background-color: #f5f5f5;
 }
 
 progress[value]::-webkit-progress-bar {
-    background-color: #ddd;
+    background-color: #f5f5f5;
 }
 
 .progress::-moz-progress-bar {
-    background-color: #5bf;
+    background-color: rgba(242, 106, 37, 1);
 }
 
 progress[value]::-webkit-progress-value {
-    background-color: #5bf;
+    background-color: rgba(242, 106, 37, 1);
 }
 
 #housing-filters h3, #associate-filters h3 {
-    font-size: 17px;
+    font-size: 16px;
     font-variant: small-caps;
     font-weight: 700;
     text-align: center;
@@ -193,7 +212,7 @@ progress[value]::-webkit-progress-value {
 }
 
 #housing-filters .fluid-container, #associate-filters .fluid-container {
-    width: 56.5em;
+    width: 56em;
 }
 
 #housing-filters .fluid-container .col-md-6, #housing-filters .fluid-container .col-md-12,
@@ -203,11 +222,11 @@ progress[value]::-webkit-progress-value {
 
 #housing-filters .fluid-container .col-md-4, #housing-filters .fluid-container .col-md-2,
 #associate-filters .fluid-container .col-md-4, #associate-filters .fluid-container .col-md-2 {
-    width: 8.75em;
+    width: 8.5em;
 }
 
 .pill {
-    background-color: rgba(220, 220, 220, 1);
+    background-color: #f5f5f5;
     border-radius: 4px;
     height: 2.6em;
     width: 100%;
@@ -252,9 +271,18 @@ progress {
     margin-bottom: 0;
 }
 
+.pagination {
+    transition: all .5s;
+}
+
 .pagination li .btn-revature {
     background-color: rgba(242, 106, 37, 1);
     color: white;
+    font-weight: bold;
+}
+
+.pagination li a.btn.btn-default.form-control {
+    font-weight: bold;
 }
 
 .pagination li .btn-revature:hover {
@@ -267,4 +295,10 @@ progress {
 
 .text-center .input-group li {
     border-radius: 2px;
+}
+
+.btn.btn-lg.btn-revature {
+    background-color: rgba(242, 106, 37, 1);
+    color: white;
+    font-weight: bold;
 }

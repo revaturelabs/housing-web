@@ -3,8 +3,10 @@ angular.module("HousingApp")
     var requestAssociate = new XMLHttpRequest();
 
     $scope.AssociateScope = [];
-    $scope.AssociateScope.PageSize = 3;
-    $scope.AssociateScope.CurrentPage = 1;
+    $scope.AssociateScope.PageSize1 = 3;
+    $scope.AssociateScope.PageSize2 = 9;
+    $scope.AssociateScope.CurrentPage1 = 1;
+    $scope.AssociateScope.CurrentPage2 = 1;
     $scope.AssociateScope.Associates = [];
     $scope.AssociateScope.AssociateFilters = {
         SrcChoice: "name",
@@ -23,12 +25,26 @@ angular.module("HousingApp")
     requestAssociate.open("GET", associatesURL, false);
     requestAssociate.send();
 
-    $scope.AssociateScope.GoToPage = function (page) {
-        $scope.AssociateScope.CurrentPage = page;
+    $scope.AssociateScope.GoToPage = function (version, page) {
+        if(version == $scope.AssociateScope.CurrentPage1)
+        {
+            $scope.AssociateScope.CurrentPage1 = page;
+        }
+        else
+        {
+            $scope.AssociateScope.CurrentPage2 = page;
+        }
     }
 
-    $scope.AssociateScope.GetPageClass = function (page) {
-        return $scope.AssociateScope.CurrentPage == page ? "btn-revature" : "";
+    $scope.AssociateScope.GetPageClass = function (version, page) {
+        if(version == $scope.AssociateScope.CurrentPage1)
+        {
+            return $scope.AssociateScope.CurrentPage1 == page ? "btn-revature" : "";
+        }
+        else
+        {
+            return $scope.AssociateScope.CurrentPage2 == page ? "btn-revature" : "";
+        }
     }
 
     $scope.AssociateScope.ToggleFilters = function() {
@@ -38,12 +54,39 @@ angular.module("HousingApp")
         if(filters.style.height == "15em")
         {
             filters.style.height = "0em";
-            list.style.height = "37em";
+            updateSpacing(10, 0);
         }
         else if(filters.style.height == "0em")
         {
             filters.style.height = "15em";
-            list.style.height = "22em";
+            updateSpacing(10, 210);
         }
     }
+
+    var updateSpacing = function (time, height) {
+        setTimeout(function() {
+            var content = document.getElementById("associate-content");
+            var contentParent = content.parentElement;
+            var spacing = contentParent.clientHeight;
+
+            for (var i = 0; i < contentParent.children.length; i++)
+            {
+                if (contentParent.children[i] != content)
+                {
+                    if (contentParent.children[i].id != "associate-filters")
+                    {
+                        spacing -= contentParent.children[i].clientHeight;
+                    }
+                    else if (contentParent.children[i].id == "associate-filters" && height != 0) 
+                    {
+                        spacing -= height;
+                    }
+                }
+            }
+            
+            content.style.height = spacing + "px";
+        }, time);
+    }
+
+    updateSpacing(10, 0);
 });

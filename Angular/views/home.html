@@ -1,13 +1,13 @@
-<article class="fluid-container">
-    <div id="dashboard" class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="row">
+<article class="fluid-container" style="height: 100%">
+    <div id="dashboard" class="row" style="height: 100%">
+        <div class="col-md-10 col-md-offset-1" style="height: 100%">
+            <div class="row" style="height: 100%">
                 <section id="dashboard-left" class="col-md-8 expanded">
-                    <div ui-view ="units"></div>
+                    <div ui-view ="units" style="height: 100%"></div>
                 </section>
                 <button type="button" id="expand-btn" class="btn btn-default" ng-click="DashboardScope.ExpandView()">&harr;</button>
                 <section id="dashboard-right" class="col-md-4">
-                    <div ui-view ="associates"></div>
+                    <div ui-view ="associates" style="height: 100%"></div>
                 </section>
             </div>
         </div>

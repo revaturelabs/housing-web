@@ -5,6 +5,12 @@ angular.module("HousingApp")
     var requestUnit = new XMLHttpRequest();
 
     $scope.HousingScope = [];
+    $scope.HousingScope.PageSize1 = 3;
+    $scope.HousingScope.PageSize2 = 3;
+    $scope.HousingScope.PageSize3 = 3;
+    $scope.HousingScope.CurrentPage1 = 1;
+    $scope.HousingScope.CurrentPage2 = 1;
+    $scope.HousingScope.CurrentPage3 = 1;
     $scope.HousingScope.CurrentComplex = $stateParams.Name;
     $scope.HousingScope.CurrentUnits = [];
     $scope.HousingScope.Units = [];
@@ -42,6 +48,36 @@ angular.module("HousingApp")
     requestComplex.send();
     requestData.send();
     requestUnit.send();
+
+    $scope.HousingScope.GoToPage = function (version, page) {
+        if(version == $scope.HousingScope.CurrentPage1)
+        {
+            $scope.HousingScope.CurrentPage1 = page;
+        }
+        else if(version == $scope.HousingScope.CurrentPage2)
+        {
+            $scope.HousingScope.CurrentPage2 = page;
+        }
+        else
+        {
+            $scope.HousingScope.CurrentPage3 = page;
+        }
+    }
+
+    $scope.HousingScope.GetPageClass = function (version, page) {
+        if(version == $scope.HousingScope.CurrentPage1)
+        {
+            return $scope.HousingScope.CurrentPage1 == page ? "btn-revature" : "";
+        }
+        else if(version == $scope.HousingScope.CurrentPage2)
+        {
+            return $scope.HousingScope.CurrentPage2 == page ? "btn-revature" : "";
+        }
+        else
+        {
+            return $scope.HousingScope.CurrentPage3 == page ? "btn-revature" : "";
+        }
+    }
 
     var inArray = function(array, item)
     {
@@ -123,12 +159,39 @@ angular.module("HousingApp")
         if(filters.style.height == "15em")
         {
             filters.style.height = "0em";
-            list.style.height = "37em";
+            updateSpacing(10, 0);
         }
         else if(filters.style.height == "0em")
         {
             filters.style.height = "15em";
-            list.style.height = "22em";
+            updateSpacing(10, 210);
         }
     }
+
+    var updateSpacing = function (time, height) {
+        setTimeout(function() {
+            var content = document.getElementById("housing-content");
+            var contentParent = content.parentElement;
+            var spacing = contentParent.clientHeight;
+
+            for (var i = 0; i < contentParent.children.length; i++)
+            {
+                if (contentParent.children[i] != content)
+                {
+                    if (contentParent.children[i].id != "housing-filters")
+                    {
+                        spacing -= contentParent.children[i].clientHeight;
+                    }
+                    else if (contentParent.children[i].id == "housing-filters" && height != 0) 
+                    {
+                        spacing -= height;
+                    }
+                }
+            }
+            
+            content.style.height = spacing + "px";
+        }, time);
+    }
+
+    updateSpacing(10, 0);
 });

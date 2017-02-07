@@ -1,5 +1,5 @@
-<article class="container">
-    <div class="col-md-10 col-md-offset-1">
+<article class="container view-content" style="height: 100%">
+    <div class="col-md-10 col-md-offset-1" style="height: 100%">
         <section class="row">
             <div class="col-md-3 col-btn back">
                 <a ui-sref="housing">
@@ -22,8 +22,8 @@
         <section class="row">
             <hr />
         </section>
-        <section class="row">
-            <div class="col-md-4" ng-repeat="item in HousingScope.CurrentUnits">
+        <section class="row" id="housing-content">
+            <div class="col-md-4" ng-repeat="item in HousingScope.CurrentUnits | pagerange:HousingScope.CurrentPage2:HousingScope.PageSize2">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{item.AptNumber}}</h3>
@@ -43,6 +43,17 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </section>
+        <section class="row" id="housing-pagination">
+            <div class="text-center">
+                <ul class="pagination input-group">
+                    <li ng-repeat="item in HousingScope.Complexes | pagecount:HousingScope.PageSize2">
+                        <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(HousingScope.CurrentPage2, $index + 1)" ng-class="HousingScope.GetPageClass(HousingScope.CurrentPage2, $index + 1)">
+                             {{$index + 1}}
+                        </a>
+                    </li>
+                </ul>
             </div>
         </section>
     </div>

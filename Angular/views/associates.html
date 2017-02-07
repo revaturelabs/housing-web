@@ -1,5 +1,5 @@
-<article class="container">
-    <div class="col-md-10 col-md-offset-1">
+<article class="container view-content" style="height: 100%">
+    <div class="col-md-10 col-md-offset-1" style="height: 100%;">
         <section class="row">
             <div class="col-md-9">
                 <h1>Associates</h1>
@@ -13,8 +13,8 @@
         <section class="row">
             <hr />
         </section>
-        <section class="row">
-            <div class="col-md-4" ng-repeat="item in AssociateScope.Associates | pagerange:AssociateScope.CurrentPage:AssociateScope.PageSize">
+        <section class="row" id="associate-content">
+            <div class="col-md-4" ng-repeat="item in AssociateScope.Associates | pagerange:AssociateScope.CurrentPage1:AssociateScope.PageSize1">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <a href="">
@@ -39,16 +39,16 @@
                 </div>
             </div>
         </section>
-        <div class="row">
+        <section class="row" id="associate-pagination">
             <div class="text-center">
                 <ul class="pagination input-group">
-                    <li ng-repeat="item in AssociateScope.Associates | pagecount:AssociateScope.PageSize">
-                        <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage($index + 1)" ng-class="AssociateScope.GetPageClass($index + 1)">
+                    <li ng-repeat="item in AssociateScope.Associates | pagecount:AssociateScope.PageSize1">
+                        <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage(AssociateScope.CurrentPage1, ($index + 1))" ng-class="AssociateScope.GetPageClass(AssociateScope.CurrentPage1, ($index + 1))">
                              {{$index + 1}}
                         </a>
                     </li>
                 </ul>
             </div>
-        </div>
+        </section>
     </div>
 </article>

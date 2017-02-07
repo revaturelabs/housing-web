@@ -1,103 +1,118 @@
-<div id="dashboard-housing" class="row">
-    <div class="col-md-6">
-        <h1>Housing</h1>
-    </div>
-    <div class="col-md-6 filter-search">
-        <button class="btn btn-default btn-filter" ng-click="HousingScope.ToggleFilters()">Filters</button>
-    </div>
-</div>
-<div class="row" id="housing-filters" style="height: 0em;">
-    <div class="fluid-container" style="width: 56em; margin: 0em 1.5em;">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-6">
-                <div class="input-group">
-                    <select ng-model="HousingScope.HousingFilters.SrcChoice" id="housing-search" class="form-control">
-                        <option value="name">Name</option>
-                        <option value="batch">Batch</option>
-                    </select>
-                    <input type="text" ng-model="HousingScope.HousingFilters.SrcString" class="form-control">
+<article class="container" style="height: 100%">
+    <section id="dashboard-housing" class="row">
+        <div class="col-md-6">
+            <h1>Housing</h1>
+        </div>
+        <div class="col-md-6 filter-search">
+            <button class="btn btn-default btn-filter" ng-click="HousingScope.ToggleFilters()">Filters</button>
+        </div>
+    </section>
+    <section class="row" id="housing-filters" style="height: 0em;">
+        <div class="fluid-container" style="width: 56em; margin: 0em 1em;">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-6">
+                    <div class="input-group">
+                        <select ng-model="HousingScope.HousingFilters.SrcChoice" id="housing-search" class="form-control">
+                            <option value="name">Name</option>
+                            <option value="batch">Batch</option>
+                        </select>
+                        <input type="text" ng-model="HousingScope.HousingFilters.SrcString" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <h3>Technology</h3>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechAll" value="all" />
+                        <label for="hTechAll" class="pill">All</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechJava" value="java" />
+                        <label for="hTechJava" class="pill">Java</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechNet" value="net" />
+                        <label for="hTechNet" class="pill">.NET</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechSdet" value="sdet" />
+                        <label for="hTechSdet" class="pill">SDET</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h3>Gender</h3>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderAll" value="all" />
+                        <label for="hGenderAll" class="pill">All</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderMale" value="male" />
+                        <label for="hGenderMale" class="pill">Male</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.radGender" id="hGenderFemale" value="female" />
+                        <label for="hGenderFemale" class="pill">Female</label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h3>Needs Car</h3>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarAll" value="all" />
+                        <label for="hCarAll" class="pill">N/A</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarYes" value="yes" />
+                        <label for="hCarYes" class="pill">Yes</label>
+                    </div>
+                    <div>
+                        <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarNo" value="no" />
+                        <label for="hCarNo" class="pill">No</label>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-2">
-                <h3>Technology</h3>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechAll" value="all" />
-                    <label for="hTechAll" class="pill">All</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechJava" value="java" />
-                    <label for="hTechJava" class="pill">Java</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechNet" value="net" />
-                    <label for="hTechNet" class="pill">.NET</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechSdet" value="sdet" />
-                    <label for="hTechSdet" class="pill">SDET</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <h3>Gender</h3>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderAll" value="all" />
-                    <label for="hGenderAll" class="pill">All</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderMale" value="male" />
-                    <label for="hGenderMale" class="pill">Male</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.radGender" id="hGenderFemale" value="female" />
-                    <label for="hGenderFemale" class="pill">Female</label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <h3>Needs Car</h3>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarAll" value="all" />
-                    <label for="hCarAll" class="pill">N/A</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarYes" value="yes" />
-                    <label for="hCarYes" class="pill">Yes</label>
-                </div>
-                <div>
-                    <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarNo" value="no" />
-                    <label for="hCarNo" class="pill">No</label>
+    </section>
+    <section class="row hr-row">
+        <hr/>
+    </section>
+    <section class="row" id="housing-content">
+        <div class="fluid-container" id="housing-list">
+            <div class ="col-md-4" ng-repeat="item in HousingScope.Units | hfilters:HousingScope.HousingFilters:HousingScope.Data | pagerange:HousingScope.CurrentPage3:HousingScope.PageSize3">
+                <div class="panel panel-revature">
+                    <div class="panel-heading">
+                        {{item.AptNumber + " " + item.Complex.Name}}
+                    </div>
+                    <div class="panel-body">
+                        <p>{{item.Gender}}</p>
+                        <p class="address">{{item.Complex.Address | address}}</p>
+                        <p>{{item.Complex.PhoneNumber}}</p>
+                        <p>Cars: {{item.Cars}}</p>
+                        <p>Occupancy: 
+                            <progress class="progress" ng-value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
+                        </p>
+                    </div>
+                    <div class="panel-footer">
+                        <button type="button" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-plus"></span> Assign Associate
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="row hr-row">
-    <hr/>
-</div>
-<div class="fluid-container" id="housing-list">
-    <div class ="col-md-4" ng-repeat="item in HousingScope.Units | hfilters:HousingScope.HousingFilters:HousingScope.Data">
-        <div class="panel panel-revature">
-            <div class="panel-heading">
-                {{item.AptNumber + " " + item.Complex.Name}}
-            </div>
-            <div class="panel-body">
-                <p>{{item.Gender}}</p>
-                <p class="address">{{item.Complex.Address | address}}</p>
-                <p>{{item.Complex.PhoneNumber}}</p>
-                <p>Cars: {{item.Cars}}</p>
-                <p>Occupancy: 
-                    <progress class="progress" ng-value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
-                </p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-plus"></span> Assign Associate
-                </button>
-            </div>
+    </section>
+    <section class="row" id="housing-pagination">
+        <div class="text-center">
+            <ul class="pagination input-group">
+                <li ng-repeat="item in HousingScope.Units | pagecount:HousingScope.PageSize3">
+                    <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(HousingScope.CurrentPage3, $index + 1)" ng-class="HousingScope.GetPageClass(HousingScope.CurrentPage3, $index + 1)">
+                        {{$index + 1}}
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
-</div>
+    </section>
+</article>
    
 
 
