@@ -1,13 +1,15 @@
 angular.module("HousingApp")
-.controller("DashboardCtrl", function($scope, $http) {
-    $scope.expandView = function() {
+.controller("DashboardCtrl", function($scope, $http, $state) {
+    $scope.DashboardScope = [];
+    $scope.DashboardScope.ExpandView = function() {
         var sections = document.getElementsByTagName("section");
+        var expandBtn = document.getElementById("expand-btn");
         var section1;
         var section2;
 
         for(var i = 0; i < sections.length; i++)
         {
-            if(sections[i].id.includes("dashboard"))
+            if(sections[i].id.includes("dashboard-left") || sections[i].id.includes("dashboard-right"))
             {
                 if(sections[i].classList.contains("expanded"))
                 {
@@ -16,6 +18,15 @@ angular.module("HousingApp")
                 else
                 {
                     section2 = sections[i];
+                }
+
+                if(sections[i].id == "dashboard-left" && section1 == sections[i])
+                {
+                    expandBtn.style.MozTransform = "translate(-66.1em, 64px)";
+                }
+                else if(sections[i].id == "dashboard-left" && section2 == sections[i])
+                {
+                    expandBtn.style.MozTransform = "translate(-33.8em, 64px)";
                 }
             }
         }
@@ -68,8 +79,8 @@ angular.module("HousingApp")
         
         if (hfilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
         {
-            hfilters.childNodes[1].style.width = "24.25em";
-            hfilters.childNodes[1].style.margin = "0em 1.5em";
+            hfilters.childNodes[1].style.width = "23.75em";
+            hfilters.childNodes[1].style.margin = "0em 1em";
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-12");
@@ -82,7 +93,7 @@ angular.module("HousingApp")
         else
         {
             hfilters.childNodes[1].style.width = "56em";
-            hfilters.childNodes[1].style.margin = "0em 1.5em";
+            hfilters.childNodes[1].style.margin = "0em 1em";
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-12");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-offset-6");
@@ -95,8 +106,8 @@ angular.module("HousingApp")
         
         if (afilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
         {
-            afilters.childNodes[1].style.width = "24.25em";
-            afilters.childNodes[1].style.margin = "0em 1.5em";
+            afilters.childNodes[1].style.width = "23.75em";
+            afilters.childNodes[1].style.margin = "0em 1em";
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-12");
@@ -109,7 +120,7 @@ angular.module("HousingApp")
         else
         {
             afilters.childNodes[1].style.width = "56em";
-            afilters.childNodes[1].style.margin = "0em 1.5em";
+            afilters.childNodes[1].style.margin = "0em 1em";
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-12");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-offset-6");

@@ -3,24 +3,23 @@
 <html ng-app="HousingApp">
     <head>
         <title>Revature | Housing</title>
-        
-        <link href="content/bootstrap.css" rel="stylesheet" />
-        <link href="content/bootstrap.min.css" rel="stylesheet" />
-        <link href="content/bootstrap-theme.css" rel="stylesheet" />
-        <link href="content/site.css" rel="stylesheet" />
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="content/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" href="content/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="content/site.css" />
     </head>
     <body>
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" ui-sref="home">
+                    <a class="navbar-brand" href="#">
                         <img alt="Revature" src="images/logo.png">
                     </a>
                 </div>
                 <div class="navbar-revature">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a ui-sref="home">
+                            <a href="#">
                                 <span class="glyphicon glyphicon-dashboard"></span>
                                 Dashboard
                             </a>
@@ -54,14 +53,16 @@
             </div>
         </nav>
 
-        <section ui-view></section>
+        <section ui-view id="view"></section>
 
         <script src="scripts/angular.js"></script>
         <script src="//angular-ui.github.io/ui-router/release/angular-ui-router.js"></script>
         <script src="scripts/routes.js"></script>
+        <script src="scripts/constants.js"></script>
+        <script src="scripts/filters.js"></script>
+        <script src="scripts/format.js"></script>
         <script src="controllers/AssociatesController.js"></script>
         <script src="controllers/DashboardController.js"></script>
         <script src="controllers/HousingController.js"></script>
-        <script src="controllers/HousingUnitController.js"></script>
     </body>
 </html>

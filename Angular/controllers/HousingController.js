@@ -1,185 +1,197 @@
 angular.module("HousingApp")
-.constant("complexURL", "fakedata/HousingComplexes.json")
-.constant("dataURL", "fakedata/HousingData.json")
-.constant("unitURL", "fakedata/HousingUnits.json")
-.filter('address', function() {
-    return function(x) {
-        for (var i = 0; i < x.length; i++) {
-            if (x[i] === ',') {
-                var start = x.slice(0, i);
-                var end = x.slice(i+2);
-                x = start + '\n' + end;
-                i = x.length;
-            }
-        }
-        return x;
-    }
-})
-.controller("HousingCtrl", function($scope, $http, complexURL, dataURL, unitURL) {
-    var request1 = new XMLHttpRequest();
-    var request2 = new XMLHttpRequest();
-    var request3 = new XMLHttpRequest();
-    $scope.units = [];
-    $scope.data = [];
-    $scope.complexes = [];
-    $scope.HousingFilters = {
-        srcChoice: "name",
-        srcString: "",
-        radTech: "all",
-        radGender: "all",
-        radCar: "all"
+.controller("HousingCtrl", function($scope, $http, $stateParams, complexURL, dataURL, unitURL) {
+    var requestComplex = new XMLHttpRequest();
+    var requestData = new XMLHttpRequest();
+    var requestUnit = new XMLHttpRequest();
+
+    $scope.HousingScope = [];
+    $scope.HousingScope.PageSize1 = 3;
+    $scope.HousingScope.PageSize2 = 3;
+    $scope.HousingScope.PageSize3 = 3;
+    $scope.HousingScope.CurrentPage1 = 1;
+    $scope.HousingScope.CurrentPage2 = 1;
+    $scope.HousingScope.CurrentPage3 = 1;
+    $scope.HousingScope.CurrentComplex = $stateParams.Name;
+    $scope.HousingScope.CurrentUnits = [];
+    $scope.HousingScope.Units = [];
+    $scope.HousingScope.Data = [];
+    $scope.HousingScope.Complexes = [];
+    $scope.HousingScope.HousingFilters = {
+        SrcChoice: "name",
+        SrcString: "",
+        RadTech: "all",
+        RadGender: "all",
+        RadCar: "all"
     };
 
-    request1.onreadystatechange = function () {
-        if(request1.readyState == 4 && request1.status == 200) {
-            $scope.units = JSON.parse(request1.responseText);
+    requestComplex.onreadystatechange = function () {
+        if(requestComplex.readyState == 4 && requestComplex.status == 200) {
+            $scope.HousingScope.Complexes = JSON.parse(requestComplex.responseText);
         }
     }
 
-    request2.onreadystatechange = function () {
-        if(request2.readyState == 4 && request2.status == 200) {
-            $scope.data = JSON.parse(request2.responseText);
+    requestData.onreadystatechange = function () {
+        if(requestData.readyState == 4 && requestData.status == 200) {
+            $scope.HousingScope.Data = JSON.parse(requestData.responseText);
         }
     }
     
-    request3.onreadystatechange = function () {
-        if(request3.readyState == 4 && request3.status == 200) {
-            $scope.complexes = JSON.parse(request3.responseText);
+    requestUnit.onreadystatechange = function () {
+        if(requestUnit.readyState == 4 && requestUnit.status == 200) {
+            $scope.HousingScope.Units = JSON.parse(requestUnit.responseText);
         }
     }
 
-    request1.open("GET", unitURL, false);
-    request2.open("GET", dataURL, false);
-    request3.open("GET", complexURL, false);
-    request1.send();
-    request2.send();
-    request3.send();
+    requestComplex.open("GET", complexURL, false);
+    requestData.open("GET", dataURL, false);
+    requestUnit.open("GET", unitURL, false);
+    requestComplex.send();
+    requestData.send();
+    requestUnit.send();
 
-    $scope.units.forEach(function(element1) {
+    $scope.HousingScope.GoToPage = function (version, page) {
+        if(version == $scope.HousingScope.CurrentPage1)
+        {
+            $scope.HousingScope.CurrentPage1 = page;
+        }
+        else if(version == $scope.HousingScope.CurrentPage2)
+        {
+            $scope.HousingScope.CurrentPage2 = page;
+        }
+        else
+        {
+            $scope.HousingScope.CurrentPage3 = page;
+        }
+    }
+
+    $scope.HousingScope.GetPageClass = function (version, page) {
+        if(version == $scope.HousingScope.CurrentPage1)
+        {
+            return $scope.HousingScope.CurrentPage1 == page ? "btn-revature" : "";
+        }
+        else if(version == $scope.HousingScope.CurrentPage2)
+        {
+            return $scope.HousingScope.CurrentPage2 == page ? "btn-revature" : "";
+        }
+        else
+        {
+            return $scope.HousingScope.CurrentPage3 == page ? "btn-revature" : "";
+        }
+    }
+
+    var inArray = function(array, item)
+    {
+        for(var i = 0; i < array.length; i++)
+        {
+            if(array[i] == item)
+            {
+                return true;
+            }
+        }
+    }
+
+    var count = 0;
+
+    $scope.HousingScope.Units.forEach(function(unit) {
         var currentCap = 0;
         var currentCars = 0;
-        $scope.data.forEach(function(element2) {
-            if(element2.HousingUnit.AptNumber == element1.AptNumber && element2.HousingUnit.Complex.Name == element1.Complex.Name)
+        
+        if ($stateParams.Name != undefined)
+        {
+            var techs = [];
+            var batches = [];
+            var countTech = 0;
+            var countBatch = 0;
+            if(unit.Complex.Name == $scope.CurrentComplex)
             {
-                currentCap++;
-                
-                if(element2.Associate.HasCar)
-                {
-                    currentCars++;
-                }
+                $scope.HousingScope.Data.forEach(function(data) {
+                    if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.HousingScope.CurrentComplex)
+                    {
+                        currentCap++;
+                        
+                        if(data.Associate.HasCar)
+                        {
+                            currentCars++;
+                        }
+                        if(!inArray(techs, data.Associate.Batch.Technology))
+                        {
+                            techs[countTech] = data.Associate.Batch.Technology;
+                        }
+                        if(!inArray(batches, data.Associate.Batch.Name))
+                        {
+                            batches[countBatch] = data.Associate.Batch.Name;
+                        }
+                    }
+                }, this);
+
+                unit['Capacity'] = currentCap;
+                unit['Cars'] = currentCars;
+                unit['Tech'] = techs;
+                unit['Batch'] = batches;
+
+                $scope.HousingScope.CurrentUnits[count] = unit;
+                count++;
             }
-        }, this);
-        element1['Capacity'] = currentCap;
-        element1['Cars'] = currentCars;
+        }
+        else
+        {
+            $scope.HousingScope.Data.forEach(function(data) {
+                if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == unit.Complex.Name)
+                {
+                    currentCap++;
+                    
+                    if(data.Associate.HasCar)
+                    {
+                        currentCars++;
+                    }
+                }
+            }, this);
+
+            unit['Capacity'] = currentCap;
+            unit['Cars'] = currentCars;
+        }
     }, this);
 
-    $scope.toggleFilters = function() {
+    $scope.HousingScope.ToggleFilters = function() {
         var filters = document.getElementById("housing-filters");
         var list = document.getElementById("housing-list");
 
         if(filters.style.height == "15em")
         {
             filters.style.height = "0em";
-            list.style.height = "37em";
+            updateSpacing(10, 0);
         }
         else if(filters.style.height == "0em")
         {
             filters.style.height = "15em";
-            list.style.height = "22em";
+            updateSpacing(10, 210);
         }
     }
-})
-.filter('hfilters', function(){
-    return function(units, HousingFilters, data) {
-        if(!HousingFilters || !data)
-        {
-            return units;
-        }
 
-        var result = [];
-        var count = 0;
+    var updateSpacing = function (time, height) {
+        setTimeout(function() {
+            var content = document.getElementById("housing-content");
+            var contentParent = content.parentElement;
+            var spacing = contentParent.clientHeight;
 
-        units.forEach(function(unit) {
-            var checks = 0;
-            var techs = [];
-            var batches = [];
-            var countTech = 0;
-            var countBatch = 0;
-
-            var inArray = function(array, item, mode)
+            for (var i = 0; i < contentParent.children.length; i++)
             {
-                if(mode == 1)
+                if (contentParent.children[i] != content)
                 {
-                    for(var i = 0; i < array.length; i++)
+                    if (contentParent.children[i].id != "housing-filters")
                     {
-                        if(array[i] == item)
-                        {
-                            return true;
-                        }
+                        spacing -= contentParent.children[i].clientHeight;
+                    }
+                    else if (contentParent.children[i].id == "housing-filters" && height != 0) 
+                    {
+                        spacing -= height;
                     }
                 }
-                else if(mode == 2)
-                {
-                    for(var i = 0; i < array.length; i++)
-                    {
-                        if(array[i].toLowerCase().includes(item.toLowerCase()))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                
-                return false;
-            }
-
-            data.forEach(function(item) {
-                if (item.HousingUnit.AptNumber == unit.AptNumber && item.HousingUnit.Complex.Name == unit.Complex.Name)
-                {
-                    if (!inArray(techs, item.Associate.Batch.Technology, 1))
-                    {
-                        techs[countTech] = item.Associate.Batch.Technology;
-                        countTech++;
-                    }
-
-                    if (!inArray(techs, item.Associate.Batch.Name, 1))
-                    {
-                        batches[countBatch] = item.Associate.Batch.Name;
-                        countBatch++;
-                    }
-                }
-            }, this);
-            
-            if (HousingFilters.srcChoice == "name" && (HousingFilters.srcString == "" || (unit.AptNumber + " " + unit.Complex.Name.toLowerCase()).includes(HousingFilters.srcString.toLowerCase())))
-            {
-                checks++;
-            }
-            else if (HousingFilters.srcChoice == "batch" && (HousingFilters.srcString == "" || inArray(batches, HousingFilters.srcString, 2)))
-            {
-                checks++;
-            }
-
-            if ((HousingFilters.radTech == "all") || (inArray(techs, HousingFilters.radTech, 2)))
-            {
-                checks++;
-            }
-
-            if ((HousingFilters.radGender == "all") || (HousingFilters.radGender == unit.Gender.toLowerCase()))
-            {
-                checks++;
             }
             
-            if ((HousingFilters.radCar == "all") || (HousingFilters.radCar == "yes" && unit.Cars < 2) || (HousingFilters.radCar == "no" && unit.Cars >= 2))
-            {
-                checks++;
-            }
-
-            if (checks == 4)
-            {
-                result[count] = unit;
-                count++;
-            }
-        }, this);
-
-        return result;
+            content.style.height = spacing + "px";
+        }, time);
     }
+
+    updateSpacing(10, 0);
 });

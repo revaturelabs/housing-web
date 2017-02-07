@@ -1,118 +1,92 @@
 angular.module("HousingApp")
-.constant("associatesURL", "fakedata/Associates.json")
-.filter('date', function() {
-    return function(x) {
-        var txt = x.slice(4,6) + "/" + x.slice(6,8) + "/" + x.slice(0,4);
-        return txt;
-    }
-})
-.filter('bool', function() {
-    return function(x) {
-        var txt = "";
-        if (x) {
-            txt = "Yes";
-        }
-        else {
-            txt = "No";
-        }
-        return txt;
-    }
-})
-.filter('hasKeys', function() {
-    return function(x) {
-        var result = [];
-        var count = 0;
-        
-        x.forEach(function(element) {
-            if(!element.HasKeys)
-            {
-                result[count] = element;
-                count++;
-            }
-        }, this);
-        return result;
-    }
-})
 .controller("AssociatesCtrl", function($scope, $http, associatesURL) {
-    var request = new XMLHttpRequest();
-    $scope.associates = [];
-    $scope.AssociateFilters = {
-        srcChoice: "name",
-        srcString: "",
-        radTech: "all",
-        radGender: "all",
-        radCar: "all"
+    var requestAssociate = new XMLHttpRequest();
+
+    $scope.AssociateScope = [];
+    $scope.AssociateScope.PageSize1 = 3;
+    $scope.AssociateScope.PageSize2 = 9;
+    $scope.AssociateScope.CurrentPage1 = 1;
+    $scope.AssociateScope.CurrentPage2 = 1;
+    $scope.AssociateScope.Associates = [];
+    $scope.AssociateScope.AssociateFilters = {
+        SrcChoice: "name",
+        SrcString: "",
+        RadTech: "all",
+        RadGender: "all",
+        RadCar: "all"
     };
 
-    request.onreadystatechange = function () {
-        if(request.readyState == 4 && request.status == 200) {
-            $scope.associates = JSON.parse(request.responseText);
+    requestAssociate.onreadystatechange = function () {
+        if(requestAssociate.readyState == 4 && requestAssociate.status == 200) {
+            $scope.AssociateScope.Associates = JSON.parse(requestAssociate.responseText);
         }
     }
 
-    request.open("GET", associatesURL, false);
-    request.send();
+    requestAssociate.open("GET", associatesURL, false);
+    requestAssociate.send();
 
-    $scope.toggleFilters = function() {
+    $scope.AssociateScope.GoToPage = function (version, page) {
+        if(version == $scope.AssociateScope.CurrentPage1)
+        {
+            $scope.AssociateScope.CurrentPage1 = page;
+        }
+        else
+        {
+            $scope.AssociateScope.CurrentPage2 = page;
+        }
+    }
+
+    $scope.AssociateScope.GetPageClass = function (version, page) {
+        if(version == $scope.AssociateScope.CurrentPage1)
+        {
+            return $scope.AssociateScope.CurrentPage1 == page ? "btn-revature" : "";
+        }
+        else
+        {
+            return $scope.AssociateScope.CurrentPage2 == page ? "btn-revature" : "";
+        }
+    }
+
+    $scope.AssociateScope.ToggleFilters = function() {
         var filters = document.getElementById("associate-filters");
         var list = document.getElementById("associate-list");
 
         if(filters.style.height == "15em")
         {
             filters.style.height = "0em";
-            list.style.height = "37em";
+            updateSpacing(10, 0);
         }
         else if(filters.style.height == "0em")
         {
             filters.style.height = "15em";
-            list.style.height = "22em";
+            updateSpacing(10, 210);
         }
     }
-})
-.filter('afilters', function(){
-    return function(associates, AssociateFilters) {
-        if(!AssociateFilters)
-        {
-            return associates;
-        }
 
-        var result = [];
-        var count = 0;
+    var updateSpacing = function (time, height) {
+        setTimeout(function() {
+            var content = document.getElementById("associate-content");
+            var contentParent = content.parentElement;
+            var spacing = contentParent.clientHeight;
 
-        associates.forEach(function(associate) {
-            var checks = 0;
-            
-            if (AssociateFilters.srcChoice == "name" && (AssociateFilters.srcString == "" || (associate.FirstName + " " + associate.LastName).toLowerCase().includes(AssociateFilters.srcString.toLowerCase())))
+            for (var i = 0; i < contentParent.children.length; i++)
             {
-                checks++;
-            }
-            else if (AssociateFilters.srcChoice == "batch" && (AssociateFilters.srcString == "" || associate.Batch.Name.toLowerCase().includes(AssociateFilters.srcString.toLowerCase())))
-            {
-                checks++;
-            }
-
-            if ((AssociateFilters.radTech == "all") || (AssociateFilters.radTech == associate.Batch.Technology.toLowerCase()))
-            {
-                checks++;
-            }
-
-            if ((AssociateFilters.radGender == "all") || (AssociateFilters.radGender == associate.Gender.toLowerCase()))
-            {
-                checks++;
+                if (contentParent.children[i] != content)
+                {
+                    if (contentParent.children[i].id != "associate-filters")
+                    {
+                        spacing -= contentParent.children[i].clientHeight;
+                    }
+                    else if (contentParent.children[i].id == "associate-filters" && height != 0) 
+                    {
+                        spacing -= height;
+                    }
+                }
             }
             
-            if ((AssociateFilters.radCar == "all") || (AssociateFilters.radCar == "yes" && associate.HasCar) || (AssociateFilters.radCar == "no" && !associate.HasCar))
-            {
-                checks++;
-            }
-
-            if (checks == 4)
-            {
-                result[count] = associate;
-                count++;
-            }
-        }, this);
-
-        return result;
+            content.style.height = spacing + "px";
+        }, time);
     }
+
+    updateSpacing(10, 0);
 });
