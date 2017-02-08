@@ -78,7 +78,7 @@ html, body {
 }
 
 .panel-revature {
-    border-color: rgba(242, 106, 37, 1);
+    border-color: rgba(242, 106, 37, .5);
 }
 
 .panel-revature .panel-heading {
@@ -88,7 +88,7 @@ html, body {
     height: 3.5em;
     padding: 1.15em 1em;
     background-color: rgba(242, 106, 37, 1);
-    border-color: rgba(242, 106, 37, 1);
+    border-color: rgba(242, 106, 37, .5);
     background-image: none;
 }
 
@@ -243,6 +243,7 @@ input[type=radio] {
 
 input[type=radio]:checked+.pill {
     background-color: rgba(242, 106, 37, 1);
+    color: white;
 }
 
 .input-group {
@@ -275,6 +276,11 @@ progress {
     transition: all .5s;
 }
 
+.pagination.input-group .form-control
+{
+    border: 1px solid rgba(242, 106, 37, .5);
+}
+
 .pagination li .btn-revature {
     background-color: rgba(242, 106, 37, 1);
     color: white;
@@ -291,10 +297,6 @@ progress {
 
 .text-center .input-group {
     display: inline-block;
-}
-
-.text-center .input-group li {
-    border-radius: 2px;
 }
 
 .btn.btn-lg.btn-revature {

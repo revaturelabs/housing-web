@@ -1,9 +1,10 @@
 angular.module("HousingApp")
-.controller("HousingCtrl", function($scope, $http, $stateParams, complexURL, dataURL, unitURL) {
+.controller("HousingCtrl", function($scope, $rootScope, $http, $stateParams, complexURL, dataURL, unitURL) {
     var requestComplex = new XMLHttpRequest();
     var requestData = new XMLHttpRequest();
     var requestUnit = new XMLHttpRequest();
 
+    $scope.HousingScope = [];
     $scope.HousingScope = [];
     $scope.HousingScope.PageSize1 = 3;
     $scope.HousingScope.PageSize2 = 3;
@@ -11,6 +12,9 @@ angular.module("HousingApp")
     $scope.HousingScope.CurrentPage1 = 1;
     $scope.HousingScope.CurrentPage2 = 1;
     $scope.HousingScope.CurrentPage3 = 1;
+    $scope.HousingScope.LastPage1 = 1;
+    $scope.HousingScope.LastPage2 = 1;
+    $scope.HousingScope.LastPage3 = 1;
     $scope.HousingScope.CurrentComplex = $stateParams.Name;
     $scope.HousingScope.CurrentUnits = [];
     $scope.HousingScope.Units = [];
@@ -48,32 +52,70 @@ angular.module("HousingApp")
     requestComplex.send();
     requestData.send();
     requestUnit.send();
+    
+    $rootScope.$on("UpdateHousingList", function(event, size, mode){
+        $scope.HousingScope.UpdatePageList(size, mode);
+    });
 
-    $scope.HousingScope.GoToPage = function (version, page) {
-        if(version == $scope.HousingScope.CurrentPage1)
+    $scope.HousingScope.UpdatePageList = function (size, mode)
+    {
+        if(mode == 1)
+        {
+            $scope.HousingScope.PageSize1 = size;
+            $scope.HousingScope.CurrentPage1 = 1;
+            setTimeout(function() {
+                $scope.HousingScope.LastPage1 = getLastIndex();
+            }, 20);
+        }
+        else if(mode == 2)
+        {
+            $scope.HousingScope.PageSize2 = size;
+            $scope.HousingScope.CurrentPage2 = 1;
+            setTimeout(function() {
+                $scope.HousingScope.LastPage2 = getLastIndex();
+            }, 20);
+        }
+        else if(mode == 3)
+        {
+            $scope.HousingScope.PageSize3 = size;
+            $scope.HousingScope.CurrentPage3 = 1;
+            setTimeout(function() {
+                $scope.HousingScope.LastPage3 = getLastIndex();
+            }, 20);
+        }
+    }
+
+    $scope.HousingScope.UpdateContentClass = function (size)
+    {
+        return size == 1 ? "col-md-12" : "col-md-4";
+    }
+
+    $scope.HousingScope.GoToPage = function (version, page, last)
+    {
+        if(version == 1 && (page >= 1 && page <= $scope.HousingScope.LastPage1))
         {
             $scope.HousingScope.CurrentPage1 = page;
         }
-        else if(version == $scope.HousingScope.CurrentPage2)
+        else if(version == 2 && (page >= 1 && page <= $scope.HousingScope.LastPage2))
         {
             $scope.HousingScope.CurrentPage2 = page;
         }
-        else
+        else if(version == 3 && (page >= 1 && page <= $scope.HousingScope.LastPage3))
         {
             $scope.HousingScope.CurrentPage3 = page;
         }
     }
 
     $scope.HousingScope.GetPageClass = function (version, page) {
-        if(version == $scope.HousingScope.CurrentPage1)
+        if(version == 1)
         {
             return $scope.HousingScope.CurrentPage1 == page ? "btn-revature" : "";
         }
-        else if(version == $scope.HousingScope.CurrentPage2)
+        else if(version == 2)
         {
             return $scope.HousingScope.CurrentPage2 == page ? "btn-revature" : "";
         }
-        else
+        else if(version == 3)
         {
             return $scope.HousingScope.CurrentPage3 == page ? "btn-revature" : "";
         }
@@ -89,6 +131,21 @@ angular.module("HousingApp")
             }
         }
     }
+
+    var getLastIndex = function()
+    {
+        var pagin = document.getElementById("housing-pagination");
+        var pages = pagin.children[0].children[0].children;
+        var count = pages.length - 2;
+
+        return count;
+    }
+
+    setTimeout(function() {
+        $scope.HousingScope.LastPage1 = getLastIndex();
+        $scope.HousingScope.LastPage2 = getLastIndex();
+        $scope.HousingScope.LastPage3 = getLastIndex();
+    }, 20);
 
     var count = 0;
 
