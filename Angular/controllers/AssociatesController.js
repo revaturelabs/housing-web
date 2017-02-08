@@ -1,5 +1,5 @@
 angular.module("HousingApp")
-.controller("AssociatesCtrl", function($scope, $http, associatesURL) {
+.controller("AssociatesCtrl", function($scope, $rootScope, $http, associatesURL) {
     var requestAssociate = new XMLHttpRequest();
 
     $scope.AssociateScope = [];
@@ -7,6 +7,8 @@ angular.module("HousingApp")
     $scope.AssociateScope.PageSize2 = 9;
     $scope.AssociateScope.CurrentPage1 = 1;
     $scope.AssociateScope.CurrentPage2 = 1;
+    $scope.AssociateScope.LastPage1 = 1;
+    $scope.AssociateScope.LastPage2 = 1;
     $scope.AssociateScope.Associates = [];
     $scope.AssociateScope.AssociateFilters = {
         SrcChoice: "name",
@@ -24,24 +26,53 @@ angular.module("HousingApp")
 
     requestAssociate.open("GET", associatesURL, false);
     requestAssociate.send();
+    
+    $rootScope.$on("UpdateAssociateList", function(event, size, mode){
+        $scope.AssociateScope.UpdatePageList(size, mode);
+    });
+
+    $scope.AssociateScope.UpdatePageList = function (size, mode)
+    {
+        if(mode == 1)
+        {
+            $scope.AssociateScope.PageSize1 = size;
+            $scope.AssociateScope.CurrentPage1 = 1;
+            setTimeout(function() {
+                $scope.AssociateScope.LastPage1 = getLastIndex();
+            }, 20);
+        }
+        else if(mode == 2)
+        {
+            $scope.AssociateScope.PageSize2 = size;
+            $scope.AssociateScope.CurrentPage2 = 1;
+            setTimeout(function() {
+                $scope.AssociateScope.LastPage2 = getLastIndex();
+            }, 20);
+        }
+    }
+
+    $scope.AssociateScope.UpdateContentClass = function (size)
+    {
+        return size == 9 ? "col-md-12" : "col-md-4";
+    }
 
     $scope.AssociateScope.GoToPage = function (version, page) {
-        if(version == $scope.AssociateScope.CurrentPage1)
+        if(version == 1 && (page >= 1 && page <= $scope.AssociateScope.LastPage1))
         {
             $scope.AssociateScope.CurrentPage1 = page;
         }
-        else
+        else if(version == 2 && (page >= 1 && page <= $scope.AssociateScope.LastPage2))
         {
             $scope.AssociateScope.CurrentPage2 = page;
         }
     }
 
     $scope.AssociateScope.GetPageClass = function (version, page) {
-        if(version == $scope.AssociateScope.CurrentPage1)
+        if(version == 1)
         {
             return $scope.AssociateScope.CurrentPage1 == page ? "btn-revature" : "";
         }
-        else
+        else if(version == 2)
         {
             return $scope.AssociateScope.CurrentPage2 == page ? "btn-revature" : "";
         }
@@ -88,5 +119,19 @@ angular.module("HousingApp")
         }, time);
     }
 
+    var getLastIndex = function()
+    {
+        var pagin = document.getElementById("associate-pagination");
+        var pages = pagin.children[0].children[0].children;
+        var count = pages.length - 2;
+
+        return count;
+    }
+
     updateSpacing(10, 0);
+
+    setTimeout(function() {
+        $scope.AssociateScope.LastPage1 = getLastIndex();
+        $scope.AssociateScope.LastPage2 = getLastIndex();
+    }, 20);
 });

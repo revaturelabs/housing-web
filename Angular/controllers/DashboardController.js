@@ -1,5 +1,5 @@
 angular.module("HousingApp")
-.controller("DashboardCtrl", function($scope, $http, $state) {
+.controller("DashboardCtrl", function($scope, $rootScope, $http, $state) {
     $scope.DashboardScope = [];
     $scope.DashboardScope.ExpandView = function() {
         var sections = document.getElementsByTagName("section");
@@ -14,10 +14,14 @@ angular.module("HousingApp")
                 if(sections[i].classList.contains("expanded"))
                 {
                     section1 = sections[i];
+                    $rootScope.$emit("UpdateHousingList", 3, 3);
+                    $rootScope.$emit("UpdateAssociateList", 9, 2);
                 }
                 else
                 {
                     section2 = sections[i];
+                    $rootScope.$emit("UpdateHousingList", 1, 3);
+                    $rootScope.$emit("UpdateAssociateList", 24, 2);
                 }
 
                 if(sections[i].id == "dashboard-left" && section1 == sections[i])

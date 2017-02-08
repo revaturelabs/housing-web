@@ -42,9 +42,19 @@
         <section class="row" id="associate-pagination">
             <div class="text-center">
                 <ul class="pagination input-group">
+                    <li>
+                        <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage(1, AssociateScope.CurrentPage1 - 1)" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
                     <li ng-repeat="item in AssociateScope.Associates | pagecount:AssociateScope.PageSize1">
                         <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage(AssociateScope.CurrentPage1, ($index + 1))" ng-class="AssociateScope.GetPageClass(AssociateScope.CurrentPage1, ($index + 1))">
                              {{$index + 1}}
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage(1, AssociateScope.CurrentPage1 + 1)" style="border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                            <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
