@@ -2,15 +2,17 @@ angular.module("HousingApp")
 .controller("DashboardCtrl", function($scope, $rootScope, $http, $state) {
     $scope.DashboardScope = [];
 
-    $rootScope.$on("ExpandView", function(event){
+    $scope.$on("ExpandView", function(event){
+        console.log("Recieved ExpandView Call!");
         $scope.DashboardScope.ExpandView();
     });
 
     $scope.DashboardScope.ExpandView = function() {
+        console.log("Performing ExpandView Call...");
         var sections = document.getElementsByTagName("section");
         var section1;
         var section2;
-
+        console.log(sections);
         for(var i = 0; i < sections.length; i++)
         {
             if(sections[i].id.includes("dashboard-left") || sections[i].id.includes("dashboard-right"))

@@ -93,6 +93,12 @@
                         <p>Occupancy: 
                             <progress class="progress" ng-value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
                         </p>
+                        <div class="housing-occupants">
+                            <p>Occupants:</p>
+                            <ul>
+                                <li ng-repeat="data in item.Occupants">{{data.FirstName + " " + data.LastName}}</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-default btn-sm assignAssociates" ng-click="HousingScope.StartAssigning(item)">
