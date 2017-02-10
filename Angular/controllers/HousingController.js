@@ -169,6 +169,7 @@ angular.module("HousingApp")
         {
             var techs = [];
             var batches = [];
+            var occupants = [];
             var countTech = 0;
             var countBatch = 0;
             if(unit.Complex.Name == $scope.HousingScope.CurrentComplex)
@@ -190,6 +191,7 @@ angular.module("HousingApp")
                         {
                             batches[countBatch] = data.Associate.Batch.Name;
                         }
+                        occupants.push(data.Associate);
                     }
                 }, this);
 
@@ -197,6 +199,7 @@ angular.module("HousingApp")
                 unit['Cars'] = currentCars;
                 unit['Tech'] = techs;
                 unit['Batch'] = batches;
+                unit['Occupants'] = occupants;
 
                 $scope.HousingScope.CurrentUnits[count] = unit;
                 count++;
@@ -204,6 +207,7 @@ angular.module("HousingApp")
         }
         else
         {
+            var occupants = [];
             $scope.HousingScope.Data.forEach(function(data) {
                 if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == unit.Complex.Name)
                 {
@@ -213,11 +217,13 @@ angular.module("HousingApp")
                     {
                         currentCars++;
                     }
+                        occupants.push(data.Associate);
                 }
             }, this);
 
             unit['Capacity'] = currentCap;
             unit['Cars'] = currentCars;
+            unit['Occupants'] = occupants;
         }
     }, this);
 
@@ -247,9 +253,10 @@ angular.module("HousingApp")
 
     $scope.HousingScope.StartAssigning = function (unit) {
         $scope.HousingScope.HousingFilters.Current = unit.AptNumber + " " + unit.Complex.Name;
+        var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
-        var filterBtn;
+        var occupants = document.getElementsByClassName("housing-occupants");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
 
@@ -268,6 +275,11 @@ angular.module("HousingApp")
             assignBtns[i].style.display = "none";
         }
 
+        for(var i = 0; i < occupants.length; i++)
+        {
+            occupants[i].classList.add("current");
+        }
+
         filterBtn.style.display = "none";
         assigningCtrls[0].style.display = "inline-block";
         assigningCtrls[1].style.display = "inline-block";
@@ -275,9 +287,10 @@ angular.module("HousingApp")
 
     $scope.HousingScope.StopAssigning = function () {
         $scope.HousingScope.HousingFilters.Current = "";
+        var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
-        var filterBtn;
+        var occupants = document.getElementsByClassName("housing-occupants");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
         
@@ -295,6 +308,11 @@ angular.module("HousingApp")
         for(var i = 0; i < assignBtns.length; i++)
         {
             assignBtns[i].style.display = "inline-block";
+        }
+
+        for(var i = 0; i < occupants.length; i++)
+        {
+            occupants[i].classList.remove("current");
         }
 
         filterBtn.style.display = "inline-block";

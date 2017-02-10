@@ -1,9 +1,9 @@
 <article class="container" style="height: 100%">
     <section id="dashboard-associate" class="row">
-        <div class="col-md-6">
-            <h1>Associates</h1>
+        <div class="col-md-9">
+            <h1>Unassigned Associates</h1>
         </div>
-        <div class="col-md-6 filter-search">
+        <div class="col-md-3 filter-search">
             <button class="btn btn-default btn-filter" ng-click="AssociateScope.ToggleFilters()">Filters</button>
         </div>
     </section>
@@ -82,6 +82,7 @@
                 <div class="panel panel-revature">
                     <div class="panel-heading" ng-click="AssociateScope.SelectPerson($event,item)"> 
                         {{item.FirstName + " " + item.LastName}}
+                        <span class="glyphicon glyphicon-ok pull-right"></span>
                     </div>
                 </div>
             </div>
