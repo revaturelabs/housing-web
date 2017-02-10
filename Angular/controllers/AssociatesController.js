@@ -7,6 +7,8 @@ angular.module("HousingApp")
     $scope.AssociateScope.PageSize2 = 9;
     $scope.AssociateScope.CurrentPage1 = 1;
     $scope.AssociateScope.CurrentPage2 = 1;
+    $scope.AssociateScope.CurrentAssociate = [];
+    $scope.AssociateScope.SelectedAssociates = [];
     $scope.AssociateScope.LastPage1 = 1;
     $scope.AssociateScope.LastPage2 = 1;
     $scope.AssociateScope.Associates = [];
@@ -29,6 +31,23 @@ angular.module("HousingApp")
     
     $rootScope.$on("UpdateAssociateList", function(event, size, mode){
         $scope.AssociateScope.UpdatePageList(size, mode);
+    });
+
+    $rootScope.$on("RequestSelection", function(event){
+        $rootScope.$broadcast('GetSelection', $scope.AssociateScope.SelectedAssociates);
+    });
+
+    $rootScope.$on("ResetSelection", function(event){
+        var list = document.getElementById("associate-list");
+        var children = list.children;
+
+        for(var i = 0; i < children.length; i++)
+        {
+            if(children[i].firstElementChild.firstElementChild.classList.contains("selected"))
+            {
+                children[i].firstElementChild.firstElementChild.classList.remove("selected");
+            }
+        }
     });
 
     $scope.AssociateScope.UpdatePageList = function (size, mode)
@@ -92,6 +111,28 @@ angular.module("HousingApp")
             filters.style.height = "15em";
             updateSpacing(10, 210);
         }
+    }
+
+    $scope.AssociateScope.SelectPerson = function(event, person)
+    {
+        var list = document.getElementById("associate-list");
+        var children = list.children;
+        if(children[0].classList.contains("col-md-4"))
+        {
+            if(event.currentTarget.classList.contains("selected"))
+            {
+                event.currentTarget.classList.remove("selected");
+            }
+            else
+            {
+                event.currentTarget.classList.add("selected");
+            }
+            $scope.AssociateScope.SelectedAssociates.push(person);
+        }
+    }
+
+    $scope.AssociateScope.GetCurrentAssociate = function (person) {
+        $scope.AssociateScope.CurrentAssociate = person;
     }
 
     var updateSpacing = function (time, height) {

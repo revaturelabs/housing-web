@@ -5,7 +5,7 @@
                 <h1>Associates</h1>
             </div>
             <div class="col-md-3 col-btn">
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
                     <span class="glyphicon glyphicon-plus"></span> Add Associate
                 </button>
             </div>
@@ -32,7 +32,7 @@
                         <p>Has keys: {{item.HasKeys | bool}}</p>
                     </div>
                     <div class="panel-footer">
-                        <button type="button" class="btn btn-default btn-sm">
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#removeModal" ng-click="AssociateScope.GetCurrentAssociate(item)">
                             <span class="glyphicon glyphicon-trash"></span> Remove Associate
                         </button>
                     </div>
@@ -62,3 +62,154 @@
         </section>
     </div>
 </article>
+
+<!-- Add Associate Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Add New Associate</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    First Name
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="John">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Last Name
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="Smith">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Email
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="johnsmith@gmail.com">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Phone
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="(555) 555-5555" >
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 input-group">
+                            <label>
+                                <div class="row">
+                                    Date of Birth
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3" style="padding: 0">
+                                        <input type="text" class="form-control" placeholder="MM" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px; padding-left: 8px; padding-right: 8px;">
+                                    </div>
+                                    <div class="col-md-3" style="padding: 0">
+                                        <input type="text" class="form-control" placeholder="DD" style="padding-left: 8px; padding-right: 8px;">
+                                    </div>
+                                    <div class="col-md-6" style="padding: 0">
+                                        <input type="text" class="form-control" placeholder="YYYY" style="border-top-right-radius: 4px; border-bottom-right-radius: 4px; padding-left: 8px; padding-right: 8px;">
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Gender
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" name="gender" id="aGenderMale" value="male" checked />
+                                        <label for="aGenderMale" class="toggle-left">Male</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" name="gender" id="aGenderFemale" value="female" />
+                                        <label for="aGenderFemale" class="toggle-right">Female</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Has a Car
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" name="car" id="hasCarYes" value="yes" checked />
+                                        <label for="hasCarYes" class="toggle-left">Yes</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" name="car" id="hasCarNo" value="no" />
+                                        <label for="hasCarNo" class="toggle-right">No</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Batch
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="padding: 0">
+                                        <select name="batches" id="batch" class="form-control">
+                                            <option value="0">Coming Soon</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Associate Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Remove {{AssociateScope.CurrentAssociate.FirstName + " " + AssociateScope.CurrentAssociate.LastName}}</h2>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove {{AssociateScope.CurrentAssociate.FirstName + " " + AssociateScope.CurrentAssociate.LastName}} from all Associates?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

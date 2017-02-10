@@ -96,6 +96,26 @@ angular.module("HousingApp")
         return str;
     }
 })
+.filter('selected', function() {
+    return function(units, current) {
+        if(!current)
+        {
+            return units
+        }
+        
+        var result = [];
+
+        units.forEach(function(unit) {
+            if(unit.AptNumber == current.AptNumber && unit.Complex.Name == current.Complex.Name)
+            {
+                result[0] = unit;
+                return result;
+            }
+        }, this);
+        
+        return units;
+    }
+})
 .filter('afilters', function(){
     return function(associates, filters) {
         if(!filters)
@@ -227,7 +247,12 @@ angular.module("HousingApp")
                 checks++;
             }
 
-            if (checks == 4)
+            if ((filters.Current == "") || (filters.Current == unit.AptNumber + " " + unit.Complex.Name))
+            {
+                checks++;
+            }
+
+            if (checks == 5)
             {
                 result[count] = unit;
                 count++;
@@ -237,3 +262,13 @@ angular.module("HousingApp")
         return result;
     }
 });
+
+function isEmpty(obj) {
+    for(var x in obj) {
+        if (obj.hasOwnProperty(x)) {
+            return false;
+        }
+    }
+
+    return true;
+}

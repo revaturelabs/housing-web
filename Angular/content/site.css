@@ -92,6 +92,10 @@ html, body {
     background-image: none;
 }
 
+.panel-revature .panel-heading.selected {
+    background-color: rgba(255, 150, 90, 1);
+}
+
 .panel-revature .panel-heading, .panel-revature .panel-heading a h3 {
     color: white;
     font-weight: bold;
@@ -237,11 +241,11 @@ progress[value]::-webkit-progress-value {
     font-variant: small-caps;
 }
 
-input[type=radio] {
+input[type=radio], input[type=checkbox] {
     display: none;
 }
 
-input[type=radio]:checked+.pill {
+input[type=radio]:checked+.pill, input[type=checkbox]:checked+.pill {
     background-color: rgba(242, 106, 37, 1);
     color: white;
 }
@@ -254,8 +258,8 @@ input[type=radio]:checked+.pill {
     width: 3em !important;
 }
 
-select.form-control {
-    width: 8em !important;
+#dashboard select.form-control {
+    width: 8em;
 }
 
 .row.hr-row {
@@ -303,4 +307,74 @@ progress {
     background-color: rgba(242, 106, 37, 1);
     color: white;
     font-weight: bold;
+}
+
+.modal {
+     overflow: hidden;
+}
+
+body.modal-open {
+    margin: 0;
+}
+
+@media (min-width:992px) {
+    .modal-lg {
+        width: 900px;
+    }
+}
+
+.modal-body label {
+    width: 100%;
+}
+
+.modal-body .row .row {
+    padding: 0 15px;
+}
+
+.toggle {
+    padding: 0;
+}
+
+.toggle-left, .toggle-right {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    height: 3em;
+    width: 100%;
+    padding: .5em 1em;
+    margin: .2em;
+    font-size: 10px;
+    font-weight: 900;
+    font-variant: small-caps;
+}
+
+input[type=radio]:checked+.toggle-left, input[type=radio]:checked+.toggle-right {
+    background-color: rgba(242, 106, 37, 1);
+    color: white;
+}
+
+.toggle-left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.toggle-right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.modal-header-revature {
+    background-color: rgba(242, 106, 37, 1);
+    font-weight: 700;
+    color: white;
+}
+
+.modal-footer {
+    background-color: #f5f5f5;
+}
+
+.assigning-controls {
+    margin-right: .2em; 
+    display: inline-block;
+    float: right;
 }

@@ -1,9 +1,13 @@
 angular.module("HousingApp")
 .controller("DashboardCtrl", function($scope, $rootScope, $http, $state) {
     $scope.DashboardScope = [];
+
+    $rootScope.$on("ExpandView", function(event){
+        $scope.DashboardScope.ExpandView();
+    });
+
     $scope.DashboardScope.ExpandView = function() {
         var sections = document.getElementsByTagName("section");
-        var expandBtn = document.getElementById("expand-btn");
         var section1;
         var section2;
 
@@ -22,15 +26,6 @@ angular.module("HousingApp")
                     section2 = sections[i];
                     $rootScope.$emit("UpdateHousingList", 1, 3);
                     $rootScope.$emit("UpdateAssociateList", 24, 2);
-                }
-
-                if(sections[i].id == "dashboard-left" && section1 == sections[i])
-                {
-                    expandBtn.style.MozTransform = "translate(-66.1em, 64px)";
-                }
-                else if(sections[i].id == "dashboard-left" && section2 == sections[i])
-                {
-                    expandBtn.style.MozTransform = "translate(-33.8em, 64px)";
                 }
             }
         }
