@@ -5,7 +5,7 @@
                 <h1>Housing Complexes</h1>
             </div>
             <div class="col-md-3 col-btn">
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
                     <span class="glyphicon glyphicon-plus"></span> New Complex
                 </button>
             </div>
@@ -26,7 +26,7 @@
                         <p>{{item.PhoneNumber}}</p>
                     </div>
                     <div class="panel-footer">
-                        <button type="button" class="btn btn-default btn-sm">
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#removeModal" ng-click="HousingScope.GetCurrentComplex(item)">
                             <span class="glyphicon glyphicon-trash"></span> Remove
                         </button>
                     </div>
@@ -56,3 +56,108 @@
         </section>
     </div>
 </article>
+
+<!-- Add Complex Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Add New Complex</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Name
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="Grand Apartments">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Phone Number
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="(555) 555-5555">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>
+                                <div class="row">
+                                    Street Address
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="123 1st Street">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    City
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="Reston" >
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    State
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="Virginia" >
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Zip Code
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="20190" >
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Complex Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Remove {{HousingScope.CurrentHousing.Name}}</h2>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove {{HousingScope.CurrentHousing.Name}} from all available Complexes?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

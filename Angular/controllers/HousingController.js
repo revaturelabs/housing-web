@@ -12,9 +12,12 @@ angular.module("HousingApp")
     $scope.HousingScope.CurrentPage1 = 1;
     $scope.HousingScope.CurrentPage2 = 1;
     $scope.HousingScope.CurrentPage3 = 1;
+    $scope.HousingScope.CurrentHousing = {};
+    $scope.HousingScope.CurrentUnit = {};
     $scope.HousingScope.LastPage1 = 1;
     $scope.HousingScope.LastPage2 = 1;
     $scope.HousingScope.LastPage3 = 1;
+    $scope.HousingScope.SelectedAssociates = [];
     $scope.HousingScope.CurrentComplex = $stateParams.Name;
     $scope.HousingScope.CurrentUnits = [];
     $scope.HousingScope.Units = [];
@@ -25,7 +28,8 @@ angular.module("HousingApp")
         SrcString: "",
         RadTech: "all",
         RadGender: "all",
-        RadCar: "all"
+        RadCar: "all",
+        Current: ""
     };
 
     requestComplex.onreadystatechange = function () {
@@ -57,6 +61,11 @@ angular.module("HousingApp")
         $scope.HousingScope.UpdatePageList(size, mode);
     });
 
+    $rootScope.$on("GetSelection", function(event, data){
+        $scope.HousingScope.SelectedAssociates = data;
+        console.log($scope.HousingScope.SelectedAssociates);
+    });
+
     $scope.HousingScope.UpdatePageList = function (size, mode)
     {
         if(mode == 1)
@@ -83,6 +92,10 @@ angular.module("HousingApp")
                 $scope.HousingScope.LastPage3 = getLastIndex();
             }, 20);
         }
+    }
+
+    $scope.HousingScope.OnModalOpen = function() {
+        $rootScope.$emit("RequestSelection");
     }
 
     $scope.HousingScope.UpdateContentClass = function (size)
@@ -159,7 +172,7 @@ angular.module("HousingApp")
             var batches = [];
             var countTech = 0;
             var countBatch = 0;
-            if(unit.Complex.Name == $scope.CurrentComplex)
+            if(unit.Complex.Name == $scope.HousingScope.CurrentComplex)
             {
                 $scope.HousingScope.Data.forEach(function(data) {
                     if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.HousingScope.CurrentComplex)
@@ -223,6 +236,63 @@ angular.module("HousingApp")
             filters.style.height = "15em";
             updateSpacing(10, 210);
         }
+    }
+
+    $scope.HousingScope.GetCurrentComplex = function (complex) {
+        $scope.HousingScope.CurrentHousing = complex;
+    }
+
+    $scope.HousingScope.GetCurrentUnit = function (unit) {
+        $scope.HousingScope.CurrentUnit = unit;
+    }
+
+    $scope.HousingScope.StartAssigning = function (unit) {
+        $scope.HousingScope.HousingFilters.Current = unit.AptNumber + " " + unit.Complex.Name;
+        var dashboard = document.getElementById("dashboard-housing");
+        var assignBtn = document.getElementById("assignAssociates");
+        var filterBtn;
+        var filterBtns = document.getElementsByClassName("btn-filter");
+        var assigningCtrls = document.getElementsByClassName("assigning-controls");
+
+        for(var i = 0; i < filterBtns.length; i++)
+        {
+            if(filterBtns[i].parentElement.parentElement == dashboard)
+            {
+                filterBtn = filterBtns[i];
+            }
+        }
+
+        $rootScope.$emit("ExpandView");
+
+        filterBtn.style.display = "none";
+        assignBtn.style.display = "none";
+        assigningCtrls[0].style.display = "inline-block";
+        assigningCtrls[1].style.display = "inline-block";
+    }
+
+    $scope.HousingScope.StopAssigning = function () {
+        $scope.HousingScope.HousingFilters.Current = "";
+        var dashboard = document.getElementById("dashboard-housing");
+        var assignBtn = document.getElementById("assignAssociates");
+        var filterBtn;
+        var filterBtns = document.getElementsByClassName("btn-filter");
+        var assigningCtrls = document.getElementsByClassName("assigning-controls");
+
+        for(var i = 0; i < filterBtns.length; i++)
+        {
+            if(filterBtns[i].parentElement.parentElement == dashboard)
+            {
+                filterBtn = filterBtns[i];
+            }
+        }
+        
+        $rootScope.$emit("ExpandView");
+        $rootScope.$emit("ResetSelection");
+
+        filterBtn.style.display = "inline-block";
+        assignBtn.style.display = "inline-block";
+        assigningCtrls[0].style.display = "none";
+        assigningCtrls[1].style.display = "none";
     }
 
     var updateSpacing = function (time, height) {

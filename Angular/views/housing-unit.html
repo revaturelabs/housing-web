@@ -14,7 +14,7 @@
                 <h1>{{HousingScope.CurrentComplex}}</h1>
             </div>
             <div class="col-md-3 col-btn">
-                <button type="button" class="btn btn-default">
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
                     <span class="glyphicon glyphicon-plus"></span> New Unit
                 </button>
             </div>
@@ -38,7 +38,7 @@
                         </p>
                     </div>
                     <div class="panel-footer">
-                        <button type="button" class="btn btn-default btn-sm">
+                        <button type="button" class="btn btn-default btn-sm"  data-toggle="modal" data-target="#removeModal" ng-click="HousingScope.GetCurrentUnit(item)">
                             <span class="glyphicon glyphicon-trash"></span> Remove
                         </button>
                     </div>
@@ -68,3 +68,99 @@
         </section>
     </div>
 </article>
+
+<!-- Add Unit Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Add New Complex</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>
+                                <div class="row">
+                                    Apartment
+                                </div>
+                                <div class="row">
+                                    <input type="text" class="form-control" placeholder="1408">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-5">
+                            <label>
+                                <div class="row">
+                                    Complex
+                                </div>
+                                <div class="row">
+                                    <select name="complexes" id="complex" class="form-control">
+                                        <option value="0">Coming Soon</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Gender
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" name="gender" id="aGenderMale" value="male" checked />
+                                        <label for="aGenderMale" class="toggle-left">Male</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" name="gender" id="aGenderFemale" value="female" />
+                                        <label for="aGenderFemale" class="toggle-right">Female</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                <div class="row">
+                                    Capacity
+                                </div>
+                                <div class="row">
+                                    <select name="batches" id="batch" class="form-control" style="width: 100%">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Unit Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header modal-header-revature">
+        <h2 class="modal-title center text-uppercase" id="myModalLabel">Remove {{HousingScope.CurrentUnit.AptNumber + " " + HousingScope.CurrentUnit.Complex.Name}}</h2>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to remove {{HousingScope.CurrentUnit.AptNumber + " " + HousingScope.CurrentUnit.Complex.Name}} from all available Units?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

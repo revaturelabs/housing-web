@@ -5,6 +5,8 @@
         </div>
         <div class="col-md-6 filter-search">
             <button class="btn btn-default btn-filter" ng-click="HousingScope.ToggleFilters()">Filters</button>
+            <button class="btn btn-default assigning-controls" style="display: none" data-toggle="modal" data-target="#addModal" ng-click="HousingScope.OnModalOpen()">Confirm</button>
+            <button class="btn btn-default assigning-controls" style="display: none" ng-click="HousingScope.StopAssigning()">Cancel</button>
         </div>
     </section>
     <section class="row" id="housing-filters" style="height: 0em;">
@@ -93,7 +95,7 @@
                         </p>
                     </div>
                     <div class="panel-footer">
-                        <button type="button" class="btn btn-default btn-sm">
+                        <button type="button" class="btn btn-default btn-sm" id="assignAssociates" ng-click="HousingScope.StartAssigning(item)">
                             <span class="glyphicon glyphicon-plus"></span> Assign Associate
                         </button>
                     </div>
@@ -123,6 +125,29 @@
         </div>
     </section>
 </article>
+
+<!-- Add Associates Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Assign to {{HousingScope.HousingFilters.Current}}</h2>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to assign the following associates to {{HousingScope.HousingFilters.Current}}?
+                <ul>
+                    <li ng-repeat="item in HousingScope.SelectedAssociates">
+                        {{item.FirstName + " " + item.LastName}}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal" ng-click="HousingScope.StopAssigning()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
    
 
 
