@@ -43,7 +43,6 @@ angular.module("HousingApp")
 
         for(var i = 0; i < children.length; i++)
         {
-            console.log(children[i].firstElementChild);
             if(children[i].firstElementChild.firstElementChild.classList.contains("selected"))
             {
                 children[i].firstElementChild.firstElementChild.classList.remove("selected");

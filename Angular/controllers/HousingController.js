@@ -63,7 +63,6 @@ angular.module("HousingApp")
 
     $rootScope.$on("GetSelection", function(event, data){
         $scope.HousingScope.SelectedAssociates = data;
-        console.log($scope.HousingScope.SelectedAssociates);
     });
 
     $scope.HousingScope.UpdatePageList = function (size, mode)
