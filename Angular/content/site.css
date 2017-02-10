@@ -92,6 +92,10 @@ html, body {
     background-image: none;
 }
 
+.col-md-4 .panel-revature .panel-heading {
+    cursor: pointer;
+}
+
 .panel-revature .panel-heading.selected {
     background-color: rgba(255, 150, 90, 1);
 }

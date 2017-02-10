@@ -248,10 +248,12 @@ angular.module("HousingApp")
     $scope.HousingScope.StartAssigning = function (unit) {
         $scope.HousingScope.HousingFilters.Current = unit.AptNumber + " " + unit.Complex.Name;
         var dashboard = document.getElementById("dashboard-housing");
-        var assignBtn = document.getElementById("assignAssociates");
+        var assignBtns = document.getElementsByClassName("assignAssociates");
         var filterBtn;
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
+
+        $rootScope.$emit("ExpandView");
 
         for(var i = 0; i < filterBtns.length; i++)
         {
@@ -261,10 +263,12 @@ angular.module("HousingApp")
             }
         }
 
-        $rootScope.$emit("ExpandView");
+        for(var i = 0; i < assignBtns.length; i++)
+        {
+            assignBtns[i].style.display = "none";
+        }
 
         filterBtn.style.display = "none";
-        assignBtn.style.display = "none";
         assigningCtrls[0].style.display = "inline-block";
         assigningCtrls[1].style.display = "inline-block";
     }
@@ -272,10 +276,13 @@ angular.module("HousingApp")
     $scope.HousingScope.StopAssigning = function () {
         $scope.HousingScope.HousingFilters.Current = "";
         var dashboard = document.getElementById("dashboard-housing");
-        var assignBtn = document.getElementById("assignAssociates");
+        var assignBtns = document.getElementsByClassName("assignAssociates");
         var filterBtn;
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
+        
+        $rootScope.$emit("ExpandView");
+        $rootScope.$emit("ResetSelection");
 
         for(var i = 0; i < filterBtns.length; i++)
         {
@@ -284,12 +291,13 @@ angular.module("HousingApp")
                 filterBtn = filterBtns[i];
             }
         }
-        
-        $rootScope.$emit("ExpandView");
-        $rootScope.$emit("ResetSelection");
+
+        for(var i = 0; i < assignBtns.length; i++)
+        {
+            assignBtns[i].style.display = "inline-block";
+        }
 
         filterBtn.style.display = "inline-block";
-        assignBtn.style.display = "inline-block";
         assigningCtrls[0].style.display = "none";
         assigningCtrls[1].style.display = "none";
     }
