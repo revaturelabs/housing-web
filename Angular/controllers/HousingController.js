@@ -260,7 +260,7 @@ angular.module("HousingApp")
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
 
-        $rootScope.$emit("ExpandView");
+        $scope.$emit("ExpandView");
 
         for(var i = 0; i < filterBtns.length; i++)
         {
@@ -294,8 +294,8 @@ angular.module("HousingApp")
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
         
-        $rootScope.$emit("ExpandView");
-        $rootScope.$emit("ResetSelection");
+        $scope.$emit("ExpandView");
+        $scope.$emit("ResetSelection");
 
         for(var i = 0; i < filterBtns.length; i++)
         {
