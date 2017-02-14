@@ -54,8 +54,8 @@
                         </a>
                     </li>
                     <li ng-repeat="item in HousingScope.Complexes | pagecount:HousingScope.PageSize2">
-                        <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(HousingScope.CurrentPage2, $index + 1)" ng-class="HousingScope.GetPageClass(HousingScope.CurrentPage2, $index + 1)">
-                             {{$index + 1}}
+                        <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(2, $index + 1)" ng-class="HousingScope.GetPageClass(2, $index + 1)">
+                            {{$index + 1}}
                         </a>
                     </li>
                     <li>
