@@ -8,7 +8,7 @@
         </div>
     </section>
     <section class="row" id="associate-filters" style="height: 0em;">
-        <div class="fluid-container" style="width: 23.75em; margin: 0em 1em;">
+        <div class="fluid-container" style="width: 25.5em; margin: 0em 1em;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="input-group">
@@ -78,11 +78,29 @@
     </section>
     <section class="row" id="associate-content">
         <div class="fluid-container" id="associate-list">
-            <div ng-class="AssociateScope.UpdateContentClass(AssociateScope.PageSize2)" ng-repeat="item in AssociateScope.Associates | hasKeys | afilters:AssociateScope.AssociateFilters | pagerange:AssociateScope.CurrentPage2:AssociateScope.PageSize2">
+            <div ng-class="AssociateScope.UpdateContentClass(AssociateScope.PageSize2)" ng-repeat="item in AssociateScope.Associates | assigned:AssociateScope.DisplayMode:AssociateScope.CurrentUnit | afilters:AssociateScope.AssociateFilters | pagerange:AssociateScope.CurrentPage2:AssociateScope.PageSize2">
                 <div class="panel panel-revature">
-                    <div class="panel-heading" ng-click="AssociateScope.SelectPerson($event,item)"> 
-                        {{item.FirstName + " " + item.LastName}}
-                        <span class="glyphicon glyphicon-ok pull-right"></span>
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-10" ng-click="AssociateScope.SelectPerson($event,item)">
+                                {{item.FirstName + " " + item.LastName}}
+                                <span class="glyphicon glyphicon-ok pull-right"></span>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-default pull-right" ng-click="AssociateScope.ToggleDetails($event)">
+                                    <span class="glyphicon glyphicon-menu-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="display: none;">
+                        <p>Gender: {{item.Gender}}</p>
+                        <p>Batch: {{item.Batch.Name}}</p>
+                        <p>Technology: {{item.Batch.Technology}}</p>
+                        <p>Phone: {{item.PhoneNumber}}</p>
+                        <p>Email: {{item.Email}}</p>
+                        <p>DOB: {{item.DateOfBirth | date}}</p>
+                        <p>Has a Car: {{item.HasCar | bool}}</p>
                     </div>
                 </div>
             </div>

@@ -3,16 +3,14 @@ angular.module("HousingApp")
     $scope.DashboardScope = [];
 
     $scope.$on("ExpandView", function(event){
-        console.log("Recieved ExpandView Call!");
         $scope.DashboardScope.ExpandView();
     });
 
     $scope.DashboardScope.ExpandView = function() {
-        console.log("Performing ExpandView Call...");
         var sections = document.getElementsByTagName("section");
         var section1;
         var section2;
-        console.log(sections);
+        
         for(var i = 0; i < sections.length; i++)
         {
             if(sections[i].id.includes("dashboard-left") || sections[i].id.includes("dashboard-right"))
@@ -80,7 +78,7 @@ angular.module("HousingApp")
         
         if (hfilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
         {
-            hfilters.childNodes[1].style.width = "23.75em";
+            hfilters.childNodes[1].style.width = "25.5em";
             hfilters.childNodes[1].style.margin = "0em 1em";
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
@@ -107,7 +105,7 @@ angular.module("HousingApp")
         
         if (afilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
         {
-            afilters.childNodes[1].style.width = "23.75em";
+            afilters.childNodes[1].style.width = "25.5em";
             afilters.childNodes[1].style.margin = "0em 1em";
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
