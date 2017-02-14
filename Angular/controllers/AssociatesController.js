@@ -97,6 +97,23 @@ angular.module("HousingApp")
         }
     }
 
+    $scope.AssociateScope.ToggleDetails = function (event) {
+        var panel = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
+
+        if(panel.children[1].style.display == "none")
+        {
+            panel.children[1].style.display = "block";
+            event.currentTarget.children[0].classList.remove("glyphicon-menu-down");
+            event.currentTarget.children[0].classList.add("glyphicon-menu-up");
+        }
+        else if(panel.children[1].style.display == "block")
+        {
+            panel.children[1].style.display = "none";
+            event.currentTarget.children[0].classList.remove("glyphicon-menu-up");
+            event.currentTarget.children[0].classList.add("glyphicon-menu-down");
+        }
+    }
+
     $scope.AssociateScope.ToggleFilters = function() {
         var filters = document.getElementById("associate-filters");
         var list = document.getElementById("associate-list");
@@ -116,16 +133,18 @@ angular.module("HousingApp")
     $scope.AssociateScope.SelectPerson = function(event, person)
     {
         var list = document.getElementById("associate-list");
+        var target = event.currentTarget.parentElement.parentElement;
         var children = list.children;
+        
         if(children[0].classList.contains("col-md-4"))
         {
-            if(event.currentTarget.classList.contains("selected"))
+            if(target.classList.contains("selected"))
             {
-                event.currentTarget.classList.remove("selected");
+                target.classList.remove("selected");
             }
             else
             {
-                event.currentTarget.classList.add("selected");
+                target.classList.add("selected");
             }
             $scope.AssociateScope.SelectedAssociates.push(person);
         }
