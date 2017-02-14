@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li ng-repeat="item in AssociateScope.Associates | pagecount:AssociateScope.PageSize1">
-                        <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage(AssociateScope.CurrentPage1, ($index + 1))" ng-class="AssociateScope.GetPageClass(AssociateScope.CurrentPage1, ($index + 1))">
+                        <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage(1, ($index + 1))" ng-class="AssociateScope.GetPageClass(1, ($index + 1))">
                              {{$index + 1}}
                         </a>
                     </li>
