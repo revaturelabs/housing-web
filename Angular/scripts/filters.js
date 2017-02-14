@@ -30,21 +30,6 @@ angular.module("HousingApp")
         return x;
     }
 })
-.filter('hasKeys', function() {
-    return function(x) {
-        var result = [];
-        var count = 0;
-        
-        x.forEach(function(element) {
-            if(!element.HasKeys)
-            {
-                result[count] = element;
-                count++;
-            }
-        }, this);
-        return result;
-    }
-})
 .filter("pagecount", function () {
     return function (data, size) {
         if (angular.isArray(data)) {
@@ -67,6 +52,44 @@ angular.module("HousingApp")
         }
         else {
             return data.slice(start, size + start);
+        }
+    }
+})
+.filter('assigned', function(){
+    return function (associates, mode, unit) {
+        var result = [];
+        var count = 0;
+
+        if(mode == 1)
+        {
+            associates.forEach(function(associate) {
+                if(!associate.HasKeys)
+                {
+                    result[count] = associate;
+                    count++;
+                }
+            }, this);
+
+            return result;
+        }
+        else if(mode == 2)
+        {
+            if(unit.AptNumber == undefined)
+            {
+                return associates;
+            }
+            
+            unit.Occupants.forEach(function(associate) {
+                result[count] = associate;
+                count++;
+            }, this);
+
+            return result;
+        }
+        else
+        {
+            console("Hello");
+            return associates;
         }
     }
 })

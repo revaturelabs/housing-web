@@ -78,7 +78,7 @@
     </section>
     <section class="row" id="associate-content">
         <div class="fluid-container" id="associate-list">
-            <div ng-class="AssociateScope.UpdateContentClass(AssociateScope.PageSize2)" ng-repeat="item in AssociateScope.Associates | hasKeys | afilters:AssociateScope.AssociateFilters | pagerange:AssociateScope.CurrentPage2:AssociateScope.PageSize2">
+            <div ng-class="AssociateScope.UpdateContentClass(AssociateScope.PageSize2)" ng-repeat="item in AssociateScope.Associates | assigned:AssociateScope.DisplayMode:AssociateScope.CurrentUnit | afilters:AssociateScope.AssociateFilters | pagerange:AssociateScope.CurrentPage2:AssociateScope.PageSize2">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <div class="row">

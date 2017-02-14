@@ -256,6 +256,7 @@ angular.module("HousingApp")
         var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
+        var removeBtns = document.getElementsByClassName("removeAssociates");
         var occupants = document.getElementsByClassName("housing-occupants");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
@@ -273,6 +274,7 @@ angular.module("HousingApp")
         for(var i = 0; i < assignBtns.length; i++)
         {
             assignBtns[i].style.display = "none";
+            removeBtns[i].style.display = "none";
         }
 
         for(var i = 0; i < occupants.length; i++)
@@ -290,6 +292,7 @@ angular.module("HousingApp")
         var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
+        var removeBtns = document.getElementsByClassName("removeAssociates");
         var occupants = document.getElementsByClassName("housing-occupants");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
@@ -308,6 +311,7 @@ angular.module("HousingApp")
         for(var i = 0; i < assignBtns.length; i++)
         {
             assignBtns[i].style.display = "inline-block";
+            removeBtns[i].style.display = "inline-block";
         }
 
         for(var i = 0; i < occupants.length; i++)
@@ -318,6 +322,102 @@ angular.module("HousingApp")
         filterBtn.style.display = "inline-block";
         assigningCtrls[0].style.display = "none";
         assigningCtrls[1].style.display = "none";
+    }
+    
+    $scope.HousingScope.StartRemoving = function (unit) {
+        $scope.HousingScope.CurrentUnit = unit;
+        $scope.HousingScope.HousingFilters.Current = unit.AptNumber + " " + unit.Complex.Name;
+        var filterBtn;
+        var dashboard = document.getElementById("dashboard-housing");
+        var title = document.getElementById("dashboard-associate").children[0].children[0];
+        var assigned = document.getElementsByClassName("assigned");
+        var unassigned = document.getElementsByClassName("unassigned");
+        var assignBtns = document.getElementsByClassName("assignAssociates");
+        var removeBtns = document.getElementsByClassName("removeAssociates");
+        var filterBtns = document.getElementsByClassName("btn-filter");
+        var removingCtrls = document.getElementsByClassName("removing-controls");
+
+        $scope.$emit("ExpandView");
+        $rootScope.$broadcast('GetCurrentUnit', $scope.HousingScope.CurrentUnit);
+        $rootScope.$broadcast('SetDisplayMode', 2);
+
+        for(var i = 0; i < filterBtns.length; i++)
+        {
+            if(filterBtns[i].parentElement.parentElement == dashboard)
+            {
+                filterBtn = filterBtns[i];
+            }
+        }
+
+        for(var i = 0; i < removeBtns.length; i++)
+        {
+            assignBtns[i].style.display = "none";
+            removeBtns[i].style.display = "none";
+        }
+
+        setTimeout(function() {
+            for(var i = 0; i < assigned.length; i++)
+            {
+                assigned[i].style.display = "inline-block";
+            }
+        }, 2);
+
+        for(var i = 0; i < unassigned.length; i++)
+        {
+            unassigned[i].style.display = "none";
+        }
+        
+        filterBtn.style.display = "none";
+        removingCtrls[0].style.display = "inline-block";
+        removingCtrls[1].style.display = "inline-block";
+        title.innerHTML = "Assigned Associates";
+    }
+    
+    $scope.HousingScope.StopRemoving = function () {
+        $scope.HousingScope.CurrentUnit = {};
+        $scope.HousingScope.HousingFilters.Current = "";
+        var filterBtn;
+        var dashboard = document.getElementById("dashboard-housing");
+        var title = document.getElementById("dashboard-associate").children[0].children[0];
+        var assigned = document.getElementsByClassName("assigned");
+        var unassigned = document.getElementsByClassName("unassigned");
+        var assignBtns = document.getElementsByClassName("assignAssociates");
+        var removeBtns = document.getElementsByClassName("removeAssociates");
+        var filterBtns = document.getElementsByClassName("btn-filter");
+        var removingCtrls = document.getElementsByClassName("removing-controls");
+
+        $scope.$emit("ExpandView");
+        $rootScope.$broadcast('GetCurrentUnit', $scope.HousingScope.CurrentUnit);
+        $rootScope.$broadcast('SetDisplayMode', 1);
+
+        for(var i = 0; i < filterBtns.length; i++)
+        {
+            if(filterBtns[i].parentElement.parentElement == dashboard)
+            {
+                filterBtn = filterBtns[i];
+            }
+        }
+
+        for(var i = 0; i < removeBtns.length; i++)
+        {
+            assignBtns[i].style.display = "inline-block";
+            removeBtns[i].style.display = "inline-block";
+        }
+
+        for(var i = 0; i < assigned.length; i++)
+        {
+            assigned[i].style.display = "none";
+        }
+
+        for(var i = 0; i < unassigned.length; i++)
+        {
+            unassigned[i].style.display = "inline-block";
+        }
+
+        filterBtn.style.display = "inline-block";
+        removingCtrls[0].style.display = "none";
+        removingCtrls[1].style.display = "none";
+        title.innerHTML = "Unassigned Associates";
     }
 
     var updateSpacing = function (time, height) {

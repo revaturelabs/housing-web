@@ -29,6 +29,12 @@ hr {
     margin-bottom: 2.4vh;
 }
 
+.no-wrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .navbar.navbar-default {
     background: none !important;
     box-shadow: none !important;

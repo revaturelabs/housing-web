@@ -7,6 +7,8 @@
             <button class="btn btn-default btn-filter" ng-click="HousingScope.ToggleFilters()">Filters</button>
             <button class="btn btn-default assigning-controls" style="display: none" data-toggle="modal" data-target="#addModal" ng-click="HousingScope.OnModalOpen()">Confirm</button>
             <button class="btn btn-default assigning-controls" style="display: none" ng-click="HousingScope.StopAssigning()">Cancel</button>
+            <button class="btn btn-default removing-controls" style="display: none" data-toggle="modal" data-target="#removeModal" ng-click="HousingScope.OnModalOpen()">Confirm</button>
+            <button class="btn btn-default removing-controls" style="display: none" ng-click="HousingScope.StopRemoving()">Cancel</button>
         </div>
     </section>
     <section class="row" id="housing-filters" style="height: 0em;">
@@ -102,7 +104,10 @@
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-default btn-sm assignAssociates" ng-click="HousingScope.StartAssigning(item)">
-                            <span class="glyphicon glyphicon-plus"></span> Assign Associate
+                            <span class="glyphicon glyphicon-plus"></span> Assign
+                        </button>
+                        <button type="button" class="btn btn-default btn-sm removeAssociates" ng-click="HousingScope.StartRemoving(item)">
+                            <span class="glyphicon glyphicon-minus"></span> Remove
                         </button>
                     </div>
                 </div>
@@ -137,7 +142,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header modal-header-revature">
-                <h2 class="modal-title center text-uppercase" id="myModalLabel">Assign to {{HousingScope.HousingFilters.Current}}</h2>
+                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Assign to {{HousingScope.HousingFilters.Current}}</h2>
             </div>
             <div class="modal-body">
                 Are you sure you want to assign the following associates to {{HousingScope.HousingFilters.Current}}?
@@ -150,6 +155,29 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal" ng-click="HousingScope.StopAssigning()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Associates Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Remove from {{HousingScope.HousingFilters.Current}}</h2>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to remove the following associates from {{HousingScope.HousingFilters.Current}}?
+                <ul>
+                    <li ng-repeat="item in HousingScope.SelectedAssociates">
+                        {{item.FirstName + " " + item.LastName}}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal" ng-click="HousingScope.StopRemoving()">Confirm</button>
             </div>
         </div>
     </div>
