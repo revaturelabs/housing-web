@@ -4,11 +4,11 @@
             <h1>Housing</h1>
         </div>
         <div class="col-md-6 filter-search">
-            <button class="btn btn-default btn-filter" ng-click="HousingScope.ToggleFilters()">Filters</button>
-            <button class="btn btn-default assigning-controls" style="display: none" data-toggle="modal" data-target="#addModal" ng-click="HousingScope.OnModalOpen()">Confirm</button>
-            <button class="btn btn-default assigning-controls" style="display: none" ng-click="HousingScope.StopAssigning()">Cancel</button>
-            <button class="btn btn-default removing-controls" style="display: none" data-toggle="modal" data-target="#removeModal" ng-click="HousingScope.OnModalOpen()">Confirm</button>
-            <button class="btn btn-default removing-controls" style="display: none" ng-click="HousingScope.StopRemoving()">Cancel</button>
+            <button class="btn btn-default btn-filter" ng-click="DashboardScope.ToggleFilters('housing')">Filters</button>
+            <button class="btn btn-default assigning-controls" style="display: none" data-toggle="modal" data-target="#addModal">Confirm</button>
+            <button class="btn btn-default assigning-controls" style="display: none" ng-click="DashboardScope.StopAssigning()">Cancel</button>
+            <button class="btn btn-default removing-controls" style="display: none" data-toggle="modal" data-target="#removeModal">Confirm</button>
+            <button class="btn btn-default removing-controls" style="display: none" ng-click="DashboardScope.StopRemoving()">Cancel</button>
         </div>
     </section>
     <section class="row" id="housing-filters" style="height: 0em;">
@@ -16,11 +16,11 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-6">
                     <div class="input-group">
-                        <select ng-model="HousingScope.HousingFilters.SrcChoice" id="housing-search" class="form-control">
+                        <select ng-model="DashboardScope.Filters.SrcChoice" id="housing-search" class="form-control">
                             <option value="name">Name</option>
                             <option value="batch">Batch</option>
                         </select>
-                        <input type="text" ng-model="HousingScope.HousingFilters.SrcString" class="form-control">
+                        <input type="text" ng-model="DashboardScope.Filters.SrcString" class="form-control">
                     </div>
                 </div>
             </div>
@@ -28,49 +28,49 @@
                 <div class="col-md-2">
                     <h3>Technology</h3>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechAll" value="all" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadTech" id="hTechAll" value="all" />
                         <label for="hTechAll" class="pill">All</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechJava" value="java" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadTech" id="hTechJava" value="java" />
                         <label for="hTechJava" class="pill">Java</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechNet" value="net" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadTech" id="hTechNet" value="net" />
                         <label for="hTechNet" class="pill">.NET</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadTech" id="hTechSdet" value="sdet" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadTech" id="hTechSdet" value="sdet" />
                         <label for="hTechSdet" class="pill">SDET</label>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <h3>Gender</h3>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderAll" value="all" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadGender" id="hGenderAll" value="all" />
                         <label for="hGenderAll" class="pill">All</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderMale" value="male" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadGender" id="hGenderMale" value="male" />
                         <label for="hGenderMale" class="pill">Male</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadGender" id="hGenderFemale" value="female" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadGender" id="hGenderFemale" value="female" />
                         <label for="hGenderFemale" class="pill">Female</label>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <h3>Needs Car</h3>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarAll" value="all" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadCar" id="hCarAll" value="all" />
                         <label for="hCarAll" class="pill">N/A</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarYes" value="yes" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadCar" id="hCarYes" value="yes" />
                         <label for="hCarYes" class="pill">Yes</label>
                     </div>
                     <div>
-                        <input type="radio" ng-model="HousingScope.HousingFilters.RadCar" id="hCarNo" value="no" />
+                        <input type="radio" ng-model="DashboardScope.Filters.RadCar" id="hCarNo" value="no" />
                         <label for="hCarNo" class="pill">No</label>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
     </section>
     <section class="row" id="housing-content">
         <div class="fluid-container" id="housing-list">
-            <div ng-class="HousingScope.UpdateContentClass(HousingScope.PageSize3)" ng-repeat="item in HousingScope.Units | hfilters:HousingScope.HousingFilters:HousingScope.Data | pagerange:HousingScope.CurrentPage3:HousingScope.PageSize3">
+            <div ng-class="DashboardScope.UpdateContentClass(2, DashboardScope.HousingPageSize)" ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.Data | pagerange:DashboardScope.HousingCurrentPage:DashboardScope.HousingPageSize">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         {{item.AptNumber + " " + item.Complex.Name}}
@@ -103,10 +103,10 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <button type="button" class="btn btn-default btn-sm assignAssociates" ng-click="HousingScope.StartAssigning(item)">
+                        <button type="button" class="btn btn-default btn-sm assignAssociates" ng-click="DashboardScope.StartAssigning(item)">
                             <span class="glyphicon glyphicon-plus"></span> Assign
                         </button>
-                        <button type="button" class="btn btn-default btn-sm removeAssociates" ng-click="HousingScope.StartRemoving(item)">
+                        <button type="button" class="btn btn-default btn-sm removeAssociates" ng-click="DashboardScope.StartRemoving(item)">
                             <span class="glyphicon glyphicon-minus"></span> Remove
                         </button>
                     </div>
@@ -118,17 +118,17 @@
         <div class="text-center">
             <ul class="pagination input-group">
                 <li>
-                    <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(3, HousingScope.CurrentPage3 - 1)" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
+                    <a class="btn btn-default form-control" ng-click="DashboardScope.GoToPage(2, DashboardScope.HousingCurrentPage - 1)" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px;">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li ng-repeat="item in HousingScope.Units | hfilters:HousingScope.HousingFilters:HousingScope.Data | pagecount:HousingScope.PageSize3">
-                    <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(3, $index + 1)" ng-class="HousingScope.GetPageClass(3, $index + 1)">
+                <li ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.Data | pagecount:DashboardScope.HousingPageSize">
+                    <a class="btn btn-default form-control" ng-click="DashboardScope.GoToPage(2, $index + 1)" ng-class="DashboardScope.GetPageClass(2, $index + 1)">
                         {{$index + 1}}
                     </a>
                 </li>
                 <li>
-                    <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(3, HousingScope.CurrentPage3 + 1)" style="border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
+                    <a class="btn btn-default form-control" ng-click="DashboardScope.GoToPage(2, DashboardScope.HousingCurrentPage + 1)" style="border-top-right-radius: 4px; border-bottom-right-radius: 4px;">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -142,19 +142,19 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header modal-header-revature">
-                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Assign to {{HousingScope.HousingFilters.Current}}</h2>
+                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Assign to {{DashboardScope.Filters.Current}}</h2>
             </div>
             <div class="modal-body">
-                Are you sure you want to assign the following associates to {{HousingScope.HousingFilters.Current}}?
+                Are you sure you want to assign the following associates to {{DashboardScope.Filters.Current}}?
                 <ul>
-                    <li ng-repeat="item in HousingScope.SelectedAssociates">
+                    <li ng-repeat="item in DashboardScope.SelectedAssociates">
                         {{item.FirstName + " " + item.LastName}}
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal" ng-click="HousingScope.StopAssigning()">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal" ng-click="DashboardScope.StopAssigning()">Confirm</button>
             </div>
         </div>
     </div>
@@ -165,19 +165,19 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header modal-header-revature">
-                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Remove from {{HousingScope.HousingFilters.Current}}</h2>
+                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Remove from {{DashboardScope.Filters.Current}}</h2>
             </div>
             <div class="modal-body">
-                Are you sure you want to remove the following associates from {{HousingScope.HousingFilters.Current}}?
+                Are you sure you want to remove the following associates from {{DashboardScope.Filters.Current}}?
                 <ul>
-                    <li ng-repeat="item in HousingScope.SelectedAssociates">
+                    <li ng-repeat="item in DashboardScope.SelectedAssociates">
                         {{item.FirstName + " " + item.LastName}}
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal" ng-click="HousingScope.StopRemoving()">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal" ng-click="DashboardScope.StopRemoving()">Confirm</button>
             </div>
         </div>
     </div>
