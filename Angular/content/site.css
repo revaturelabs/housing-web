@@ -84,21 +84,22 @@ hr {
     font-weight: 500;
 }
 
-.col-md-3.col-btn {
-    padding: 3em 0em 1em 0em;
+.col-btn {
+    padding: 0em;
+    padding-top: 1.75em;
 }
 
-.col-md-3.col-btn.back {
+.col-btn.back {
     position: absolute;
     transform: translate(-10em);
 }
 
-.col-md-3.col-btn .btn.btn-default {
+.col-btn .btn.btn-default {
     background: none;
     font-size: .8em;
 }
 
-.col-md-3.col-btn .btn.btn-default:hover {
+.col-btn .btn.btn-default:hover {
     background: hsla(0, 0%, 0%, .1);
 }
 

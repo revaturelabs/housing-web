@@ -1,35 +1,26 @@
 angular.module("HousingApp")
-.controller("HousingCtrl", function($scope, $rootScope, $http, $stateParams, complexURL, dataURL, unitURL) {
+.controller("HousingCtrl", function($scope, $http, $stateParams, complexURL, dataURL, unitURL) {
     var requestComplex = new XMLHttpRequest();
     var requestData = new XMLHttpRequest();
     var requestUnit = new XMLHttpRequest();
 
     $scope.HousingScope = [];
-    $scope.HousingScope = [];
     $scope.HousingScope.PageSize1 = 3;
     $scope.HousingScope.PageSize2 = 3;
-    $scope.HousingScope.PageSize3 = 3;
     $scope.HousingScope.CurrentPage1 = 1;
     $scope.HousingScope.CurrentPage2 = 1;
-    $scope.HousingScope.CurrentPage3 = 1;
-    $scope.HousingScope.CurrentHousing = {};
-    $scope.HousingScope.CurrentUnit = {};
     $scope.HousingScope.LastPage1 = 1;
     $scope.HousingScope.LastPage2 = 1;
-    $scope.HousingScope.LastPage3 = 1;
-    $scope.HousingScope.SelectedAssociates = [];
+    $scope.HousingScope.CurrentHousing = {};
+    $scope.HousingScope.CurrentUnit = {};
     $scope.HousingScope.CurrentComplex = $stateParams.Name;
     $scope.HousingScope.CurrentUnits = [];
     $scope.HousingScope.Units = [];
     $scope.HousingScope.Data = [];
     $scope.HousingScope.Complexes = [];
-    $scope.HousingScope.HousingFilters = {
-        SrcChoice: "name",
-        SrcString: "",
-        RadTech: "all",
-        RadGender: "all",
-        RadCar: "all",
-        Current: ""
+    $scope.HousingScope.Search = {
+        Housing: "",
+        Unit: ""
     };
 
     requestComplex.onreadystatechange = function () {
@@ -56,14 +47,6 @@ angular.module("HousingApp")
     requestComplex.send();
     requestData.send();
     requestUnit.send();
-    
-    $rootScope.$on("UpdateHousingList", function(event, size, mode){
-        $scope.HousingScope.UpdatePageList(size, mode);
-    });
-
-    $rootScope.$on("GetSelection", function(event, data){
-        $scope.HousingScope.SelectedAssociates = data;
-    });
 
     $scope.HousingScope.UpdatePageList = function (size, mode)
     {
@@ -83,23 +66,6 @@ angular.module("HousingApp")
                 $scope.HousingScope.LastPage2 = getLastIndex();
             }, 20);
         }
-        else if(mode == 3)
-        {
-            $scope.HousingScope.PageSize3 = size;
-            $scope.HousingScope.CurrentPage3 = 1;
-            setTimeout(function() {
-                $scope.HousingScope.LastPage3 = getLastIndex();
-            }, 20);
-        }
-    }
-
-    $scope.HousingScope.OnModalOpen = function() {
-        $rootScope.$emit("RequestSelection");
-    }
-
-    $scope.HousingScope.UpdateContentClass = function (size)
-    {
-        return size == 1 ? "col-md-12" : "col-md-4";
     }
 
     $scope.HousingScope.GoToPage = function (version, page, last)
@@ -112,10 +78,6 @@ angular.module("HousingApp")
         {
             $scope.HousingScope.CurrentPage2 = page;
         }
-        else if(version == 3 && (page >= 1 && page <= $scope.HousingScope.LastPage3))
-        {
-            $scope.HousingScope.CurrentPage3 = page;
-        }
     }
 
     $scope.HousingScope.GetPageClass = function (version, page) {
@@ -126,10 +88,6 @@ angular.module("HousingApp")
         else if(version == 2)
         {
             return $scope.HousingScope.CurrentPage2 == page ? "btn-revature" : "";
-        }
-        else if(version == 3)
-        {
-            return $scope.HousingScope.CurrentPage3 == page ? "btn-revature" : "";
         }
     }
 
@@ -156,7 +114,6 @@ angular.module("HousingApp")
     setTimeout(function() {
         $scope.HousingScope.LastPage1 = getLastIndex();
         $scope.HousingScope.LastPage2 = getLastIndex();
-        $scope.HousingScope.LastPage3 = getLastIndex();
     }, 20);
 
     var count = 0;
@@ -164,52 +121,15 @@ angular.module("HousingApp")
     $scope.HousingScope.Units.forEach(function(unit) {
         var currentCap = 0;
         var currentCars = 0;
-        
-        if ($stateParams.Name != undefined)
+        var techs = [];
+        var batches = [];
+        var occupants = [];
+        var countTech = 0;
+        var countBatch = 0;
+        if(unit.Complex.Name == $scope.HousingScope.CurrentComplex)
         {
-            var techs = [];
-            var batches = [];
-            var occupants = [];
-            var countTech = 0;
-            var countBatch = 0;
-            if(unit.Complex.Name == $scope.HousingScope.CurrentComplex)
-            {
-                $scope.HousingScope.Data.forEach(function(data) {
-                    if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.HousingScope.CurrentComplex)
-                    {
-                        currentCap++;
-                        
-                        if(data.Associate.HasCar)
-                        {
-                            currentCars++;
-                        }
-                        if(!inArray(techs, data.Associate.Batch.Technology))
-                        {
-                            techs[countTech] = data.Associate.Batch.Technology;
-                        }
-                        if(!inArray(batches, data.Associate.Batch.Name))
-                        {
-                            batches[countBatch] = data.Associate.Batch.Name;
-                        }
-                        occupants.push(data.Associate);
-                    }
-                }, this);
-
-                unit['Capacity'] = currentCap;
-                unit['Cars'] = currentCars;
-                unit['Tech'] = techs;
-                unit['Batch'] = batches;
-                unit['Occupants'] = occupants;
-
-                $scope.HousingScope.CurrentUnits[count] = unit;
-                count++;
-            }
-        }
-        else
-        {
-            var occupants = [];
             $scope.HousingScope.Data.forEach(function(data) {
-                if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == unit.Complex.Name)
+                if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.HousingScope.CurrentComplex)
                 {
                     currentCap++;
                     
@@ -217,31 +137,28 @@ angular.module("HousingApp")
                     {
                         currentCars++;
                     }
-                        occupants.push(data.Associate);
+                    if(!inArray(techs, data.Associate.Batch.Technology))
+                    {
+                        techs[countTech] = data.Associate.Batch.Technology;
+                    }
+                    if(!inArray(batches, data.Associate.Batch.Name))
+                    {
+                        batches[countBatch] = data.Associate.Batch.Name;
+                    }
+                    occupants.push(data.Associate);
                 }
             }, this);
 
             unit['Capacity'] = currentCap;
             unit['Cars'] = currentCars;
+            unit['Tech'] = techs;
+            unit['Batch'] = batches;
             unit['Occupants'] = occupants;
+
+            $scope.HousingScope.CurrentUnits[count] = unit;
+            count++;
         }
     }, this);
-
-    $scope.HousingScope.ToggleFilters = function() {
-        var filters = document.getElementById("housing-filters");
-        var list = document.getElementById("housing-list");
-
-        if(filters.style.height == "15em")
-        {
-            filters.style.height = "0em";
-            updateSpacing(10, 0);
-        }
-        else if(filters.style.height == "0em")
-        {
-            filters.style.height = "15em";
-            updateSpacing(10, 210);
-        }
-    }
 
     $scope.HousingScope.GetCurrentComplex = function (complex) {
         $scope.HousingScope.CurrentHousing = complex;
@@ -249,175 +166,6 @@ angular.module("HousingApp")
 
     $scope.HousingScope.GetCurrentUnit = function (unit) {
         $scope.HousingScope.CurrentUnit = unit;
-    }
-
-    $scope.HousingScope.StartAssigning = function (unit) {
-        $scope.HousingScope.HousingFilters.Current = unit.AptNumber + " " + unit.Complex.Name;
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
-        var assignBtns = document.getElementsByClassName("assignAssociates");
-        var removeBtns = document.getElementsByClassName("removeAssociates");
-        var occupants = document.getElementsByClassName("housing-occupants");
-        var filterBtns = document.getElementsByClassName("btn-filter");
-        var assigningCtrls = document.getElementsByClassName("assigning-controls");
-
-        $scope.$emit("ExpandView");
-
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
-            }
-        }
-
-        for(var i = 0; i < assignBtns.length; i++)
-        {
-            assignBtns[i].style.display = "none";
-            removeBtns[i].style.display = "none";
-        }
-
-        for(var i = 0; i < occupants.length; i++)
-        {
-            occupants[i].classList.add("current");
-        }
-
-        filterBtn.style.display = "none";
-        assigningCtrls[0].style.display = "inline-block";
-        assigningCtrls[1].style.display = "inline-block";
-    }
-
-    $scope.HousingScope.StopAssigning = function () {
-        $scope.HousingScope.HousingFilters.Current = "";
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
-        var assignBtns = document.getElementsByClassName("assignAssociates");
-        var removeBtns = document.getElementsByClassName("removeAssociates");
-        var occupants = document.getElementsByClassName("housing-occupants");
-        var filterBtns = document.getElementsByClassName("btn-filter");
-        var assigningCtrls = document.getElementsByClassName("assigning-controls");
-        
-        $scope.$emit("ExpandView");
-        $scope.$emit("ResetSelection");
-
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
-            }
-        }
-
-        for(var i = 0; i < assignBtns.length; i++)
-        {
-            assignBtns[i].style.display = "inline-block";
-            removeBtns[i].style.display = "inline-block";
-        }
-
-        for(var i = 0; i < occupants.length; i++)
-        {
-            occupants[i].classList.remove("current");
-        }
-
-        filterBtn.style.display = "inline-block";
-        assigningCtrls[0].style.display = "none";
-        assigningCtrls[1].style.display = "none";
-    }
-    
-    $scope.HousingScope.StartRemoving = function (unit) {
-        $scope.HousingScope.CurrentUnit = unit;
-        $scope.HousingScope.HousingFilters.Current = unit.AptNumber + " " + unit.Complex.Name;
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
-        var title = document.getElementById("dashboard-associate").children[0].children[0];
-        var assigned = document.getElementsByClassName("assigned");
-        var unassigned = document.getElementsByClassName("unassigned");
-        var assignBtns = document.getElementsByClassName("assignAssociates");
-        var removeBtns = document.getElementsByClassName("removeAssociates");
-        var filterBtns = document.getElementsByClassName("btn-filter");
-        var removingCtrls = document.getElementsByClassName("removing-controls");
-
-        $scope.$emit("ExpandView");
-        $rootScope.$broadcast('GetCurrentUnit', $scope.HousingScope.CurrentUnit);
-        $rootScope.$broadcast('SetDisplayMode', 2);
-
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
-            }
-        }
-
-        for(var i = 0; i < removeBtns.length; i++)
-        {
-            assignBtns[i].style.display = "none";
-            removeBtns[i].style.display = "none";
-        }
-
-        setTimeout(function() {
-            for(var i = 0; i < assigned.length; i++)
-            {
-                assigned[i].style.display = "inline-block";
-            }
-        }, 2);
-
-        for(var i = 0; i < unassigned.length; i++)
-        {
-            unassigned[i].style.display = "none";
-        }
-        
-        filterBtn.style.display = "none";
-        removingCtrls[0].style.display = "inline-block";
-        removingCtrls[1].style.display = "inline-block";
-        title.innerHTML = "Assigned Associates";
-    }
-    
-    $scope.HousingScope.StopRemoving = function () {
-        $scope.HousingScope.CurrentUnit = {};
-        $scope.HousingScope.HousingFilters.Current = "";
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
-        var title = document.getElementById("dashboard-associate").children[0].children[0];
-        var assigned = document.getElementsByClassName("assigned");
-        var unassigned = document.getElementsByClassName("unassigned");
-        var assignBtns = document.getElementsByClassName("assignAssociates");
-        var removeBtns = document.getElementsByClassName("removeAssociates");
-        var filterBtns = document.getElementsByClassName("btn-filter");
-        var removingCtrls = document.getElementsByClassName("removing-controls");
-
-        $scope.$emit("ExpandView");
-        $rootScope.$broadcast('GetCurrentUnit', $scope.HousingScope.CurrentUnit);
-        $rootScope.$broadcast('SetDisplayMode', 1);
-
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
-            }
-        }
-
-        for(var i = 0; i < removeBtns.length; i++)
-        {
-            assignBtns[i].style.display = "inline-block";
-            removeBtns[i].style.display = "inline-block";
-        }
-
-        for(var i = 0; i < assigned.length; i++)
-        {
-            assigned[i].style.display = "none";
-        }
-
-        for(var i = 0; i < unassigned.length; i++)
-        {
-            unassigned[i].style.display = "inline-block";
-        }
-
-        filterBtn.style.display = "inline-block";
-        removingCtrls[0].style.display = "none";
-        removingCtrls[1].style.display = "none";
-        title.innerHTML = "Unassigned Associates";
     }
 
     var updateSpacing = function (time, height) {

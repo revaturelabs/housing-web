@@ -1,25 +1,15 @@
 angular.module("HousingApp")
-.controller("AssociatesCtrl", function($scope, $rootScope, $http, associatesURL) {
+.controller("AssociatesCtrl", function($scope, $http, associatesURL) {
     var requestAssociate = new XMLHttpRequest();
 
     $scope.AssociateScope = [];
-    $scope.AssociateScope.PageSize1 = 3;
-    $scope.AssociateScope.PageSize2 = 9;
-    $scope.AssociateScope.CurrentPage1 = 1;
-    $scope.AssociateScope.CurrentPage2 = 1;
+    $scope.AssociateScope.PageSize = 3;
+    $scope.AssociateScope.CurrentPage = 1;
+    $scope.AssociateScope.LastPage = 1;
     $scope.AssociateScope.CurrentAssociate = [];
-    $scope.AssociateScope.CurrentUnit = {};
-    $scope.AssociateScope.SelectedAssociates = [];
-    $scope.AssociateScope.DisplayMode = 1;
-    $scope.AssociateScope.LastPage1 = 1;
-    $scope.AssociateScope.LastPage2 = 1;
     $scope.AssociateScope.Associates = [];
-    $scope.AssociateScope.AssociateFilters = {
-        SrcChoice: "name",
-        SrcString: "",
-        RadTech: "all",
-        RadGender: "all",
-        RadCar: "all"
+    $scope.AssociateScope.Search = {
+        Associate: ""
     };
 
     requestAssociate.onreadystatechange = function () {
@@ -30,138 +20,25 @@ angular.module("HousingApp")
 
     requestAssociate.open("GET", associatesURL, false);
     requestAssociate.send();
-    
-    $rootScope.$on("UpdateAssociateList", function(event, size, mode){
-        $scope.AssociateScope.UpdatePageList(size, mode);
-    });
 
-    $rootScope.$on("GetCurrentUnit", function(event, unit){
-        $scope.AssociateScope.CurrentUnit = unit;
-    });
-
-    $rootScope.$on("SetDisplayMode", function(event, mode){
-        $scope.AssociateScope.DisplayMode = mode;
-    });
-
-    $rootScope.$on("RequestSelection", function(event){
-        $rootScope.$broadcast('GetSelection', $scope.AssociateScope.SelectedAssociates);
-    });
-
-    $rootScope.$on("ResetSelection", function(event){
-        var list = document.getElementById("associate-list");
-        var children = list.children;
-
-        for(var i = 0; i < children.length; i++)
-        {
-            if(children[i].firstElementChild.firstElementChild.classList.contains("selected"))
-            {
-                children[i].firstElementChild.firstElementChild.classList.remove("selected");
-            }
-        }
-    });
-
-    $scope.AssociateScope.UpdatePageList = function (size, mode)
+    $scope.AssociateScope.UpdatePageList = function (size)
     {
-        if(mode == 1)
+        $scope.AssociateScope.PageSize = size;
+        $scope.AssociateScope.CurrentPage = 1;
+        setTimeout(function() {
+            $scope.AssociateScope.LastPage = getLastIndex();
+        }, 20);
+    }
+
+    $scope.AssociateScope.GoToPage = function (page) {
+        if(page >= 1 && page <= $scope.AssociateScope.LastPage)
         {
-            $scope.AssociateScope.PageSize1 = size;
-            $scope.AssociateScope.CurrentPage1 = 1;
-            setTimeout(function() {
-                $scope.AssociateScope.LastPage1 = getLastIndex();
-            }, 20);
-        }
-        else if(mode == 2)
-        {
-            $scope.AssociateScope.PageSize2 = size;
-            $scope.AssociateScope.CurrentPage2 = 1;
-            setTimeout(function() {
-                $scope.AssociateScope.LastPage2 = getLastIndex();
-            }, 20);
+            $scope.AssociateScope.CurrentPage = page;
         }
     }
 
-    $scope.AssociateScope.UpdateContentClass = function (size)
-    {
-        return size == 9 ? "col-md-12" : "col-md-4";
-    }
-
-    $scope.AssociateScope.GoToPage = function (version, page) {
-        if(version == 1 && (page >= 1 && page <= $scope.AssociateScope.LastPage1))
-        {
-            $scope.AssociateScope.CurrentPage1 = page;
-        }
-        else if(version == 2 && (page >= 1 && page <= $scope.AssociateScope.LastPage2))
-        {
-            $scope.AssociateScope.CurrentPage2 = page;
-        }
-    }
-
-    $scope.AssociateScope.GetPageClass = function (version, page) {
-        if(version == 1)
-        {
-            return $scope.AssociateScope.CurrentPage1 == page ? "btn-revature" : "";
-        }
-        else if(version == 2)
-        {
-            return $scope.AssociateScope.CurrentPage2 == page ? "btn-revature" : "";
-        }
-    }
-
-    $scope.AssociateScope.ToggleDetails = function (event) {
-        var panel = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
-
-        if(panel.children[1].style.display == "none")
-        {
-            panel.children[1].style.display = "block";
-            event.currentTarget.children[0].classList.remove("glyphicon-menu-down");
-            event.currentTarget.children[0].classList.add("glyphicon-menu-up");
-        }
-        else if(panel.children[1].style.display == "block")
-        {
-            panel.children[1].style.display = "none";
-            event.currentTarget.children[0].classList.remove("glyphicon-menu-up");
-            event.currentTarget.children[0].classList.add("glyphicon-menu-down");
-        }
-    }
-
-    $scope.AssociateScope.ToggleFilters = function() {
-        var filters = document.getElementById("associate-filters");
-        var list = document.getElementById("associate-list");
-
-        if(filters.style.height == "15em")
-        {
-            filters.style.height = "0em";
-            updateSpacing(10, 0);
-        }
-        else if(filters.style.height == "0em")
-        {
-            filters.style.height = "15em";
-            updateSpacing(10, 210);
-        }
-    }
-
-    $scope.AssociateScope.SelectPerson = function(event, person)
-    {
-        var list = document.getElementById("associate-list");
-        var target = event.currentTarget.parentElement.parentElement;
-        var children = list.children;
-        
-        if(children[0].classList.contains("col-md-4"))
-        {
-            if(target.classList.contains("selected"))
-            {
-                target.classList.remove("selected");
-            }
-            else
-            {
-                target.classList.add("selected");
-            }
-            $scope.AssociateScope.SelectedAssociates.push(person);
-        }
-    }
-
-    $scope.AssociateScope.GetCurrentAssociate = function (person) {
-        $scope.AssociateScope.CurrentAssociate = person;
+    $scope.AssociateScope.GetPageClass = function (page) {
+        return $scope.AssociateScope.CurrentPage == page ? "btn-revature" : "";
     }
 
     var updateSpacing = function (time, height) {
@@ -201,7 +78,6 @@ angular.module("HousingApp")
     updateSpacing(10, 0);
 
     setTimeout(function() {
-        $scope.AssociateScope.LastPage1 = getLastIndex();
-        $scope.AssociateScope.LastPage2 = getLastIndex();
+        $scope.AssociateScope.LastPage = getLastIndex();
     }, 20);
 });

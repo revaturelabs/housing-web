@@ -1,20 +1,25 @@
 <article class="container view-content" style="height: 100%">
     <div class="col-md-10 col-md-offset-1" style="height: 100%">
         <section class="row">
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <h1>Housing Complexes</h1>
             </div>
-            <div class="col-md-3 col-btn">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
-                    <span class="glyphicon glyphicon-plus"></span> New Complex
-                </button>
+            <div class="col-md-6 col-btn">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#addModal">
+                        <span class="glyphicon glyphicon-plus"></span> New Complex
+                    </button>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" placeholder="Search" ng-model="HousingScope.Search.Housing" class="form-control">
+                </div>
             </div>
         </section>
         <section class="row">
             <hr />
         </section>
         <section class="row" id="housing-content">
-            <div class="col-md-4" ng-repeat="item in HousingScope.Complexes | pagerange:HousingScope.CurrentPage1:HousingScope.PageSize1">
+            <div class="col-md-4" ng-repeat="item in HousingScope.Complexes | search:HousingScope.Search.Housing:2 | pagerange:HousingScope.CurrentPage1:HousingScope.PageSize1">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <a ui-sref="housing-unit({ Name: item.Name })">
@@ -41,7 +46,7 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li ng-repeat="item in HousingScope.Complexes | pagecount:HousingScope.PageSize1">
+                    <li ng-repeat="item in HousingScope.Complexes | search:HousingScope.Search.Housing:2 | pagecount:HousingScope.PageSize1">
                         <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(1, $index + 1)" ng-class="HousingScope.GetPageClass(1, $index + 1)">
                             {{$index + 1}}
                         </a>

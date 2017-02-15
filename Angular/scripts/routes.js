@@ -10,11 +10,9 @@ angular.module('HousingApp', ['ui.router'])
                 templateUrl: "views/home.html"
             },
             'units@home': {
-                controller: "HousingCtrl",
                 templateUrl: "views/dashboard-housing.html"
             },
             'associates@home': {
-                controller: "AssociatesCtrl",
                 templateUrl: "views/dashboard-associates.html"
             }
         }

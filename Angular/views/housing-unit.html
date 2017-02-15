@@ -10,20 +10,25 @@
             </div>
         </section>
         <section class="row">
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <h1>{{HousingScope.CurrentComplex}}</h1>
             </div>
-            <div class="col-md-3 col-btn">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
-                    <span class="glyphicon glyphicon-plus"></span> New Unit
-                </button>
+            <div class="col-md-6 col-btn">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#addModal">
+                        <span class="glyphicon glyphicon-plus"></span> New Unit
+                    </button>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" placeholder="Search" ng-model="HousingScope.Search.Unit" class="form-control">
+                </div>
             </div>
         </section>
         <section class="row">
             <hr />
         </section>
         <section class="row" id="housing-content">
-            <div class="col-md-4" ng-repeat="item in HousingScope.CurrentUnits | pagerange:HousingScope.CurrentPage2:HousingScope.PageSize2">
+            <div class="col-md-4" ng-repeat="item in HousingScope.CurrentUnits | search:HousingScope.Search.Unit:3 | pagerange:HousingScope.CurrentPage2:HousingScope.PageSize2">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <h3 class="panel-title">{{item.AptNumber}}</h3>
@@ -53,7 +58,7 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li ng-repeat="item in HousingScope.Complexes | pagecount:HousingScope.PageSize2">
+                    <li ng-repeat="item in HousingScope.Complexes | search:HousingScope.Search.Unit:3 | pagecount:HousingScope.PageSize2">
                         <a class="btn btn-default form-control" ng-click="HousingScope.GoToPage(2, $index + 1)" ng-class="HousingScope.GetPageClass(2, $index + 1)">
                             {{$index + 1}}
                         </a>
