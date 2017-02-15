@@ -1,20 +1,25 @@
 <article class="container view-content" style="height: 100%">
     <div class="col-md-10 col-md-offset-1" style="height: 100%;">
         <section class="row">
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <h1>Associates</h1>
             </div>
-            <div class="col-md-3 col-btn">
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
-                    <span class="glyphicon glyphicon-plus"></span> Add Associate
-                </button>
+            <div class="col-md-6 col-btn">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#addModal">
+                        <span class="glyphicon glyphicon-plus"></span> Add Associate
+                    </button>
+                </div>
+                <div class="col-md-8">
+                    <input type="text" placeholder="Search" ng-model="AssociateScope.Search.Associate" class="form-control">
+                </div>
             </div>
         </section>
         <section class="row">
             <hr />
         </section>
         <section class="row" id="associate-content">
-            <div class="col-md-4" ng-repeat="item in AssociateScope.Associates | pagerange:AssociateScope.CurrentPage:AssociateScope.PageSize">
+            <div class="col-md-4" ng-repeat="item in AssociateScope.Associates | search:AssociateScope.Search.Associate:1 | pagerange:AssociateScope.CurrentPage:AssociateScope.PageSize">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         <a href="">
@@ -47,7 +52,7 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li ng-repeat="item in AssociateScope.Associates | pagecount:AssociateScope.PageSize">
+                    <li ng-repeat="item in AssociateScope.Associates | search:AssociateScope.Search.Associate:1 | pagecount:AssociateScope.PageSize">
                         <a class="btn btn-default form-control" ng-click="AssociateScope.GoToPage($index + 1)" ng-class="AssociateScope.GetPageClass($index + 1)">
                              {{$index + 1}}
                         </a>

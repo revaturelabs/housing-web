@@ -18,6 +18,10 @@ angular.module("HousingApp")
     $scope.HousingScope.Units = [];
     $scope.HousingScope.Data = [];
     $scope.HousingScope.Complexes = [];
+    $scope.HousingScope.Search = {
+        Housing: "",
+        Unit: ""
+    };
 
     requestComplex.onreadystatechange = function () {
         if(requestComplex.readyState == 4 && requestComplex.status == 200) {

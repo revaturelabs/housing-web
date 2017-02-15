@@ -8,6 +8,9 @@ angular.module("HousingApp")
     $scope.AssociateScope.LastPage = 1;
     $scope.AssociateScope.CurrentAssociate = [];
     $scope.AssociateScope.Associates = [];
+    $scope.AssociateScope.Search = {
+        Associate: ""
+    };
 
     requestAssociate.onreadystatechange = function () {
         if(requestAssociate.readyState == 4 && requestAssociate.status == 200) {

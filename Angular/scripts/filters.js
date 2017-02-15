@@ -55,6 +55,32 @@ angular.module("HousingApp")
         }
     }
 })
+.filter("search", function () {
+    return function (data, input, mode) {
+        if (input == "" || mode == undefined) {
+            return data;
+        }
+
+        var result = [];
+
+        data.forEach(function(element) {
+            if(mode == 1 && (element.FirstName + " " + element.LastName).toLowerCase().includes(input.toLowerCase()))
+            {
+                result.push(element);
+            }
+            else if(mode == 2 && (element.Name).toLowerCase().includes(input.toLowerCase()))
+            {
+                result.push(element);
+            }
+            else if(mode == 3 && (element.AptNumber + " " + element.Complex.Name).toLowerCase().includes(input.toLowerCase()))
+            {
+                result.push(element);
+            }
+        }, this);
+
+        return result;
+    }
+})
 .filter('assigned', function(){
     return function (associates, mode, unit) {
         var result = [];
@@ -88,7 +114,6 @@ angular.module("HousingApp")
         }
         else
         {
-            console("Hello");
             return associates;
         }
     }
