@@ -45,7 +45,7 @@ angular.module("HousingApp")
                 {
                     $scope.AssociateScope.CurrentPage = $scope.AssociateScope.LastPage;
                 }
-            }, 20);
+            }, 200);
         });
 
         batch.getAll(function(data){
@@ -55,15 +55,6 @@ angular.module("HousingApp")
     }
 
     $scope.AssociateScope.UpdateAjax();
-
-    $scope.AssociateScope.UpdatePageList = function (size)
-    {
-        $scope.AssociateScope.PageSize = size;
-        $scope.AssociateScope.CurrentPage = 1;
-        setTimeout(function() {
-            $scope.AssociateScope.LastPage = getLastIndex();
-        }, 20);
-    }
 
     $scope.AssociateScope.GoToPage = function (page) {
         if(page >= 1 && page <= $scope.AssociateScope.LastPage)
@@ -167,43 +158,16 @@ angular.module("HousingApp")
         return date;
     }
 
-    var updateSpacing = function (time, height) {
-        setTimeout(function() {
-            var content = document.getElementById("associate-content");
-            var contentParent = content.parentElement;
-            var spacing = contentParent.clientHeight;
-
-            for (var i = 0; i < contentParent.children.length; i++)
-            {
-                if (contentParent.children[i] != content)
-                {
-                    if (contentParent.children[i].id != "associate-filters")
-                    {
-                        spacing -= contentParent.children[i].clientHeight;
-                    }
-                    else if (contentParent.children[i].id == "associate-filters" && height != 0) 
-                    {
-                        spacing -= height;
-                    }
-                }
-            }
-            
-            content.style.height = spacing + "px";
-        }, time);
-    }
-
     var getLastIndex = function()
     {
         var pagin = document.getElementById("associate-pagination");
+        if(pagin == null)
+        {
+            console.log(pagin);
+        }
         var pages = pagin.children[0].children[0].children;
         var count = pages.length - 2;
 
         return count;
     }
-
-    updateSpacing(10, 0);
-
-    setTimeout(function() {
-        $scope.AssociateScope.LastPage = getLastIndex();
-    }, 20);
 });

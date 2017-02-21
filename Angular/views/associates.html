@@ -24,7 +24,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-10">
-                                {{item.FirstName + " " + item.LastName}}
+                                <h3 class="panel-title">{{item.FirstName + " " + item.LastName}}</h3>
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-default pull-right" data-toggle="modal" data-target="#editModal" ng-click="AssociateScope.EditAssociate(item)">
@@ -294,7 +294,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 toggle">
-                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.Gender" id="aGenderMale" value="male" checked />
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.Gender" id="aGenderMale" value="male">
                                         <label for="aGenderMale" class="toggle-left">Male</label>
                                     </div>
                                     <div class="col-md-6 toggle">

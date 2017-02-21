@@ -39,14 +39,17 @@ angular.module("HousingApp")
         associate.getUnassigned(function(data){
             UnassignedAssociates = data;
             $scope.DashboardScope.Associates = UnassignedAssociates;
+            $scope.DashboardScope.UpdateUnits();
         });
 
         batch.getAll(function(data){
             $scope.DashboardScope.Batches = data;
+            $scope.DashboardScope.UpdateUnits();
         });
 
         housingcomplex.getAll(function(data){
             $scope.DashboardScope.Complexes = data;
+            $scope.DashboardScope.UpdateUnits();
         });
 
         housingdata.getAll(function(data){
@@ -63,7 +66,7 @@ angular.module("HousingApp")
                 {
                     $scope.DashboardScope.HousingCurrentPage = $scope.DashboardScope.HousingLastPage;
                 }
-            }, 20);
+            }, 200);
         });
     }
 
@@ -101,6 +104,8 @@ angular.module("HousingApp")
                 children[i].firstElementChild.firstElementChild.classList.remove("selected");
             }
         }
+
+        $scope.DashboardScope.SelectedAssociates = [];
     }
 
     $scope.DashboardScope.UpdateContentClass = function (mode, size)
@@ -163,12 +168,10 @@ angular.module("HousingApp")
             if(filters.style.height == "15em")
             {
                 filters.style.height = "0em";
-                updateSpacing(10, 0);
             }
             else if(filters.style.height == "0em")
             {
                 filters.style.height = "15em";
-                updateSpacing(10, 210);
             }
         }
     }
@@ -388,39 +391,42 @@ angular.module("HousingApp")
     var count = 0;
 
     $scope.DashboardScope.UpdateUnits = function() {
-        $scope.DashboardScope.Units.forEach(function(unit) {
-            var currentCap = 0;
-            var currentCars = 0;
-            var occupants = [];
-            var emails = [];
+        if($scope.DashboardScope.Units.length > 0 && $scope.DashboardScope.Data.length > 0 && $scope.DashboardScope.Associates.length > 0)
+        {
+            $scope.DashboardScope.Units.forEach(function(unit) {
+                var currentCap = 0;
+                var currentCars = 0;
+                var occupants = [];
+                var emails = [];
 
-            $scope.DashboardScope.Data.forEach(function(data) {
-                if(data.HousingUnitName == unit.HousingUnitName)
-                {
-                    emails.push(data.AssociateEmail);
-                }
-            }, this);
-
-            emails.forEach(function(email) {
-                AllAssociates.forEach(function(occupant) {
-                    if(email == occupant.Email)
+                $scope.DashboardScope.Data.forEach(function(data) {
+                    if(data.HousingUnitName == unit.HousingUnitName)
                     {
-                        currentCap++;
-                    
-                        if(occupant.HasCar)
-                        {
-                            currentCars++;
-                        }
-
-                        occupants.push(occupant);
+                        emails.push(data.AssociateEmail);
                     }
                 }, this);
-            }, this);
 
-            unit['Capacity'] = currentCap;
-            unit['Cars'] = currentCars;
-            unit['Occupants'] = occupants;
-        }, this);
+                emails.forEach(function(email) {
+                    AllAssociates.forEach(function(occupant) {
+                        if(email == occupant.Email)
+                        {
+                            currentCap++;
+                        
+                            if(occupant.HasCar)
+                            {
+                                currentCars++;
+                            }
+
+                            occupants.push(occupant);
+                        }
+                    }, this);
+                }, this);
+
+                unit['Capacity'] = currentCap;
+                unit['Cars'] = currentCars;
+                unit['Occupants'] = occupants;
+            }, this);
+        }
     }
 
     $scope.DashboardScope.ExpandView = function() {
@@ -552,22 +558,22 @@ angular.module("HousingApp")
         $scope.DashboardScope.SelectedAssociates.forEach(function(associate) {
             if(unit.GenderName == associate.GenderName) {
                 var d1 = new Date();
-                var d2 = d1;
+                var d2 = new Date();
 
                 if(d1.getMonth() + 3 > 11)
                 {
-                    var diff = (d1.getMonth() + 3) - 11;
+                    var diff = (d2.getMonth() + 3) - 11;
                     d2.setMonth(diff - 1);
-                    d2.setFullYear(d1.getFullYear() + 1);
+                    d2.setFullYear(d2.getFullYear() + 1);
                 }
                 else
                 {
-                    d2.setMonth(d1.getMonth() + 3);
+                    d2.setMonth(d2.getMonth() + 3);
                 }
 
                 var temp = {
                     AssociateEmail: associate.Email,
-                    HousingUnitName: unit.HousingComplexName,
+                    HousingUnitName: unit.HousingUnitName,
                     MoveInDate: getDateFormat(d1),
                     MoveOutDate: getDateFormat(d2),
                     HousingDataAltId: null
@@ -612,31 +618,6 @@ angular.module("HousingApp")
         return yyyy + "-" + mm + "-" + dd + "T00:00:00";
     }
 
-    var updateSpacing = function (time, height, id) {
-        setTimeout(function() {
-            var content = document.getElementById(id + "-content");
-            var contentParent = content.parentElement;
-            var spacing = contentParent.clientHeight;
-
-            for (var i = 0; i < contentParent.children.length; i++)
-            {
-                if (contentParent.children[i] != content)
-                {
-                    if (contentParent.children[i].id != id + "-filters")
-                    {
-                        spacing -= contentParent.children[i].clientHeight;
-                    }
-                    else if (contentParent.children[i].id == id + "-filters" && height != 0) 
-                    {
-                        spacing -= height;
-                    }
-                }
-            }
-            
-            content.style.height = spacing + "px";
-        }, time);
-    }
-
     var getLastIndex = function(id)
     {
         var pagin = document.getElementById(id);
@@ -645,9 +626,6 @@ angular.module("HousingApp")
 
         return count;
     }
-
-    updateSpacing(10, 0, "associate");
-    updateSpacing(10, 0, "housing");
 
     setTimeout(function() {
         $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");

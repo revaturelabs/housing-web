@@ -127,21 +127,7 @@ angular.module("HousingApp")
     return function(array) {
         var str = "";
 
-        if (array.length > 0)
-        {
-            for (var i = 0; i < array.length; i++)
-            {
-                if(i != array.length - 1)
-                {
-                    str += array[i] + ", ";
-                }
-                else
-                {
-                    str += array[i];
-                }
-            }
-        }
-        else
+        if (array.length == 0)
         {
             str = "None";
         }

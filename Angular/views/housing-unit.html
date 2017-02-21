@@ -31,11 +31,29 @@
             <div class="col-md-4" ng-repeat="item in HousingScope.CurrentUnits | search:HousingScope.Search.Unit:3 | pagerange:HousingScope.CurrentPage2:HousingScope.PageSize2">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{{item.AptNumber}}</h3>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h3 class="panel-title">{{item.AptNumber}}</h3>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-default pull-right" data-toggle="modal" data-target="#editModal" ng-click="HousingScope.EditUnit(item)">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body panel-unit">
                         <p>{{item.GenderName | lettercap}}</p>
+                        <p>Batches: {{item.Batch | array}}</p>
+                        <ul>
+                            <li ng-repeat="batch in item.Batch">{{batch}}</li>
+                        </ul>
+                        <p>Techs: {{item.Tech | array}}</p>
+                        <ul>
+                            <li ng-repeat="tech in item.Tech">{{tech}}</li>
+                        </ul>
                         <p>Cars: {{item.Cars}}</p>
+                        <p>Lease End Date: {{item.LeaseEndDate | changedate}}</p>
                         <p>Occupancy: 
                             <progress class="progress" ng-value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
                         </p>
@@ -143,6 +161,82 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
                 <button type="button" class="btn btn-default" ng-click="HousingScope.AddUnit()" data-dismiss="modal" data-target="#addModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Unit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Edit Complex</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>
+                                <div class="row">
+                                    Apartment
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="HousingScope.UpdateUnit.AptNumber" class="form-control" disabled>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Lease End Date
+                                </div>
+                                <div class="row">
+                                    <input type="date" ng-model="HousingScope.UpdateUnit.LeaseEndDate" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Gender
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="HousingScope.UpdateUnit.GenderName" id="aGenderMale" value="male" checked />
+                                        <label for="aGenderMale" class="toggle-left">Male</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="HousingScope.UpdateUnit.GenderName" id="aGenderFemale" value="female" />
+                                        <label for="aGenderFemale" class="toggle-right">Female</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <label>
+                                <div class="row">
+                                    Capacity
+                                </div>
+                                <div class="row">
+                                    <select ng-init="HousingScope.UpdateUnit.MaxCapacity" ng-model="HousingScope.UpdateUnit.MaxCapacity" class="form-control">
+                                        <option value="0" disabled>0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#editModal">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="HousingScope.ModUnit()" data-dismiss="modal" data-target="#editModal">Confirm</button>
             </div>
         </div>
     </div>
