@@ -57,6 +57,7 @@ hr {
 }
 
 .nav.navbar-nav.navbar-right li a {
+    transition: all 0s;
     padding: 1em 0em;
     padding-bottom: .2em;
     font-weight: 700;

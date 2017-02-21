@@ -81,6 +81,7 @@ angular.module("HousingApp")
 
         housingcomplex.getAll(function(data){
             $scope.HousingScope.Complexes = data;
+            $scope.HousingScope.UpdateUnits();
             setTimeout(function() {
                 $scope.HousingScope.LastPage1 = getLastIndex();
                 if($scope.HousingScope.LastPage1 < $scope.HousingScope.CurrentPage1 && $scope.HousingScope.CurrentPage1 > 1)
@@ -203,11 +204,12 @@ angular.module("HousingApp")
                     if($scope.HousingScope.CurrentUnits.length > 0)
                     {
                         var check = 0;
-                        $scope.HousingScope.CurrentUnits.forEach(function(curunit) {
-                            if(curunit.HousingUnitName == unit.HousingUnitName) {
+                        for(var i = 0; i < $scope.HousingScope.CurrentUnits.length; i++) {
+                            if($scope.HousingScope.CurrentUnits[i].HousingUnitName == unit.HousingUnitName) {
+                                $scope.HousingScope.CurrentUnits[i] = unit;
                                 check++;
                             }
-                        }, this);
+                        }
 
                         if(check == 0) {
                             $scope.HousingScope.CurrentUnits.push(unit);
@@ -245,7 +247,7 @@ angular.module("HousingApp")
         $scope.HousingScope.UpdateUnit = {
             HousingUnitName: unit.HousingUnitName,
             AptNumber: unit.AptNumber,
-            MaxCapacity: unit.MaxCapacity,
+            MaxCapacity: unit.MaxCapacity.toString(),
             GenderName: unit.GenderName,
             HousingComplexName: unit.HousingComplexName,
             LeaseEndDate: reverseDateFormat(unit.LeaseEndDate)
