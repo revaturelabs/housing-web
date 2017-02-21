@@ -22,9 +22,18 @@
             <div class="col-md-4" ng-repeat="item in HousingScope.Complexes | search:HousingScope.Search.Housing:2 | pagerange:HousingScope.CurrentPage1:HousingScope.PageSize1">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
-                        <a ui-sref="housing-unit({ Name: item.Name })">
-                            <h3 class="panel-title">{{item.Name}}</h3>
-                        </a>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <a ui-sref="housing-unit({ Name: item.Name })">
+                                    <h3 class="panel-title">{{item.Name}}</h3>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-default pull-right" data-toggle="modal" data-target="#editModal" ng-click="HousingScope.EditComplex(item)">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <p class="address">{{item.Address | address}}</p>
@@ -78,7 +87,7 @@
                                     Name
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Grand Apartments">
+                                    <input type="text" ng-model="HousingScope.NewComplex.Name" class="form-control" placeholder="Grand Apartments">
                                 </div>
                             </label>
                         </div>
@@ -88,7 +97,7 @@
                                     Phone Number
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="(555) 555-5555">
+                                    <input type="text" ng-model="HousingScope.NewComplex.PhoneNumber" class="form-control" placeholder="(555) 555-5555">
                                 </div>
                             </label>
                         </div>
@@ -101,7 +110,7 @@
                                     Street Address
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="123 1st Street">
+                                    <input type="text" ng-model="HousingScope.NewComplex.Street" class="form-control" placeholder="123 1st Street">
                                 </div>
                             </label>
                         </div>
@@ -114,7 +123,7 @@
                                     City
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Reston" >
+                                    <input type="text" ng-model="HousingScope.NewComplex.City" class="form-control" placeholder="Reston" >
                                 </div>
                             </label>
                         </div>
@@ -124,7 +133,7 @@
                                     State
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Virginia" >
+                                    <input type="text" ng-model="HousingScope.NewComplex.State" class="form-control" placeholder="Virginia" >
                                 </div>
                             </label>
                         </div>
@@ -134,7 +143,7 @@
                                     Zip Code
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="20190" >
+                                    <input type="number" ng-model="HousingScope.NewComplex.ZipCode" class="form-control" placeholder="20190" >
                                 </div>
                             </label>
                         </div>
@@ -142,8 +151,95 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="HousingScope.AddComplex()" data-dismiss="modal" data-target="#addModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Complex Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Edit Complex</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Name
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="HousingScope.UpdateComplex.Name" class="form-control" disabled>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Phone Number
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="HousingScope.UpdateComplex.PhoneNumber" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>
+                                <div class="row">
+                                    Street Address
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="HousingScope.UpdateComplex.Street" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    City
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="HousingScope.UpdateComplex.City" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    State
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="HousingScope.UpdateComplex.State" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Zip Code
+                                </div>
+                                <div class="row">
+                                    <input type="number" ng-model="HousingScope.UpdateComplex.ZipCode" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#editModal">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="HousingScope.ModComplex()" data-dismiss="modal" data-target="#editModal">Confirm</button>
             </div>
         </div>
     </div>
@@ -161,7 +257,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+                <button type="button" class="btn btn-default" ng-click="HousingScope.RemoveComplex(HousingScope.CurrentHousing.Name)" data-dismiss="modal" data-target="#removeModal">Confirm</button>
             </div>
         </div>
     </div>

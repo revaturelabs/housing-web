@@ -1,9 +1,5 @@
 angular.module("HousingApp")
-.controller("DashboardCtrl", function($scope, $http, $state, $stateParams, associatesURL, complexURL, dataURL, unitURL) {
-    var requestAssociate = new XMLHttpRequest();
-    var requestComplex = new XMLHttpRequest();
-    var requestData = new XMLHttpRequest();
-    var requestUnit = new XMLHttpRequest();
+.controller("DashboardCtrl", function($scope, $http, $state, $stateParams, associate, batch, housingcomplex, housingdata, housingunit) {
 
     $scope.DashboardScope = [];
     $scope.DashboardScope.AssociatePageSize = 9;
@@ -17,6 +13,7 @@ angular.module("HousingApp")
     $scope.DashboardScope.CurrentHousing = {};
     $scope.DashboardScope.CurrentUnit = {};
     $scope.DashboardScope.Associates = [];
+    $scope.DashboardScope.Batches = [];
     $scope.DashboardScope.Complexes = [];
     $scope.DashboardScope.Data = [];
     $scope.DashboardScope.Units = [];
@@ -30,39 +27,50 @@ angular.module("HousingApp")
         Current: ""
     };
 
-    requestAssociate.onreadystatechange = function () {
-        if(requestAssociate.readyState == 4 && requestAssociate.status == 200) {
-            $scope.DashboardScope.Associates = JSON.parse(requestAssociate.responseText);
-        }
+    var AllAssociates = [];
+    var UnassignedAssociates = [];
+
+    $scope.DashboardScope.UpdateAjax = function() {
+        associate.getAll(function(data){
+            AllAssociates = data;
+            $scope.DashboardScope.UpdateUnits();
+        });
+
+        associate.getUnassigned(function(data){
+            UnassignedAssociates = data;
+            $scope.DashboardScope.Associates = UnassignedAssociates;
+            $scope.DashboardScope.UpdateUnits();
+        });
+
+        batch.getAll(function(data){
+            $scope.DashboardScope.Batches = data;
+            $scope.DashboardScope.UpdateUnits();
+        });
+
+        housingcomplex.getAll(function(data){
+            $scope.DashboardScope.Complexes = data;
+            $scope.DashboardScope.UpdateUnits();
+        });
+
+        housingdata.getAll(function(data){
+            $scope.DashboardScope.Data = data;
+            $scope.DashboardScope.UpdateUnits();
+        });
+
+        housingunit.getAll(function(data){
+            $scope.DashboardScope.Units = data;
+            $scope.DashboardScope.UpdateUnits();
+            setTimeout(function() {
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
+                if($scope.DashboardScope.HousingLastPage < $scope.DashboardScope.HousingCurrentPage)
+                {
+                    $scope.DashboardScope.HousingCurrentPage = $scope.DashboardScope.HousingLastPage;
+                }
+            }, 200);
+        });
     }
 
-    requestComplex.onreadystatechange = function () {
-        if(requestComplex.readyState == 4 && requestComplex.status == 200) {
-            $scope.DashboardScope.Complexes = JSON.parse(requestComplex.responseText);
-        }
-    }
-
-    requestData.onreadystatechange = function () {
-        if(requestData.readyState == 4 && requestData.status == 200) {
-            $scope.DashboardScope.Data = JSON.parse(requestData.responseText);
-        }
-    }
-
-    requestUnit.onreadystatechange = function () {
-        if(requestUnit.readyState == 4 && requestUnit.status == 200) {
-            $scope.DashboardScope.Units = JSON.parse(requestUnit.responseText);
-        }
-    }
-
-    requestAssociate.open("GET", associatesURL, false);
-    requestComplex.open("GET", complexURL, false);
-    requestData.open("GET", dataURL, false);
-    requestUnit.open("GET", unitURL, false);
-
-    requestAssociate.send();
-    requestComplex.send();
-    requestData.send();
-    requestUnit.send();
+    $scope.DashboardScope.UpdateAjax();
 
     $scope.DashboardScope.UpdatePageList = function (size, mode)
     {
@@ -71,7 +79,7 @@ angular.module("HousingApp")
             $scope.DashboardScope.AssociatePageSize = size;
             $scope.DashboardScope.AssociateCurrentPage = 1;
             setTimeout(function() {
-                $scope.DashboardScope.AssociateLastPage = getLastIndex();
+                $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
             }, 20);
         }
         else if(mode == 2)
@@ -79,7 +87,7 @@ angular.module("HousingApp")
             $scope.DashboardScope.HousingPageSize = size;
             $scope.DashboardScope.HousingCurrentPage = 1;
             setTimeout(function() {
-                $scope.DashboardScope.HousingLastPage = getLastIndex();
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
             }, 20);
         }
     }
@@ -96,6 +104,8 @@ angular.module("HousingApp")
                 children[i].firstElementChild.firstElementChild.classList.remove("selected");
             }
         }
+
+        $scope.DashboardScope.SelectedAssociates = [];
     }
 
     $scope.DashboardScope.UpdateContentClass = function (mode, size)
@@ -158,12 +168,10 @@ angular.module("HousingApp")
             if(filters.style.height == "15em")
             {
                 filters.style.height = "0em";
-                updateSpacing(10, 0);
             }
             else if(filters.style.height == "0em")
             {
                 filters.style.height = "15em";
-                updateSpacing(10, 210);
             }
         }
     }
@@ -188,20 +196,13 @@ angular.module("HousingApp")
         }
     }
 
-    $scope.DashboardScope.GetCurrentAssociate = function (person) {
-        $scope.DashboardScope.CurrentAssociate = person;
-    }
-
-    $scope.DashboardScope.GetCurrentComplex = function (complex) {
-        $scope.DashboardScope.CurrentHousing = complex;
-    }
-
     $scope.DashboardScope.GetCurrentUnit = function (unit) {
         $scope.DashboardScope.CurrentUnit = unit;
     }
 
     $scope.DashboardScope.StartAssigning = function (unit) {
-        $scope.DashboardScope.Filters.Current = unit.AptNumber + " " + unit.Complex.Name;
+        $scope.DashboardScope.CurrentUnit = unit;
+        $scope.DashboardScope.Filters.Current = unit.HousingUnitName;
         var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
@@ -237,6 +238,8 @@ angular.module("HousingApp")
     }
 
     $scope.DashboardScope.StopAssigning = function () {
+        assignAssociate($scope.DashboardScope.CurrentUnit);
+        $scope.DashboardScope.CurrentUnit = {};
         $scope.DashboardScope.Filters.Current = "";
         var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
@@ -247,7 +250,6 @@ angular.module("HousingApp")
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
         
         $scope.DashboardScope.ExpandView();
-        $scope.DashboardScope.ResetSelection();
 
         for(var i = 0; i < filterBtns.length; i++)
         {
@@ -275,7 +277,16 @@ angular.module("HousingApp")
 
     $scope.DashboardScope.StartRemoving = function (unit) {
         $scope.DashboardScope.CurrentUnit = unit;
-        $scope.DashboardScope.Filters.Current = unit.AptNumber + " " + unit.Complex.Name;
+        $scope.DashboardScope.Filters.Current = unit.HousingUnitName;
+        $scope.DashboardScope.Associates = unit.Occupants;
+        setTimeout(function() {
+            $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
+            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage)
+            {
+                $scope.DashboardScope.AssociateCurrentPage = $scope.DashboardScope.AssociateLastPage;
+            }
+        }, 20);
+
         var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
         var title = document.getElementById("dashboard-associate").children[0].children[0];
@@ -322,8 +333,17 @@ angular.module("HousingApp")
     }
 
     $scope.DashboardScope.StopRemoving = function () {
+        removeAssociate($scope.DashboardScope.CurrentUnit);
         $scope.DashboardScope.CurrentUnit = {};
         $scope.DashboardScope.Filters.Current = "";
+        $scope.DashboardScope.Associates = UnassignedAssociates;
+        setTimeout(function() {
+            $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
+            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage)
+            {
+                $scope.DashboardScope.AssociateCurrentPage = $scope.DashboardScope.AssociateLastPage;
+            }
+        }, 20);
 
         var filterBtn;
         var dashboard = document.getElementById("dashboard-housing");
@@ -336,7 +356,6 @@ angular.module("HousingApp")
         var removingCtrls = document.getElementsByClassName("removing-controls");
 
         $scope.DashboardScope.ExpandView();
-        $scope.DashboardScope.ResetSelection();
         $scope.DashboardScope.DisplayMode = 1;
 
         for(var i = 0; i < filterBtns.length; i++)
@@ -371,70 +390,44 @@ angular.module("HousingApp")
 
     var count = 0;
 
-    $scope.DashboardScope.Units.forEach(function(unit) {
-        var currentCap = 0;
-        var currentCars = 0;
-        var occupants = [];
+    $scope.DashboardScope.UpdateUnits = function() {
+        if($scope.DashboardScope.Units.length > 0 && $scope.DashboardScope.Data.length > 0 && $scope.DashboardScope.Associates.length > 0)
+        {
+            $scope.DashboardScope.Units.forEach(function(unit) {
+                var currentCap = 0;
+                var currentCars = 0;
+                var occupants = [];
+                var emails = [];
 
-        $scope.DashboardScope.Data.forEach(function(data) {
-            if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == unit.Complex.Name)
-            {
-                currentCap++;
-                
-                if(data.Associate.HasCar)
-                {
-                    currentCars++;
-                }
-                    occupants.push(data.Associate);
-            }
-        }, this);
-
-        unit['Capacity'] = currentCap;
-        unit['Cars'] = currentCars;
-        unit['Occupants'] = occupants;
-    }, this);
-
-    var updateSpacing = function (time, height, id) {
-        setTimeout(function() {
-            var content = document.getElementById(id + "-content");
-            var contentParent = content.parentElement;
-            var spacing = contentParent.clientHeight;
-
-            for (var i = 0; i < contentParent.children.length; i++)
-            {
-                if (contentParent.children[i] != content)
-                {
-                    if (contentParent.children[i].id != id + "-filters")
+                $scope.DashboardScope.Data.forEach(function(data) {
+                    if(data.HousingUnitName == unit.HousingUnitName)
                     {
-                        spacing -= contentParent.children[i].clientHeight;
+                        emails.push(data.AssociateEmail);
                     }
-                    else if (contentParent.children[i].id == id + "-filters" && height != 0) 
-                    {
-                        spacing -= height;
-                    }
-                }
-            }
-            
-            content.style.height = spacing + "px";
-        }, time);
+                }, this);
+
+                emails.forEach(function(email) {
+                    AllAssociates.forEach(function(occupant) {
+                        if(email == occupant.Email)
+                        {
+                            currentCap++;
+                        
+                            if(occupant.HasCar)
+                            {
+                                currentCars++;
+                            }
+
+                            occupants.push(occupant);
+                        }
+                    }, this);
+                }, this);
+
+                unit['Capacity'] = currentCap;
+                unit['Cars'] = currentCars;
+                unit['Occupants'] = occupants;
+            }, this);
+        }
     }
-
-    var getLastIndex = function(id)
-    {
-        var pagin = document.getElementById(id);
-        var pages = pagin.children[0].children[0].children;
-        var count = pages.length - 2;
-
-        return count;
-    }
-
-    updateSpacing(10, 0, "associate");
-    updateSpacing(10, 0, "housing");
-
-    setTimeout(function() {
-        $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
-        $scope.DashboardScope.AssociateLastPage = getLastIndex("housing-pagination");
-    }, 20);
 
     $scope.DashboardScope.ExpandView = function() {
         var sections = document.getElementsByTagName("section");
@@ -487,8 +480,6 @@ angular.module("HousingApp")
         var divcolumns = document.querySelectorAll('div[class^="col-md-"]');
         var housinglist = document.getElementById("housing-list");
         var associatelist = document.getElementById("associate-list");
-
-        console.log(divcolumns[i]);
 
         for(var i = 0; i < divcolumns.length; i++)
         {
@@ -562,4 +553,82 @@ angular.module("HousingApp")
             }
         }
     }
+
+    var assignAssociate = function(unit) {
+        $scope.DashboardScope.SelectedAssociates.forEach(function(associate) {
+            if(unit.GenderName == associate.GenderName) {
+                var d1 = new Date();
+                var d2 = new Date();
+
+                if(d1.getMonth() + 3 > 11)
+                {
+                    var diff = (d2.getMonth() + 3) - 11;
+                    d2.setMonth(diff - 1);
+                    d2.setFullYear(d2.getFullYear() + 1);
+                }
+                else
+                {
+                    d2.setMonth(d2.getMonth() + 3);
+                }
+
+                var temp = {
+                    AssociateEmail: associate.Email,
+                    HousingUnitName: unit.HousingUnitName,
+                    MoveInDate: getDateFormat(d1),
+                    MoveOutDate: getDateFormat(d2),
+                    HousingDataAltId: null
+                };
+
+                housingdata.add(temp, function(data){
+                    if(data.status == 200)
+                    {
+                        $scope.DashboardScope.UpdateAjax();
+                    }
+                });
+            }
+        }, this);
+        
+        $scope.DashboardScope.ResetSelection();
+    }
+
+    var removeAssociate = function(unit) {
+        $scope.DashboardScope.SelectedAssociates.forEach(function(associate) {
+            $scope.DashboardScope.Data.forEach(function(data) {
+                if(data.AssociateEmail == associate.Email && data.HousingUnitName == unit.HousingUnitName)
+                {
+                    housingdata.delete(data.HousingDataAltId, function(data){
+                        if(data.status == 200)
+                        {
+                            $scope.DashboardScope.UpdateAjax();
+                        }
+                    });
+                }
+            }, this);
+        }, this);
+        
+        $scope.DashboardScope.ResetSelection();
+    }
+
+    var getDateFormat = function(d)
+    {
+        var dd = d.getDate() >= 10 ? d.getDate() : "0" + d.getDate();
+        var mm = (d.getMonth() + 1) >= 10 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
+        var yyyy = d.getFullYear();
+
+        return yyyy + "-" + mm + "-" + dd + "T00:00:00";
+    }
+
+    var getLastIndex = function(id)
+    {
+        var pagin = document.getElementById(id);
+        var pages = pagin.children[0].children[0].children;
+        var count = pages.length - 2;
+
+        return count;
+    }
+
+    setTimeout(function() {
+        $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
+        $scope.DashboardScope.AssociateLastPage = getLastIndex("housing-pagination");
+    }, 20);
 });

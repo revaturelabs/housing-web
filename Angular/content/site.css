@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+* {
+    transition: all .5s;
+}
+
 html, body {
     overflow: hidden;
     height: 100%;
@@ -14,7 +18,6 @@ html, body, button, .btn {
 }
 
 .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .container, .fluid-container {
-    transition: all .5s;
     padding-right: 1.90vh;
     padding-left: 1.90vh;
 }
@@ -54,6 +57,7 @@ hr {
 }
 
 .nav.navbar-nav.navbar-right li a {
+    transition: all 0s;
     padding: 1em 0em;
     padding-bottom: .2em;
     font-weight: 700;
@@ -109,6 +113,10 @@ hr {
 
 .panel-heading, .panel-body, .panel-footer {
     padding: 1.84vh;
+}
+
+.panel-body.panel-unit {
+    min-height: 23.25em;
 }
 
 .panel-revature .panel-heading {
@@ -180,7 +188,6 @@ hr {
     padding-top: 1.72vh;
     border-left: none;
     height: 100%;
-    transition: all .5s;
 }
 
 #dashboard-right{
@@ -188,7 +195,6 @@ hr {
     padding-top: 1.72vh;
     border-right: none;
     height: 100%;
-    transition: all .5s;
 }
 
 .view-content {
@@ -209,7 +215,6 @@ hr {
     font-variant: small-caps;
     font-weight: 500;
     margin: 0;
-    transition: all .5s;
 }
 
 .housing-occupants {
@@ -226,7 +231,7 @@ hr {
 
 #housing-content, #associate-content {
     overflow-y: hidden;
-    transition: all .5s;
+    height: 32.75em;
 }
 
 .filter-search{
@@ -243,9 +248,8 @@ hr {
 }
 
 #associate-filters, #housing-filters {
-    overflow-y: hidden;
+    overflow: hidden;
     height: 0;
-    transition: all .5s;
     margin: 0em 1em;
 }
 
@@ -253,16 +257,18 @@ hr {
     background-color: #f5f5f5;
 }
 
-progress[value]::-webkit-progress-bar {
+progress::-webkit-progress-bar {
     background-color: #f5f5f5;
 }
 
 .progress::-moz-progress-bar {
     background-color: rgba(242, 106, 37, 1);
+    z-index: 2;
 }
 
-progress[value]::-webkit-progress-value {
+progress::-webkit-progress-value {
     background-color: rgba(242, 106, 37, 1);
+    z-index: 2;
 }
 
 #housing-filters h3, #associate-filters h3 {
@@ -340,10 +346,6 @@ progress {
     font-size: 1.84vh;
 }
 
-.pagination {
-    transition: all .5s;
-}
-
 .pagination.input-group .form-control
 {
     border: 1px solid rgba(242, 106, 37, .5);
@@ -388,6 +390,12 @@ body.modal-open {
 @media (min-width:992px) {
     .modal-lg {
         width: 900px;
+    }
+}
+
+@media (min-width:792px) {
+    .modal-md-lg {
+        width: 700px;
     }
 }
 
@@ -446,3 +454,17 @@ input[type=radio]:checked+.toggle-left, input[type=radio]:checked+.toggle-right 
     display: inline-block;
     float: right;
 }
+
+.min-padding {
+    padding: 0 1.84vh;
+}
+
+.max-padding {
+    padding: 1.84vh;
+}
+
+input::-webkit-inner-spin-button {
+    display: none;
+}
+
+

@@ -1,7 +1,12 @@
 angular.module("HousingApp")
-.filter('date', function() {
+.filter('lettercap', function() {
     return function(x) {
-        var txt = x.slice(4,6) + "/" + x.slice(6,8) + "/" + x.slice(0,4);
+        return x.charAt(0).toUpperCase() + x.slice(1);
+    }
+})
+.filter('changedate', function() {
+    return function(x) {
+        var txt = x.slice(5,7) + "/" + x.slice(8,10) + "/" + x.slice(0,4);
         return txt;
     }
 })
@@ -72,7 +77,7 @@ angular.module("HousingApp")
             {
                 result.push(element);
             }
-            else if(mode == 3 && (element.AptNumber + " " + element.Complex.Name).toLowerCase().includes(input.toLowerCase()))
+            else if(mode == 3 && (element.HousingUnitName).toLowerCase().includes(input.toLowerCase()))
             {
                 result.push(element);
             }
@@ -122,21 +127,7 @@ angular.module("HousingApp")
     return function(array) {
         var str = "";
 
-        if (array.length > 0)
-        {
-            for (var i = 0; i < array.length; i++)
-            {
-                if(i != array.length - 1)
-                {
-                    str += array[i] + ", ";
-                }
-                else
-                {
-                    str += array[i];
-                }
-            }
-        }
-        else
+        if (array.length == 0)
         {
             str = "None";
         }
@@ -154,7 +145,7 @@ angular.module("HousingApp")
         var result = [];
 
         units.forEach(function(unit) {
-            if(unit.AptNumber == current.AptNumber && unit.Complex.Name == current.Complex.Name)
+            if(unit.HousingUnitName == current.HousingUnitName)
             {
                 result[0] = unit;
                 return result;
@@ -166,6 +157,11 @@ angular.module("HousingApp")
 })
 .filter('afilters', function(){
     return function(associates, filters) {
+        if(associates == undefined)
+        {
+            return [];
+        }
+
         if(!filters)
         {
             return associates;
@@ -213,6 +209,11 @@ angular.module("HousingApp")
 })
 .filter('hfilters', function(){
     return function(units, filters, data) {
+        if(units == undefined)
+        {
+            return [];
+        }
+
         if(!filters || !data)
         {
             return units;
@@ -253,25 +254,8 @@ angular.module("HousingApp")
                 
                 return false;
             }
-
-            data.forEach(function(item) {
-                if (item.HousingUnit.AptNumber == unit.AptNumber && item.HousingUnit.Complex.Name == unit.Complex.Name)
-                {
-                    if (!inArray(techs, item.Associate.Batch.Technology, 1))
-                    {
-                        techs[countTech] = item.Associate.Batch.Technology;
-                        countTech++;
-                    }
-
-                    if (!inArray(techs, item.Associate.Batch.Name, 1))
-                    {
-                        batches[countBatch] = item.Associate.Batch.Name;
-                        countBatch++;
-                    }
-                }
-            }, this);
             
-            if (filters.SrcChoice == "name" && (filters.SrcString == "" || (unit.AptNumber + " " + unit.Complex.Name.toLowerCase()).includes(filters.SrcString.toLowerCase())))
+            if (filters.SrcChoice == "name" && (filters.SrcString == "" || (unit.HousingUnitName.toLowerCase()).includes(filters.SrcString.toLowerCase())))
             {
                 checks++;
             }
@@ -295,7 +279,7 @@ angular.module("HousingApp")
                 checks++;
             }
 
-            if ((filters.Current == "") || (filters.Current == unit.AptNumber + " " + unit.Complex.Name))
+            if ((filters.Current == "") || (filters.Current == unit.HousingUnitName))
             {
                 checks++;
             }
