@@ -22,17 +22,24 @@
             <div class="col-md-4" ng-repeat="item in AssociateScope.Associates | search:AssociateScope.Search.Associate:1 | pagerange:AssociateScope.CurrentPage:AssociateScope.PageSize">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
-                        <a href="">
-                            <h3 class="panel-title">{{item.FirstName + " " + item.LastName}}</h3>
-                        </a>
+                        <div class="row">
+                            <div class="col-md-10">
+                                {{item.FirstName + " " + item.LastName}}
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-default pull-right" data-toggle="modal" data-target="#editModal" ng-click="AssociateScope.EditAssociate(item)">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
-                        <p>Gender: {{item.Gender}}</p>
-                        <p>Batch: {{item.Batch.Name}}</p>
-                        <p>Technology: {{item.Batch.Technology}}</p>
+                        <p>Gender: {{item.GenderName | lettercap}}</p>
+                        <p>Batch: {{item.BatchName}}</p>
                         <p>Phone: {{item.PhoneNumber}}</p>
                         <p>Email: {{item.Email}}</p>
-                        <p>DOB: {{item.DateOfBirth | date}}</p>
+                        <p>DOB: {{item.DateOfBirth | changedate}}</p>
+                        <p>Needs Housing: {{item.NeedsHousing | bool}}</p>
                         <p>Has a Car: {{item.HasCar | bool}}</p>
                         <p>Has keys: {{item.HasKeys | bool}}</p>
                     </div>
@@ -78,23 +85,33 @@
             <div class="modal-body">
                 <div class="container form-group">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>
                                 <div class="row">
                                     First Name
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="John">
+                                    <input type="text" ng-model="AssociateScope.NewAssociate.FirstName" class="form-control" placeholder="John">
                                 </div>
                             </label>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label>
                                 <div class="row">
                                     Last Name
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Smith">
+                                    <input type="text" ng-model="AssociateScope.NewAssociate.LastName" class="form-control" placeholder="Smith">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Phone
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="AssociateScope.NewAssociate.PhoneNumber" class="form-control" placeholder="555-555-5555" >
                                 </div>
                             </label>
                         </div>
@@ -107,38 +124,7 @@
                                     Email
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="johnsmith@gmail.com">
-                                </div>
-                            </label>
-                        </div>
-                        <div class="col-md-6">
-                            <label>
-                                <div class="row">
-                                    Phone
-                                </div>
-                                <div class="row">
-                                    <input type="text" class="form-control" placeholder="(555) 555-5555" >
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-3 input-group">
-                            <label>
-                                <div class="row">
-                                    Date of Birth
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3" style="padding: 0">
-                                        <input type="text" class="form-control" placeholder="MM" style="border-top-left-radius: 4px; border-bottom-left-radius: 4px; padding-left: 8px; padding-right: 8px;">
-                                    </div>
-                                    <div class="col-md-3" style="padding: 0">
-                                        <input type="text" class="form-control" placeholder="DD" style="padding-left: 8px; padding-right: 8px;">
-                                    </div>
-                                    <div class="col-md-6" style="padding: 0">
-                                        <input type="text" class="form-control" placeholder="YYYY" style="border-top-right-radius: 4px; border-bottom-right-radius: 4px; padding-left: 8px; padding-right: 8px;">
-                                    </div>
+                                    <input type="email" ng-model="AssociateScope.NewAssociate.Email" class="form-control" placeholder="johnsmith@gmail.com">
                                 </div>
                             </label>
                         </div>
@@ -149,12 +135,59 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 toggle">
-                                        <input type="radio" name="gender" id="aGenderMale" value="male" checked />
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.Gender" id="aGenderMale" value="male" checked />
                                         <label for="aGenderMale" class="toggle-left">Male</label>
                                     </div>
                                     <div class="col-md-6 toggle">
-                                        <input type="radio" name="gender" id="aGenderFemale" value="female" />
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.Gender" id="aGenderFemale" value="female" />
                                         <label for="aGenderFemale" class="toggle-right">Female</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Date of Birth
+                                </div>
+                                <div class="row">
+                                    <input type="date" ng-model="AssociateScope.NewAssociate.DateOfBirth" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Needs Housing
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.NeedsHousing" id="needsHousingYes" value="yes" checked />
+                                        <label for="needsHousingYes" class="toggle-left">Yes</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.NeedsHousing" id="needsHousingNo" value="no" />
+                                        <label for="needsHousingNo" class="toggle-right">No</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Has Keys
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.HasKeys" id="hasKeysYes" value="yes" checked />
+                                        <label for="hasKeysYes" class="toggle-left">Yes</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.HasKeys" id="hasKeysNo" value="no" />
+                                        <label for="hasKeysNo" class="toggle-right">No</label>
                                     </div>
                                 </div>
                             </label>
@@ -166,11 +199,11 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 toggle">
-                                        <input type="radio" name="car" id="hasCarYes" value="yes" checked />
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.HasCar" id="hasCarYes" value="yes" checked />
                                         <label for="hasCarYes" class="toggle-left">Yes</label>
                                     </div>
                                     <div class="col-md-6 toggle">
-                                        <input type="radio" name="car" id="hasCarNo" value="no" />
+                                        <input type="radio" ng-model="AssociateScope.NewAssociate.HasCar" id="hasCarNo" value="no" />
                                         <label for="hasCarNo" class="toggle-right">No</label>
                                     </div>
                                 </div>
@@ -183,8 +216,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12" style="padding: 0">
-                                        <select name="batches" id="batch" class="form-control">
-                                            <option value="0">Coming Soon</option>
+                                        <select ng-model="AssociateScope.NewAssociate.BatchName" id="batch" class="form-control">
+                                            <option ng-repeat="item in AssociateScope.Batches" value="{{item.Name}}">{{item.Name}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -194,8 +227,167 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="AssociateScope.AddAssociate()" data-dismiss="modal" data-target="#addModal">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Associate Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-revature">
+                <h2 class="modal-title center text-uppercase" id="myModalLabel">Edit Associate</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container form-group">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    First Name
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="AssociateScope.UpdateAssociate.FirstName" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Last Name
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="AssociateScope.UpdateAssociate.LastName" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-4">
+                            <label>
+                                <div class="row">
+                                    Phone
+                                </div>
+                                <div class="row">
+                                    <input type="text" ng-model="AssociateScope.UpdateAssociate.PhoneNumber" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>
+                                <div class="row">
+                                    Email
+                                </div>
+                                <div class="row">
+                                    <input type="email" ng-model="AssociateScope.UpdateAssociate.Email" class="form-control" disabled>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Gender
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.Gender" id="aGenderMale" value="male" checked />
+                                        <label for="aGenderMale" class="toggle-left">Male</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.Gender" id="aGenderFemale" value="female" />
+                                        <label for="aGenderFemale" class="toggle-right">Female</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Date of Birth
+                                </div>
+                                <div class="row">
+                                    <input type="date" ng-model="AssociateScope.UpdateAssociate.DateOfBirth" class="form-control">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Needs Housing
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.NeedsHousing" id="needsHousingYes" value="yes" checked />
+                                        <label for="needsHousingYes" class="toggle-left">Yes</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.NeedsHousing" id="needsHousingNo" value="no" />
+                                        <label for="needsHousingNo" class="toggle-right">No</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Has Keys
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.HasKeys" id="hasKeysYes" value="yes" checked />
+                                        <label for="hasKeysYes" class="toggle-left">Yes</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.HasKeys" id="hasKeysNo" value="no" />
+                                        <label for="hasKeysNo" class="toggle-right">No</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Has a Car
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.HasCar" id="hasCarYes" value="yes" checked />
+                                        <label for="hasCarYes" class="toggle-left">Yes</label>
+                                    </div>
+                                    <div class="col-md-6 toggle">
+                                        <input type="radio" ng-model="AssociateScope.UpdateAssociate.HasCar" id="hasCarNo" value="no" />
+                                        <label for="hasCarNo" class="toggle-right">No</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <div class="row">
+                                    Batch
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" style="padding: 0">
+                                        <select ng-model="AssociateScope.UpdateAssociate.BatchName" id="batch" class="form-control">
+                                            <option ng-repeat="item in AssociateScope.Batches" value="{{item.Name}}">{{item.Name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#editModal">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="AssociateScope.ModAssociate()" data-dismiss="modal" data-target="#editModal">Confirm</button>
             </div>
         </div>
     </div>
@@ -213,7 +405,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+                <button type="button" class="btn btn-default" ng-click="AssociateScope.RemoveAssociate(AssociateScope.CurrentAssociate.Email)" data-dismiss="modal" data-target="#removeModal">Confirm</button>
             </div>
         </div>
     </div>

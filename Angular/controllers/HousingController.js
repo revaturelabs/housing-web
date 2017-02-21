@@ -1,8 +1,5 @@
 angular.module("HousingApp")
-.controller("HousingCtrl", function($scope, $http, $stateParams, complexURL, dataURL, unitURL) {
-    var requestComplex = new XMLHttpRequest();
-    var requestData = new XMLHttpRequest();
-    var requestUnit = new XMLHttpRequest();
+.controller("HousingCtrl", function($scope, $http, $stateParams, housingcomplex, housingdata, housingunit) {
 
     $scope.HousingScope = [];
     $scope.HousingScope.PageSize1 = 3;
@@ -18,35 +15,67 @@ angular.module("HousingApp")
     $scope.HousingScope.Units = [];
     $scope.HousingScope.Data = [];
     $scope.HousingScope.Complexes = [];
+    $scope.HousingScope.NewComplex = {
+        Name: "",
+        Street: "",
+        City: "",
+        State: "",
+        ZipCode: "",
+        PhoneNumber: ""
+    };
+    $scope.HousingScope.NewUnit = {
+        HousingUnitName: "",
+        AptNumber: "",
+        MaxCapacity: null,
+        GenderName: "",
+        HousingComplexName: "",
+        LeaseEndDate: ""
+    }
     $scope.HousingScope.Search = {
         Housing: "",
         Unit: ""
     };
 
-    requestComplex.onreadystatechange = function () {
-        if(requestComplex.readyState == 4 && requestComplex.status == 200) {
-            $scope.HousingScope.Complexes = JSON.parse(requestComplex.responseText);
-        }
-    }
+    var count = 0;
 
-    requestData.onreadystatechange = function () {
-        if(requestData.readyState == 4 && requestData.status == 200) {
-            $scope.HousingScope.Data = JSON.parse(requestData.responseText);
-        }
+    $scope.HousingScope.UpdateAjax = function() {
+        housingcomplex.getAll(function(data){
+            $scope.HousingScope.Complexes = data;
+            setTimeout(function() {
+                $scope.HousingScope.LastPage1 = getLastIndex();
+                if($scope.HousingScope.LastPage1 < $scope.HousingScope.CurrentPage1)
+                {
+                    $scope.HousingScope.CurrentPage1 = $scope.HousingScope.LastPage1;
+                }
+            }, 20);
+        });
+
+        housingdata.getAll(function(data){
+            $scope.HousingScope.Data = data;
+            $scope.HousingScope.UpdateUnits();
+            setTimeout(function() {
+                $scope.HousingScope.LastPage2 = getLastIndex();
+                if($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2)
+                {
+                    $scope.HousingScope.CurrentPage2 = $scope.HousingScope.LastPage2;
+                }
+            }, 20);
+        });
+
+        housingunit.getAll(function(data){
+            $scope.HousingScope.Units = data;
+            $scope.HousingScope.UpdateUnits();
+            setTimeout(function() {
+                $scope.HousingScope.LastPage2 = getLastIndex();
+                if($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2)
+                {
+                    $scope.HousingScope.CurrentPage2 = $scope.HousingScope.LastPage2;
+                }
+            }, 20);
+        });
     }
     
-    requestUnit.onreadystatechange = function () {
-        if(requestUnit.readyState == 4 && requestUnit.status == 200) {
-            $scope.HousingScope.Units = JSON.parse(requestUnit.responseText);
-        }
-    }
-
-    requestComplex.open("GET", complexURL, false);
-    requestData.open("GET", dataURL, false);
-    requestUnit.open("GET", unitURL, false);
-    requestComplex.send();
-    requestData.send();
-    requestUnit.send();
+    $scope.HousingScope.UpdateAjax();
 
     $scope.HousingScope.UpdatePageList = function (size, mode)
     {
@@ -68,7 +97,7 @@ angular.module("HousingApp")
         }
     }
 
-    $scope.HousingScope.GoToPage = function (version, page, last)
+    $scope.HousingScope.GoToPage = function (version, page)
     {
         if(version == 1 && (page >= 1 && page <= $scope.HousingScope.LastPage1))
         {
@@ -91,6 +120,99 @@ angular.module("HousingApp")
         }
     }
 
+    $scope.HousingScope.UpdateUnits = function()
+    {
+        if($scope.HousingScope.Units.length > 0 && $scope.HousingScope.Data.length > 0)
+        {
+            $scope.HousingScope.Units.forEach(function(unit) {
+                var currentCap = 0;
+                var currentCars = 0;
+                var techs = [];
+                var batches = [];
+                var occupants = [];
+                var countTech = 0;
+                var countBatch = 0;
+                if(unit.HousingComplexName == $scope.HousingScope.CurrentComplex)
+                {
+                    $scope.HousingScope.Data.forEach(function(data) {
+                        if(data.HousingUnitName == unit.HousingUnitName)
+                        {
+                            currentCap++;
+                        }
+                    }, this);
+
+                    unit['Capacity'] = currentCap;
+                    unit['Cars'] = currentCars;
+                    unit['Tech'] = techs;
+                    unit['Batch'] = batches;
+                    unit['Occupants'] = occupants;
+
+                    $scope.HousingScope.CurrentUnits[count] = unit;
+                    count++;
+                }
+            }, this);
+        }
+    }
+
+    $scope.HousingScope.GetCurrentComplex = function (complex) {
+        $scope.HousingScope.CurrentHousing = complex;
+    }
+
+    $scope.HousingScope.GetCurrentUnit = function (unit) {
+        $scope.HousingScope.CurrentUnit = unit;
+    }
+
+    $scope.HousingScope.AddComplex = function () {
+        var temp = $scope.HousingScope.NewComplex;
+        var unit = {
+            Name: temp.Name,
+            Address: temp.Street + ", " + temp.City + ", " + temp.State + " " + temp.ZipCode,
+            PhoneNumber: temp.PhoneNumber
+        };
+        housingcomplex.add(unit, function(data){
+            if(data.status == 200)
+            {
+                $scope.HousingScope.UpdateAjax();
+            }
+        });
+    }
+
+    $scope.HousingScope.AddUnit = function () {
+        var temp = $scope.HousingScope.NewUnit;
+        var unit = {
+            HousingUnitName: $scope.HousingScope.CurrentComplex + " " + temp.AptNumber,
+            AptNumber: temp.AptNumber,
+            MaxCapacity: temp.MaxCapacity,
+            GenderName: temp.GenderName,
+            HousingComplexName: $scope.HousingScope.CurrentComplex,
+            LeaseEndDate: getDateFormat(temp.LeaseEndDate)
+        };
+        housingunit.add(unit, function(data){
+            if(data.status == 200)
+            {
+                $scope.HousingScope.UpdateAjax();
+            }
+        });
+    }
+
+    $scope.HousingScope.RemoveComplex = function (complex) {
+        housingcomplex.delete(complex, function(data){
+            if(data.status == 200)
+            {
+                $scope.HousingScope.UpdateAjax();
+            }
+        });
+    }
+
+    $scope.HousingScope.RemoveUnit = function (unit) {
+        housingunit.delete(unit, function(data){
+            if(data.status == 200)
+            {
+                $scope.HousingScope.UpdateAjax();
+            }
+        });
+    }
+
     var inArray = function(array, item)
     {
         for(var i = 0; i < array.length; i++)
@@ -102,70 +224,22 @@ angular.module("HousingApp")
         }
     }
 
+    var getDateFormat = function(d)
+    {
+        var dd = d.getDate() >= 10 ? d.getDate() : "0" + d.getDate();
+        var mm = (d.getMonth() + 1) >= 10 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
+        var yyyy = d.getFullYear();
+
+        return yyyy + "-" + mm + "-" + dd + "T00:00:00";
+    }
+
     var getLastIndex = function()
     {
         var pagin = document.getElementById("housing-pagination");
         var pages = pagin.children[0].children[0].children;
-        var count = pages.length - 2;
+        var pageCount = pages.length - 2;
 
-        return count;
-    }
-
-    setTimeout(function() {
-        $scope.HousingScope.LastPage1 = getLastIndex();
-        $scope.HousingScope.LastPage2 = getLastIndex();
-    }, 20);
-
-    var count = 0;
-
-    $scope.HousingScope.Units.forEach(function(unit) {
-        var currentCap = 0;
-        var currentCars = 0;
-        var techs = [];
-        var batches = [];
-        var occupants = [];
-        var countTech = 0;
-        var countBatch = 0;
-        if(unit.Complex.Name == $scope.HousingScope.CurrentComplex)
-        {
-            $scope.HousingScope.Data.forEach(function(data) {
-                if(data.HousingUnit.AptNumber == unit.AptNumber && data.HousingUnit.Complex.Name == $scope.HousingScope.CurrentComplex)
-                {
-                    currentCap++;
-                    
-                    if(data.Associate.HasCar)
-                    {
-                        currentCars++;
-                    }
-                    if(!inArray(techs, data.Associate.Batch.Technology))
-                    {
-                        techs[countTech] = data.Associate.Batch.Technology;
-                    }
-                    if(!inArray(batches, data.Associate.Batch.Name))
-                    {
-                        batches[countBatch] = data.Associate.Batch.Name;
-                    }
-                    occupants.push(data.Associate);
-                }
-            }, this);
-
-            unit['Capacity'] = currentCap;
-            unit['Cars'] = currentCars;
-            unit['Tech'] = techs;
-            unit['Batch'] = batches;
-            unit['Occupants'] = occupants;
-
-            $scope.HousingScope.CurrentUnits[count] = unit;
-            count++;
-        }
-    }, this);
-
-    $scope.HousingScope.GetCurrentComplex = function (complex) {
-        $scope.HousingScope.CurrentHousing = complex;
-    }
-
-    $scope.HousingScope.GetCurrentUnit = function (unit) {
-        $scope.HousingScope.CurrentUnit = unit;
+        return pageCount;
     }
 
     var updateSpacing = function (time, height) {

@@ -78,7 +78,7 @@
                                     Name
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Grand Apartments">
+                                    <input type="text" ng-model="HousingScope.NewComplex.Name" class="form-control" placeholder="Grand Apartments">
                                 </div>
                             </label>
                         </div>
@@ -88,7 +88,7 @@
                                     Phone Number
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="(555) 555-5555">
+                                    <input type="text" ng-model="HousingScope.NewComplex.PhoneNumber" class="form-control" placeholder="(555) 555-5555">
                                 </div>
                             </label>
                         </div>
@@ -101,7 +101,7 @@
                                     Street Address
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="123 1st Street">
+                                    <input type="text" ng-model="HousingScope.NewComplex.Street" class="form-control" placeholder="123 1st Street">
                                 </div>
                             </label>
                         </div>
@@ -114,7 +114,7 @@
                                     City
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Reston" >
+                                    <input type="text" ng-model="HousingScope.NewComplex.City" class="form-control" placeholder="Reston" >
                                 </div>
                             </label>
                         </div>
@@ -124,7 +124,7 @@
                                     State
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="Virginia" >
+                                    <input type="text" ng-model="HousingScope.NewComplex.State" class="form-control" placeholder="Virginia" >
                                 </div>
                             </label>
                         </div>
@@ -134,7 +134,7 @@
                                     Zip Code
                                 </div>
                                 <div class="row">
-                                    <input type="text" class="form-control" placeholder="20190" >
+                                    <input type="number" ng-model="HousingScope.NewComplex.ZipCode" class="form-control" placeholder="20190" >
                                 </div>
                             </label>
                         </div>
@@ -142,8 +142,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="HousingScope.AddComplex()" data-dismiss="modal" data-target="#addModal">Confirm</button>
             </div>
         </div>
     </div>
@@ -161,7 +161,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Confirm</button>
+                <button type="button" class="btn btn-default" ng-click="HousingScope.RemoveComplex(HousingScope.CurrentHousing.Name)" data-dismiss="modal" data-target="#removeModal">Confirm</button>
             </div>
         </div>
     </div>

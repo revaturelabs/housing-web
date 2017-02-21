@@ -85,15 +85,13 @@
             <div ng-class="DashboardScope.UpdateContentClass(2, DashboardScope.HousingPageSize)" ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.Data | pagerange:DashboardScope.HousingCurrentPage:DashboardScope.HousingPageSize">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
-                        {{item.AptNumber + " " + item.Complex.Name}}
+                        {{item.AptNumber + " " + item.HousingComplexName}}
                     </div>
                     <div class="panel-body">
-                        <p>{{item.Gender}}</p>
-                        <p class="address">{{item.Complex.Address | address}}</p>
-                        <p>{{item.Complex.PhoneNumber}}</p>
+                        <p>{{item.GenderName | lettercap}}</p>
                         <p>Cars: {{item.Cars}}</p>
                         <p>Occupancy: 
-                            <progress class="progress" ng-value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
+                            <progress class="progress" value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
                         </p>
                         <div class="housing-occupants">
                             <p>Occupants:</p>
