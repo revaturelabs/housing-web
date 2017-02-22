@@ -4,7 +4,7 @@
             <h1>Unassigned Associates</h1>
         </div>
         <div class="col-md-3 filter-search">
-            <button class="btn btn-default btn-filter" ng-click="DashboardScope.ToggleFilters('associate')">Filters</button>
+            <button class="btn btn-default btn-filter" ng-click="DashboardScope.ToggleFilters('associate')" style="display: none">Filters</button>
         </div>
     </section>
     <section class="row" id="associate-filters" style="height: 0em;">
@@ -12,11 +12,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <select ng-model="DashboardScope.Filters.SrcChoice" id="housing-search" class="form-control">
+                        <select ng-model="DashboardScope.Filters.ASrcChoice" id="housing-search" class="form-control">
                             <option value="name">Name</option>
                             <option value="batch">Batch</option>
                         </select>
-                        <input type="text" ng-model="DashboardScope.Filters.SrcString" class="form-control">
+                        <input type="text" ng-model="DashboardScope.Filters.ASrcString" class="form-control">
                     </div>
                 </div>
             </div>

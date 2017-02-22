@@ -314,6 +314,10 @@ input[type=radio]:checked+.pill, input[type=checkbox]:checked+.pill {
     color: white;
 }
 
+input[type=radio]:disabled+.pill, input[type=checkbox]:disabled+.pill {
+    cursor: not-allowed;
+}
+
 .input-group {
     display: flex;
 }

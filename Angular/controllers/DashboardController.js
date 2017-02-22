@@ -9,6 +9,7 @@ angular.module("HousingApp")
     $scope.DashboardScope.AssociateLastPage = 1;
     $scope.DashboardScope.HousingLastPage = 1;
     $scope.DashboardScope.DisplayMode = 1;
+    $scope.DashboardScope.FilterMode = 1;
     $scope.DashboardScope.CurrentAssociate = {};
     $scope.DashboardScope.CurrentHousing = {};
     $scope.DashboardScope.CurrentUnit = {};
@@ -19,8 +20,10 @@ angular.module("HousingApp")
     $scope.DashboardScope.Units = [];
     $scope.DashboardScope.SelectedAssociates = [];
     $scope.DashboardScope.Filters = {
-        SrcChoice: "name",
-        SrcString: "",
+        ASrcChoice: "name",
+        ASrcString: "",
+        HSrcChoice: "name",
+        HSrcString: "",
         RadTech: "all",
         RadGender: "all",
         RadCar: "all",
@@ -34,17 +37,20 @@ angular.module("HousingApp")
         associate.getAll(function(data){
             AllAssociates = data;
             $scope.DashboardScope.UpdateUnits();
+            $scope.DashboardScope.UpdateAssociates();
         });
 
         associate.getUnassigned(function(data){
             UnassignedAssociates = data;
             $scope.DashboardScope.Associates = UnassignedAssociates;
             $scope.DashboardScope.UpdateUnits();
+            $scope.DashboardScope.UpdateAssociates();
         });
 
         batch.getAll(function(data){
             $scope.DashboardScope.Batches = data;
             $scope.DashboardScope.UpdateUnits();
+            $scope.DashboardScope.UpdateAssociates();
         });
 
         housingcomplex.getAll(function(data){
@@ -203,36 +209,46 @@ angular.module("HousingApp")
     $scope.DashboardScope.StartAssigning = function (unit) {
         $scope.DashboardScope.CurrentUnit = unit;
         $scope.DashboardScope.Filters.Current = unit.HousingUnitName;
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
+        var housingFilterBtn;
+        var associateFilterBtn;
+        var housingdash = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
         var removeBtns = document.getElementsByClassName("removeAssociates");
         var occupants = document.getElementsByClassName("housing-occupants");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
 
+        $scope.DashboardScope.Filters.RadGender = unit.GenderName;
+        $scope.DashboardScope.FilterMode = 2;
         $scope.DashboardScope.ExpandView();
 
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
+        if(document.getElementById("housing-filters").style.height == "15em") {
+            $scope.DashboardScope.ToggleFilters("housing");
+        }
+
+        document.getElementById("aGenderAll").disabled = true;
+        document.getElementById("aGenderMale").disabled = true;
+        document.getElementById("aGenderFemale").disabled = true;
+
+        for(var i = 0; i < filterBtns.length; i++) {
+            if(filterBtns[i].parentElement.parentElement == housingdash) {
+                housingFilterBtn = filterBtns[i];
+            } else {
+                associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < assignBtns.length; i++)
-        {
+        for(var i = 0; i < assignBtns.length; i++) {
             assignBtns[i].style.display = "none";
             removeBtns[i].style.display = "none";
         }
 
-        for(var i = 0; i < occupants.length; i++)
-        {
+        for(var i = 0; i < occupants.length; i++) {
             occupants[i].classList.add("current");
         }
 
-        filterBtn.style.display = "none";
+        housingFilterBtn.style.display = "none";
+        associateFilterBtn.style.display = "inline-block";
         assigningCtrls[0].style.display = "inline-block";
         assigningCtrls[1].style.display = "inline-block";
     }
@@ -241,36 +257,46 @@ angular.module("HousingApp")
         assignAssociate($scope.DashboardScope.CurrentUnit);
         $scope.DashboardScope.CurrentUnit = {};
         $scope.DashboardScope.Filters.Current = "";
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
+        var housingFilterBtn;
+        var associateFilterBtn;
+        var housingdash = document.getElementById("dashboard-housing");
         var assignBtns = document.getElementsByClassName("assignAssociates");
         var removeBtns = document.getElementsByClassName("removeAssociates");
         var occupants = document.getElementsByClassName("housing-occupants");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var assigningCtrls = document.getElementsByClassName("assigning-controls");
+        $scope.DashboardScope.Filters.RadGender = "all";
         
+        $scope.DashboardScope.FilterMode = 1;
         $scope.DashboardScope.ExpandView();
 
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
+        if(document.getElementById("associate-filters").style.height == "15em") {
+            $scope.DashboardScope.ToggleFilters("associate");
+        }
+
+        document.getElementById("aGenderAll").disabled = false;
+        document.getElementById("aGenderMale").disabled = false;
+        document.getElementById("aGenderFemale").disabled = false;
+
+        for(var i = 0; i < filterBtns.length; i++) {
+            if(filterBtns[i].parentElement.parentElement == housingdash) {
+                housingFilterBtn = filterBtns[i];
+            } else {
+                associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < assignBtns.length; i++)
-        {
+        for(var i = 0; i < assignBtns.length; i++) {
             assignBtns[i].style.display = "inline-block";
             removeBtns[i].style.display = "inline-block";
         }
 
-        for(var i = 0; i < occupants.length; i++)
-        {
+        for(var i = 0; i < occupants.length; i++) {
             occupants[i].classList.remove("current");
         }
 
-        filterBtn.style.display = "inline-block";
+        housingFilterBtn.style.display = "inline-block";
+        associateFilterBtn.style.display = "none";
         assigningCtrls[0].style.display = "none";
         assigningCtrls[1].style.display = "none";
     }
@@ -281,14 +307,14 @@ angular.module("HousingApp")
         $scope.DashboardScope.Associates = unit.Occupants;
         setTimeout(function() {
             $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
-            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage)
-            {
+            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage) {
                 $scope.DashboardScope.AssociateCurrentPage = $scope.DashboardScope.AssociateLastPage;
             }
         }, 20);
 
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
+        var housingFilterBtn;
+        var associateFilterBtn;
+        var housingdash = document.getElementById("dashboard-housing");
         var title = document.getElementById("dashboard-associate").children[0].children[0];
         var assigned = document.getElementsByClassName("assigned");
         var unassigned = document.getElementsByClassName("unassigned");
@@ -296,37 +322,44 @@ angular.module("HousingApp")
         var removeBtns = document.getElementsByClassName("removeAssociates");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var removingCtrls = document.getElementsByClassName("removing-controls");
+        $scope.DashboardScope.Filters.RadGender = unit.GenderName;
 
         $scope.DashboardScope.ExpandView();
         $scope.DashboardScope.DisplayMode = 2;
 
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
+        if(document.getElementById("housing-filters").style.height == "15em") {
+            $scope.DashboardScope.ToggleFilters("housing");
+        }
+
+        document.getElementById("aGenderAll").disabled = true;
+        document.getElementById("aGenderMale").disabled = true;
+        document.getElementById("aGenderFemale").disabled = true;
+
+        for(var i = 0; i < filterBtns.length; i++) {
+            if(filterBtns[i].parentElement.parentElement == housingdash) {
+                housingFilterBtn = filterBtns[i];
+            } else {
+                associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < removeBtns.length; i++)
-        {
+        for(var i = 0; i < removeBtns.length; i++) {
             assignBtns[i].style.display = "none";
             removeBtns[i].style.display = "none";
         }
 
         setTimeout(function() {
-            for(var i = 0; i < assigned.length; i++)
-            {
+            for(var i = 0; i < assigned.length; i++) {
                 assigned[i].style.display = "inline-block";
             }
         }, 2);
 
-        for(var i = 0; i < unassigned.length; i++)
-        {
+        for(var i = 0; i < unassigned.length; i++) {
             unassigned[i].style.display = "none";
         }
         
-        filterBtn.style.display = "none";
+        housingFilterBtn.style.display = "none";
+        associateFilterBtn.style.display = "inline-block";
         removingCtrls[0].style.display = "inline-block";
         removingCtrls[1].style.display = "inline-block";
         title.innerHTML = "Assigned Associates";
@@ -339,14 +372,14 @@ angular.module("HousingApp")
         $scope.DashboardScope.Associates = UnassignedAssociates;
         setTimeout(function() {
             $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
-            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage)
-            {
+            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage) {
                 $scope.DashboardScope.AssociateCurrentPage = $scope.DashboardScope.AssociateLastPage;
             }
         }, 20);
 
-        var filterBtn;
-        var dashboard = document.getElementById("dashboard-housing");
+        var housingFilterBtn;
+        var associateFilterBtn;
+        var housingdash = document.getElementById("dashboard-housing");
         var title = document.getElementById("dashboard-associate").children[0].children[0];
         var assigned = document.getElementsByClassName("assigned");
         var unassigned = document.getElementsByClassName("unassigned");
@@ -354,50 +387,57 @@ angular.module("HousingApp")
         var removeBtns = document.getElementsByClassName("removeAssociates");
         var filterBtns = document.getElementsByClassName("btn-filter");
         var removingCtrls = document.getElementsByClassName("removing-controls");
+        $scope.DashboardScope.Filters.RadGender = "all";
 
         $scope.DashboardScope.ExpandView();
         $scope.DashboardScope.DisplayMode = 1;
 
-        for(var i = 0; i < filterBtns.length; i++)
-        {
-            if(filterBtns[i].parentElement.parentElement == dashboard)
-            {
-                filterBtn = filterBtns[i];
+        if(document.getElementById("associate-filters").style.height == "15em") {
+            $scope.DashboardScope.ToggleFilters("associate");
+        }
+
+        document.getElementById("aGenderAll").disabled = false;
+        document.getElementById("aGenderMale").disabled = false;
+        document.getElementById("aGenderFemale").disabled = false;
+
+        for(var i = 0; i < filterBtns.length; i++) {
+            if(filterBtns[i].parentElement.parentElement == housingdash) {
+                housingFilterBtn = filterBtns[i];
+            } else {
+                associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < removeBtns.length; i++)
-        {
+        for(var i = 0; i < removeBtns.length; i++) {
             assignBtns[i].style.display = "inline-block";
             removeBtns[i].style.display = "inline-block";
         }
 
-        for(var i = 0; i < assigned.length; i++)
-        {
+        for(var i = 0; i < assigned.length; i++) {
             assigned[i].style.display = "none";
         }
 
-        for(var i = 0; i < unassigned.length; i++)
-        {
+        for(var i = 0; i < unassigned.length; i++) {
             unassigned[i].style.display = "inline-block";
         }
 
-        filterBtn.style.display = "inline-block";
+        housingFilterBtn.style.display = "inline-block";
+        associateFilterBtn.style.display = "none";
         removingCtrls[0].style.display = "none";
         removingCtrls[1].style.display = "none";
         title.innerHTML = "Unassigned Associates";
     }
 
-    var count = 0;
-
     $scope.DashboardScope.UpdateUnits = function() {
-        if($scope.DashboardScope.Units.length > 0 && $scope.DashboardScope.Data.length > 0 && $scope.DashboardScope.Associates.length > 0)
+        if($scope.DashboardScope.Units.length > 0 && $scope.DashboardScope.Data.length > 0 && $scope.DashboardScope.Associates.length > 0 && $scope.DashboardScope.Batches.length > 0)
         {
             $scope.DashboardScope.Units.forEach(function(unit) {
                 var currentCap = 0;
                 var currentCars = 0;
-                var occupants = [];
+                var techs = [];
+                var batches = [];
                 var emails = [];
+                var occupants = [];
 
                 $scope.DashboardScope.Data.forEach(function(data) {
                     if(data.HousingUnitName == unit.HousingUnitName)
@@ -417,14 +457,46 @@ angular.module("HousingApp")
                                 currentCars++;
                             }
 
+                            if(!inArray(batches, occupant.BatchName))
+                            {
+                                batches.push(occupant.BatchName);
+                            }
+
                             occupants.push(occupant);
+                        }
+                    }, this);
+                }, this);
+
+                batches.forEach(function(name) {
+                    $scope.DashboardScope.Batches.forEach(function(batch) {
+                        if(batch.Name == name)
+                        {
+                            if(!inArray(techs, batch.Technology))
+                            {
+                                techs.push(batch.Technology);
+                            }
                         }
                     }, this);
                 }, this);
 
                 unit['Capacity'] = currentCap;
                 unit['Cars'] = currentCars;
+                unit['Tech'] = techs;
+                unit['Batch'] = batches;
                 unit['Occupants'] = occupants;
+            }, this);
+        }
+    }
+
+    $scope.DashboardScope.UpdateAssociates = function() {
+        if($scope.DashboardScope.Batches.length > 0 && $scope.DashboardScope.Associates.length > 0){
+            $scope.DashboardScope.Associates.forEach(function(associate) {
+                $scope.DashboardScope.Batches.forEach(function(batch) {
+                    if(associate.BatchName == batch.Name){
+                        associate['Batch'] = batch;
+                        console.log(associate);
+                    }
+                }, this);
             }, this);
         }
     }
@@ -607,6 +679,17 @@ angular.module("HousingApp")
         }, this);
         
         $scope.DashboardScope.ResetSelection();
+    }
+
+    var inArray = function(array, item)
+    {
+        for(var i = 0; i < array.length; i++)
+        {
+            if(array[i] == item)
+            {
+                return true;
+            }
+        }
     }
 
     var getDateFormat = function(d)
