@@ -155,139 +155,90 @@ angular.module("HousingApp")
         return units;
     }
 })
-.filter('afilters', function(){
-    return function(associates, filters) {
-        if(associates == undefined)
-        {
+.filter('afilters', function () {
+    return function (associates, filters, selected) {
+        if(associates == undefined) {
             return [];
         }
 
-        if(!filters)
-        {
+        if(!filters) {
             return associates;
         }
 
         var result = [];
-        var count = 0;
 
         associates.forEach(function(associate) {
             var checks = 0;
             
-            if (filters.SrcChoice == "name" && (filters.SrcString == "" || (associate.FirstName + " " + associate.LastName).toLowerCase().includes(filters.SrcString.toLowerCase())))
-            {
+            if (filters.ASrcChoice == "name" && (filters.ASrcString == "" || (associate.FirstName + " " + associate.LastName).toLowerCase().includes(filters.ASrcString.toLowerCase()))) {
                 checks++;
-            }
-            else if (filters.SrcChoice == "batch" && (filters.SrcString == "" || associate.Batch.Name.toLowerCase().includes(filters.SrcString.toLowerCase())))
-            {
+            } else if (filters.ASrcChoice == "batch" && (filters.ASrcString == "" || associate.BatchName.toLowerCase().includes(filters.ASrcString.toLowerCase()))) {
                 checks++;
             }
 
-            if ((filters.RadTech == "all") || (filters.RadTech == associate.Batch.Technology.toLowerCase()))
-            {
+            if ((filters.RadTech == "all") || (filters.RadTech == associate.Batch.Technology.toLowerCase())) {
                 checks++;
             }
 
-            if ((filters.RadGender == "all") || (filters.RadGender == associate.Gender.toLowerCase()))
-            {
+            if ((filters.RadGender == "all") || (filters.RadGender == associate.GenderName.toLowerCase())) {
                 checks++;
             }
             
-            if ((filters.RadCar == "all") || (filters.RadCar == "yes" && associate.HasCar) || (filters.RadCar == "no" && !associate.HasCar))
-            {
+            if ((filters.RadCar == "all") || (filters.RadCar == "yes" && associate.HasCar) || (filters.RadCar == "no" && !associate.HasCar)) {
                 checks++;
             }
 
-            if (checks == 4)
-            {
-                result[count] = associate;
-                count++;
+            if (checks == 4) {
+                result.push(associate);
             }
         }, this);
 
         return result;
     }
 })
-.filter('hfilters', function(){
-    return function(units, filters, data) {
-        if(units == undefined)
-        {
+.filter('hfilters', function () {
+    return function (units, filters, mode) {
+        if(units == undefined) {
             return [];
         }
 
-        if(!filters || !data)
-        {
+        if(!filters || mode == 2) {
             return units;
         }
 
         var result = [];
-        var count = 0;
 
         units.forEach(function(unit) {
             var checks = 0;
-            var techs = [];
-            var batches = [];
+            var techs = unit.Tech;
+            var batches = unit.Batch;
             var countTech = 0;
             var countBatch = 0;
-
-            var inArray = function(array, item, mode)
-            {
-                if(mode == 1)
-                {
-                    for(var i = 0; i < array.length; i++)
-                    {
-                        if(array[i] == item)
-                        {
-                            return true;
-                        }
-                    }
-                }
-                else if(mode == 2)
-                {
-                    for(var i = 0; i < array.length; i++)
-                    {
-                        if(array[i].toLowerCase().includes(item.toLowerCase()))
-                        {
-                            return true;
-                        }
-                    }
-                }
-                
-                return false;
-            }
             
-            if (filters.SrcChoice == "name" && (filters.SrcString == "" || (unit.HousingUnitName.toLowerCase()).includes(filters.SrcString.toLowerCase())))
-            {
+            if (filters.HSrcChoice == "name" && (filters.HSrcString == "" || (unit.HousingUnitName.toLowerCase()).includes(filters.HSrcString.toLowerCase()))) {
                 checks++;
-            }
-            else if (filters.SrcChoice == "batch" && (filters.SrcString == "" || inArray(batches, filters.SrcString, 2)))
-            {
+            } else if (filters.HSrcChoice == "batch" && (filters.HSrcString == "" || inArray(batches, filters.HSrcString, 2))) {
                 checks++;
             }
 
-            if ((filters.RadTech == "all") || (inArray(techs, filters.RadTech, 2)))
-            {
+            if ((filters.RadTech == "all") || (inArray(techs, filters.RadTech, 1))) {
                 checks++;
             }
 
-            if ((filters.RadGender == "all") || (filters.RadGender == unit.Gender.toLowerCase()))
-            {
+            if ((filters.RadGender == "all") || (filters.RadGender == unit.GenderName.toLowerCase())) {
                 checks++;
             }
             
-            if ((filters.RadCar == "all") || (filters.RadCar == "yes" && unit.Cars < 2) || (filters.RadCar == "no" && unit.Cars >= 2))
-            {
+            if ((filters.RadCar == "all") || (filters.RadCar == "yes" && unit.Cars < 2) || (filters.RadCar == "no" && unit.Cars >= 2)) {
                 checks++;
             }
 
-            if ((filters.Current == "") || (filters.Current == unit.HousingUnitName))
-            {
+            if ((filters.Current == "") || (filters.Current == unit.HousingUnitName)) {
                 checks++;
             }
 
-            if (checks == 5)
-            {
-                result[count] = unit;
-                count++;
+            if (checks == 5) {
+                result.push(unit);
             }
         }, this);
 
@@ -303,4 +254,22 @@ function isEmpty(obj) {
     }
 
     return true;
+}
+
+function inArray(array, item, mode) {
+    if(mode == 1) {
+        for(var i = 0; i < array.length; i++) {
+            if(array[i].toLowerCase() == item.toLowerCase()) {
+                return true;
+            }
+        }
+    } else if(mode == 2) {
+        for(var i = 0; i < array.length; i++) {
+            if(array[i].toLowerCase().includes(item.toLowerCase())) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
 }

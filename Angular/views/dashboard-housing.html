@@ -16,11 +16,11 @@
             <div class="row">
                 <div class="col-md-6 col-md-offset-6">
                     <div class="input-group">
-                        <select ng-model="DashboardScope.Filters.SrcChoice" id="housing-search" class="form-control">
+                        <select ng-model="DashboardScope.Filters.HSrcChoice" id="housing-search" class="form-control">
                             <option value="name">Name</option>
                             <option value="batch">Batch</option>
                         </select>
-                        <input type="text" ng-model="DashboardScope.Filters.SrcString" class="form-control">
+                        <input type="text" ng-model="DashboardScope.Filters.HSrcString" class="form-control">
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
     </section>
     <section class="row" id="housing-content">
         <div class="fluid-container" id="housing-list">
-            <div ng-class="DashboardScope.UpdateContentClass(2, DashboardScope.HousingPageSize)" ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.Data | pagerange:DashboardScope.HousingCurrentPage:DashboardScope.HousingPageSize">
+            <div ng-class="DashboardScope.UpdateContentClass(2, DashboardScope.HousingPageSize)" ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.FilterMode | pagerange:DashboardScope.HousingCurrentPage:DashboardScope.HousingPageSize">
                 <div class="panel panel-revature">
                     <div class="panel-heading">
                         {{item.AptNumber + " " + item.HousingComplexName}}
@@ -120,7 +120,7 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.Data | pagecount:DashboardScope.HousingPageSize">
+                <li ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.FilterMode | pagecount:DashboardScope.HousingPageSize">
                     <a class="btn btn-default form-control" ng-click="DashboardScope.GoToPage(2, $index + 1)" ng-class="DashboardScope.GetPageClass(2, $index + 1)">
                         {{$index + 1}}
                     </a>
