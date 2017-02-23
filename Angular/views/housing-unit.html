@@ -160,7 +160,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="HousingScope.ResetForms('#addModal')">Cancel</button>
+                    <button type="button" class="btn btn-default" ng-click="HousingScope.ResetForms('#addModal', 1)">Cancel</button>
                     <button type="submit" class="btn btn-default" ng-click="HousingScope.AddUnit('#addModal')">Confirm</button>
                 </div>
             </div>
@@ -210,7 +210,7 @@
                                             <label for="bGenderMale" class="toggle-left">Male</label>
                                         </div>
                                         <div class="col-md-6 toggle">
-                                            <input type="radio" name="bGender" ng-model="HousingScope.UpdateUnit.GenderName" id="bGenderFemale" value="female" />
+                                            <input type="radio" name="bGender" ng-model="HousingScope.UpdateUnit.GenderName" id="bGenderFemale" value="female" required/>
                                             <label for="bGenderFemale" class="toggle-right">Female</label>
                                         </div>
                                     </div>
@@ -239,7 +239,7 @@
                     <p id="error-1" class="error-message">Can't edit: Max capacity is less than current capacity!</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="HousingScope.ResetForms('#editModal')">Cancel</button>
+                    <button type="button" class="btn btn-default" ng-click="HousingScope.ResetForms('#editModal', 2)">Cancel</button>
                     <button type="submit" class="btn btn-default" ng-click="HousingScope.ModUnit('#editModal')">Confirm</button>
                 </div>
             </div>
@@ -260,7 +260,7 @@
                     <p id="error-1" class="error-message">Can't remove: Associates are still assigned to this unit!</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="HousingScope.ResetForms('#removeModal')">Cancel</button>
+                    <button type="button" class="btn btn-default" ng-click="HousingScope.ResetForms('#removeModal', 1)">Cancel</button>
                     <button type="submit" class="btn btn-default" ng-click="HousingScope.RemoveUnit(HousingScope.CurrentUnit, '#removeModal')">Confirm</button>
                 </div>
             </div>
