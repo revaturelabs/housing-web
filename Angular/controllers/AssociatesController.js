@@ -86,7 +86,7 @@ angular.module("HousingApp")
         };
     }
 
-    $scope.AssociateScope.AddAssociate = function () {
+    $scope.AssociateScope.AddAssociate = function (modal) {
         var temp = $scope.AssociateScope.NewAssociate;
         var person = {
             FirstName: temp.FirstName,
@@ -100,9 +100,9 @@ angular.module("HousingApp")
             HasKeys: temp.HasKeys == "yes" ? true : false,
             NeedsHousing: temp.NeedsHousing == "yes" ? true : false
         };
-        associate.add(person, function(data){
-            if(data.status == 200)
-            {
+        associate.add(person, function(data) {
+            if(data.status == 200) {
+                $scope.AssociateScope.ResetForms(modal);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
@@ -122,9 +122,9 @@ angular.module("HousingApp")
             HasKeys: temp.HasKeys == "yes" ? true : false,
             NeedsHousing: temp.NeedsHousing == "yes" ? true : false
         };
-        associate.update(person.Email, person, function(data){
-            if(data.status == 200)
-            {
+        associate.update(person.Email, person, function(data) {
+            if(data.status == 200) {
+                $scope.AssociateScope.ResetForms(modal);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
@@ -132,11 +132,23 @@ angular.module("HousingApp")
 
     $scope.AssociateScope.RemoveAssociate = function (person) {
         associate.delete(person, function(data){
-            if(data.status == 200)
-            {
+            if(data.status == 200) {
+                $scope.AssociateScope.ResetForms(modal);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
+    }
+
+    $scope.AssociateScope.ResetForms = function (modal) {
+        var forms = document.getElementsByClassName("inputForms");
+        var errors = document.getElementsByClassName("error-message");
+        for(var i = 0; i < forms.length; i++) {
+            forms[i].reset();
+        }
+        for(var i = 0; i < errors.length; i++) {
+            errors[i].style.display = "none";
+        }
+        $(modal).modal('hide');
     }
 
     var getDateFormat = function(d)

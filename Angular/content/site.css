@@ -306,7 +306,10 @@ progress::-webkit-progress-value {
 }
 
 input[type=radio], input[type=checkbox] {
-    display: none;
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    margin: 0;
 }
 
 input[type=radio]:checked+.pill, input[type=checkbox]:checked+.pill {
@@ -428,6 +431,11 @@ body.modal-open {
     font-variant: small-caps;
 }
 
+input[type=radio]:focus+.toggle-left, input[type=radio]:focus+.toggle-right,
+input[type=radio]:hover+.toggle-left, input[type=radio]:hover+.toggle-right {
+    border: 1px solid rgba(242, 106, 37, 1);
+}
+
 input[type=radio]:checked+.toggle-left, input[type=radio]:checked+.toggle-right {
     background-color: rgba(242, 106, 37, 1);
     color: white;
@@ -471,4 +479,8 @@ input::-webkit-inner-spin-button {
     display: none;
 }
 
+.error-message {
+    color: red;
+    display: none;
+}
 
