@@ -102,7 +102,7 @@ angular.module("HousingApp")
         };
         associate.add(person, function(data) {
             if(data.status == 200) {
-                $scope.AssociateScope.ResetForms(modal);
+                $scope.AssociateScope.ResetForms(modal, 1);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
@@ -124,7 +124,7 @@ angular.module("HousingApp")
         };
         associate.update(person.Email, person, function(data) {
             if(data.status == 200) {
-                $scope.AssociateScope.ResetForms(modal);
+                $scope.AssociateScope.ResetForms(modal, 2);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
@@ -133,17 +133,19 @@ angular.module("HousingApp")
     $scope.AssociateScope.RemoveAssociate = function (person) {
         associate.delete(person, function(data){
             if(data.status == 200) {
-                $scope.AssociateScope.ResetForms(modal);
+                $scope.AssociateScope.ResetForms(modal, 1);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
     }
 
-    $scope.AssociateScope.ResetForms = function (modal) {
+    $scope.AssociateScope.ResetForms = function (modal, mode) {
         var forms = document.getElementsByClassName("inputForms");
         var errors = document.getElementsByClassName("error-message");
-        for(var i = 0; i < forms.length; i++) {
-            forms[i].reset();
+        if (mode == 1) {
+            for(var i = 0; i < forms.length; i++) {
+                forms[i].reset();
+            }
         }
         for(var i = 0; i < errors.length; i++) {
             errors[i].style.display = "none";

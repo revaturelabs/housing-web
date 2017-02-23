@@ -263,7 +263,7 @@ angular.module("HousingApp")
         };
         housingcomplex.add(complex, function(data) {
             if(data.status == 200) {
-                $scope.HousingScope.ResetForms(modal);
+                $scope.HousingScope.ResetForms(modal, 1);
                 $scope.HousingScope.UpdateAjax();
             }
         });
@@ -278,7 +278,7 @@ angular.module("HousingApp")
         };
         housingcomplex.update(complex.Name, complex, function(data) {
             if(data.status == 200) {
-                $scope.HousingScope.ResetForms(modal);
+                $scope.HousingScope.ResetForms(modal, 2);
                 $scope.HousingScope.UpdateAjax();
             }
         });
@@ -296,7 +296,7 @@ angular.module("HousingApp")
         };
         housingunit.add(unit, function(data) {
             if(data.status == 200) {
-                $scope.HousingScope.ResetForms(modal);
+                $scope.HousingScope.ResetForms(modal, 1);
                 $scope.HousingScope.UpdateAjax();
             }
         });
@@ -322,7 +322,7 @@ angular.module("HousingApp")
         if (unit.MaxCapacity >= emails.length) {
             housingunit.update(unit.HousingUnitName, unit, function(data) {
                 if(data.status == 200) {
-                    $scope.HousingScope.ResetForms(modal);
+                    $scope.HousingScope.ResetForms(modal, 2);
                     $scope.HousingScope.UpdateAjax();
                 }
             });
@@ -344,7 +344,7 @@ angular.module("HousingApp")
         if (!check) {
             housingcomplex.delete(complex.Name, function(data){
                 if (data.status == 200) {
-                    $scope.HousingScope.ResetForms(modal);
+                    $scope.HousingScope.ResetForms(modal), 1;
                     $scope.HousingScope.UpdateAjax();
                 }
             });
@@ -361,7 +361,7 @@ angular.module("HousingApp")
         if (unit.Capacity == 0) {
             housingunit.delete(unit.HousingUnitName, function(data) {
                 if (data.status == 200) {
-                    $scope.HousingScope.ResetForms(modal);
+                    $scope.HousingScope.ResetForms(modal, 1);
                     $scope.HousingScope.UpdateAjax();
                 }
             });
@@ -372,11 +372,13 @@ angular.module("HousingApp")
         }
     }
 
-    $scope.HousingScope.ResetForms = function (modal) {
+    $scope.HousingScope.ResetForms = function (modal, mode) {
         var forms = document.getElementsByClassName("inputForms");
         var errors = document.getElementsByClassName("error-message");
-        for(var i = 0; i < forms.length; i++) {
-            forms[i].reset();
+        if (mode == 1) {
+            for(var i = 0; i < forms.length; i++) {
+                forms[i].reset();
+            }
         }
         for(var i = 0; i < errors.length; i++) {
             errors[i].style.display = "none";

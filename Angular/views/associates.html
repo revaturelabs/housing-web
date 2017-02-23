@@ -228,7 +228,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#addModal')">Cancel</button>
+                    <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#addModal', 1)">Cancel</button>
                     <button type="submit" class="btn btn-default" ng-click="$scope.AssociateScope.AddAssociate('#addModal')">Confirm</button>
                 </div>
             </div>
@@ -389,7 +389,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#editModal')">Cancel</button>
+                    <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#editModal', 2)">Cancel</button>
                     <button type="submit" class="btn btn-default" ng-click="AssociateScope.ModAssociate('#editModal')">Confirm</button>
                 </div>
             </div>
@@ -409,7 +409,7 @@
                     Are you sure you want to remove {{AssociateScope.CurrentAssociate.FirstName + " " + AssociateScope.CurrentAssociate.LastName}} from all Associates?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#removeModal')">Cancel</button>
+                    <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#removeModal', 1)">Cancel</button>
                     <button type="submit" class="btn btn-default" ng-click="AssociateScope.RemoveAssociate(AssociateScope.CurrentAssociate.Email, '#removeModal')">Confirm</button>
                 </div>
             </div>
