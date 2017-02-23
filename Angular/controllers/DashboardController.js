@@ -253,8 +253,8 @@ angular.module("HousingApp")
         assigningCtrls[1].style.display = "inline-block";
     }
 
-    $scope.DashboardScope.StopAssigning = function () {
-        assignAssociate($scope.DashboardScope.CurrentUnit);
+    $scope.DashboardScope.StopAssigning = function (modal) {
+        assignAssociate($scope.DashboardScope.CurrentUnit, modal);
         $scope.DashboardScope.CurrentUnit = {};
         $scope.DashboardScope.Filters.Current = "";
         var housingFilterBtn;
@@ -365,8 +365,8 @@ angular.module("HousingApp")
         title.innerHTML = "Assigned Associates";
     }
 
-    $scope.DashboardScope.StopRemoving = function () {
-        removeAssociate($scope.DashboardScope.CurrentUnit);
+    $scope.DashboardScope.StopRemoving = function (modal) {
+        removeAssociate($scope.DashboardScope.CurrentUnit, modal);
         $scope.DashboardScope.CurrentUnit = {};
         $scope.DashboardScope.Filters.Current = "";
         $scope.DashboardScope.Associates = UnassignedAssociates;
@@ -494,7 +494,6 @@ angular.module("HousingApp")
                 $scope.DashboardScope.Batches.forEach(function(batch) {
                     if(associate.BatchName == batch.Name){
                         associate['Batch'] = batch;
-                        console.log(associate);
                     }
                 }, this);
             }, this);
@@ -626,20 +625,19 @@ angular.module("HousingApp")
         }
     }
 
-    var assignAssociate = function(unit) {
-        $scope.DashboardScope.SelectedAssociates.forEach(function(associate) {
-            if(unit.GenderName == associate.GenderName) {
+    var assignAssociate = function(unit, modal) {
+        var error1 = document.getElementById("error-1");
+        var error2 = document.getElementById("error-2");
+        $scope.DashboardScope.SelectedAssociates.forEach(function (associate) {
+            if (unit.GenderName == associate.GenderName && unit.MaxCapacity != unit.Capacity) {
                 var d1 = new Date();
                 var d2 = new Date();
 
-                if(d1.getMonth() + 3 > 11)
-                {
+                if (d1.getMonth() + 3 > 11) {
                     var diff = (d2.getMonth() + 3) - 11;
                     d2.setMonth(diff - 1);
                     d2.setFullYear(d2.getFullYear() + 1);
-                }
-                else
-                {
+                } else {
                     d2.setMonth(d2.getMonth() + 3);
                 }
 
@@ -651,26 +649,32 @@ angular.module("HousingApp")
                     HousingDataAltId: null
                 };
 
-                housingdata.add(temp, function(data){
-                    if(data.status == 200)
-                    {
+                housingdata.add(temp, function(data) {
+                    if (data.status == 200) {
+                        $scope.DashboardScope.ResetForms(modal);
                         $scope.DashboardScope.UpdateAjax();
                     }
                 });
+            } else {
+                if (unit.GenderName != associate.GenderName) {
+                    error1.style.display = "block";
+                }
+                if (unit.MaxCapacity == unit.Capacity) {
+                    error2.style.display = "block";
+                }
             }
         }, this);
         
         $scope.DashboardScope.ResetSelection();
     }
 
-    var removeAssociate = function(unit) {
+    var removeAssociate = function(unit, modal) {
         $scope.DashboardScope.SelectedAssociates.forEach(function(associate) {
             $scope.DashboardScope.Data.forEach(function(data) {
-                if(data.AssociateEmail == associate.Email && data.HousingUnitName == unit.HousingUnitName)
-                {
+                if(data.AssociateEmail == associate.Email && data.HousingUnitName == unit.HousingUnitName) {
                     housingdata.delete(data.HousingDataAltId, function(data){
-                        if(data.status == 200)
-                        {
+                        if(data.status == 200) {
+                            $scope.DashboardScope.ResetForms(modal);
                             $scope.DashboardScope.UpdateAjax();
                         }
                     });
@@ -679,6 +683,18 @@ angular.module("HousingApp")
         }, this);
         
         $scope.DashboardScope.ResetSelection();
+    }
+
+    $scope.DashboardScope.ResetForms = function (modal) {
+        var forms = document.getElementsByClassName("inputForms");
+        var errors = document.getElementsByClassName("error-message");
+        for(var i = 0; i < forms.length; i++) {
+            forms[i].reset();
+        }
+        for(var i = 0; i < errors.length; i++) {
+            errors[i].style.display = "none";
+        }
+        $(modal).modal('hide');
     }
 
     var inArray = function(array, item)

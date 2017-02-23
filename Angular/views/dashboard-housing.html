@@ -137,48 +137,54 @@
 
 <!-- Add Associates Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header modal-header-revature">
-                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Assign to {{DashboardScope.Filters.Current}}</h2>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to assign the following associates to {{DashboardScope.Filters.Current}}?
-                <ul>
-                    <li ng-repeat="item in DashboardScope.SelectedAssociates">
-                        {{item.FirstName + " " + item.LastName}}
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#addModal" ng-click="DashboardScope.StopAssigning()">Confirm</button>
+    <form class="inputForms">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-revature">
+                    <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Assign to {{DashboardScope.Filters.Current}}</h2>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to assign the following associates to {{DashboardScope.Filters.Current}}?
+                    <ul>
+                        <li ng-repeat="item in DashboardScope.SelectedAssociates">
+                            {{item.FirstName + " " + item.LastName}}
+                        </li>
+                    </ul>
+                    <p id="error-1" class="error-message">Can't assign: Associate's gender doesn't match unit's!</p>
+                    <p id="error-2" class="error-message">Can't assign: Apartment unit is full!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="DashboardScope.ResetForms('#addModal')">Cancel</button>
+                    <button type="submit" class="btn btn-default" ng-click="DashboardScope.StopAssigning('#addModal')">Confirm</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <!-- Remove Associates Modal -->
 <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header modal-header-revature">
-                <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Remove from {{DashboardScope.Filters.Current}}</h2>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to remove the following associates from {{DashboardScope.Filters.Current}}?
-                <ul>
-                    <li ng-repeat="item in DashboardScope.SelectedAssociates">
-                        {{item.FirstName + " " + item.LastName}}
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal">Cancel</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#removeModal" ng-click="DashboardScope.StopRemoving()">Confirm</button>
+    <form class="inputForms">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header modal-header-revature">
+                    <h2 class="modal-title center text-uppercase no-wrap" id="myModalLabel">Remove from {{DashboardScope.Filters.Current}}</h2>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to remove the following associates from {{DashboardScope.Filters.Current}}?
+                    <ul>
+                        <li ng-repeat="item in DashboardScope.SelectedAssociates">
+                            {{item.FirstName + " " + item.LastName}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="DashboardScope.ResetForms('#removeModal')">Cancel</button>
+                    <button type="submit" class="btn btn-default" ng-click="DashboardScope.StopRemoving('#removeModal')">Confirm</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
    
 

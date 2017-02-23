@@ -254,37 +254,37 @@ angular.module("HousingApp")
         };
     }
 
-    $scope.HousingScope.AddComplex = function () {
+    $scope.HousingScope.AddComplex = function (modal) {
         var temp = $scope.HousingScope.NewComplex;
         var complex = {
             Name: temp.Name,
             Address: temp.Street + ", " + temp.City + ", " + temp.State + " " + temp.ZipCode,
             PhoneNumber: temp.PhoneNumber
         };
-        housingcomplex.add(complex, function(data){
-            if(data.status == 200)
-            {
+        housingcomplex.add(complex, function(data) {
+            if(data.status == 200) {
+                $scope.HousingScope.ResetForms(modal);
                 $scope.HousingScope.UpdateAjax();
             }
         });
     }
 
-    $scope.HousingScope.ModComplex = function () {
+    $scope.HousingScope.ModComplex = function (modal) {
         var temp = $scope.HousingScope.UpdateComplex;
         var complex = {
             Name: temp.Name,
             Address: temp.Street + ", " + temp.City + ", " + temp.State + " " + temp.ZipCode,
             PhoneNumber: temp.PhoneNumber
         };
-        housingcomplex.update(complex.Name, complex, function(data){
-            if(data.status == 200)
-            {
+        housingcomplex.update(complex.Name, complex, function(data) {
+            if(data.status == 200) {
+                $scope.HousingScope.ResetForms(modal);
                 $scope.HousingScope.UpdateAjax();
             }
         });
     }
 
-    $scope.HousingScope.AddUnit = function () {
+    $scope.HousingScope.AddUnit = function (modal) {
         var temp = $scope.HousingScope.NewUnit;
         var unit = {
             HousingUnitName: $scope.HousingScope.CurrentComplex + " " + temp.AptNumber,
@@ -294,15 +294,16 @@ angular.module("HousingApp")
             HousingComplexName: $scope.HousingScope.CurrentComplex,
             LeaseEndDate: getDateFormat(temp.LeaseEndDate)
         };
-        housingunit.add(unit, function(data){
-            if(data.status == 200)
-            {
+        housingunit.add(unit, function(data) {
+            if(data.status == 200) {
+                $scope.HousingScope.ResetForms(modal);
                 $scope.HousingScope.UpdateAjax();
             }
         });
     }
 
-    $scope.HousingScope.ModUnit = function () {
+    $scope.HousingScope.ModUnit = function (modal) {
+        var error1 = document.getElementById("error-1");
         var temp = $scope.HousingScope.UpdateUnit;
         var unit = {
             HousingUnitName: $scope.HousingScope.CurrentComplex + " " + temp.AptNumber,
@@ -312,30 +313,75 @@ angular.module("HousingApp")
             HousingComplexName: $scope.HousingScope.CurrentComplex,
             LeaseEndDate: getDateFormat(temp.LeaseEndDate)
         };
-        housingunit.update(unit.HousingUnitName, unit, function(data){
-            if(data.status == 200)
-            {
-                $scope.HousingScope.UpdateAjax();
+        var emails = [];
+        $scope.HousingScope.Data.forEach(function(data) {
+            if(data.HousingUnitName == unit.HousingUnitName) {
+                emails.push(data.AssociateEmail);
             }
-        });
+        }, this);
+        if (unit.MaxCapacity >= emails.length) {
+            housingunit.update(unit.HousingUnitName, unit, function(data) {
+                if(data.status == 200) {
+                    $scope.HousingScope.ResetForms(modal);
+                    $scope.HousingScope.UpdateAjax();
+                }
+            });
+        } else {
+            if (unit.MaxCapacity < emails.length) {
+                error1.style.display = "block";
+            }
+        }
     }
 
-    $scope.HousingScope.RemoveComplex = function (complex) {
-        housingcomplex.delete(complex, function(data){
-            if(data.status == 200)
-            {
-                $scope.HousingScope.UpdateAjax();
+    $scope.HousingScope.RemoveComplex = function (complex, modal) {
+        var error1 = document.getElementById("error-1");
+        var check = false;
+        $scope.HousingScope.Units.forEach(function(unit) {
+            if (unit.HousingComplexName == complex.Name) {
+                check = true;
             }
-        });
+        }, this);
+        if (!check) {
+            housingcomplex.delete(complex.Name, function(data){
+                if (data.status == 200) {
+                    $scope.HousingScope.ResetForms(modal);
+                    $scope.HousingScope.UpdateAjax();
+                }
+            });
+        } else {
+            if (check) {
+                error1.style.display = "block";
+            }
+        }
+            
     }
 
-    $scope.HousingScope.RemoveUnit = function (unit) {
-        housingunit.delete(unit, function(data){
-            if(data.status == 200)
-            {
-                $scope.HousingScope.UpdateAjax();
+    $scope.HousingScope.RemoveUnit = function (unit, modal) {
+        var error1 = document.getElementById("error-1");
+        if (unit.Capacity == 0) {
+            housingunit.delete(unit.HousingUnitName, function(data) {
+                if (data.status == 200) {
+                    $scope.HousingScope.ResetForms(modal);
+                    $scope.HousingScope.UpdateAjax();
+                }
+            });
+        } else {
+            if(unit.Capacity > 0) {
+                error1.style.display = "block";
             }
-        });
+        }
+    }
+
+    $scope.HousingScope.ResetForms = function (modal) {
+        var forms = document.getElementsByClassName("inputForms");
+        var errors = document.getElementsByClassName("error-message");
+        for(var i = 0; i < forms.length; i++) {
+            forms[i].reset();
+        }
+        for(var i = 0; i < errors.length; i++) {
+            errors[i].style.display = "none";
+        }
+        $(modal).modal('hide');
     }
 
     var inArray = function(array, item)
