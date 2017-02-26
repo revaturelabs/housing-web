@@ -1,6 +1,9 @@
+/*
+This controller handles the independent Associate page.
+*/
 angular.module("HousingApp")
 .controller("AssociatesCtrl", function($scope, $http, associate, batch) {
-
+    // Scope variables
     $scope.AssociateScope = [];
     $scope.AssociateScope.PageSize = 3;
     $scope.AssociateScope.CurrentPage = 1;
@@ -36,42 +39,46 @@ angular.module("HousingApp")
         Associate: ""
     };
     
+    // Function for updating all arrays with current information from the AJAX services.
     $scope.AssociateScope.UpdateAjax = function() {
-        associate.getAll(function(data){
+        associate.getAll(function(data) {
             $scope.AssociateScope.Associates = data;
             setTimeout(function() {
                 $scope.AssociateScope.LastPage = getLastIndex();
-                if($scope.AssociateScope.LastPage < $scope.AssociateScope.CurrentPage)
-                {
+                if ($scope.AssociateScope.LastPage < $scope.AssociateScope.CurrentPage) {
                     $scope.AssociateScope.CurrentPage = $scope.AssociateScope.LastPage;
                 }
             }, 200);
         });
 
-        batch.getAll(function(data){
+        batch.getAll(function(data) {
             $scope.AssociateScope.Batches = data;
             $scope.AssociateScope.NewAssociate.BatchName = $scope.AssociateScope.Batches[0].Name;
         });
     }
 
+    // Initialize all data from the database.
     $scope.AssociateScope.UpdateAjax();
 
-    $scope.AssociateScope.GoToPage = function (page) {
-        if(page >= 1 && page <= $scope.AssociateScope.LastPage)
-        {
+    // Changes page to the selected page in pagination.
+    $scope.AssociateScope.GoToPage = function(page) {
+        if (page >= 1 && page <= $scope.AssociateScope.LastPage) {
             $scope.AssociateScope.CurrentPage = page;
         }
     }
 
-    $scope.AssociateScope.GetPageClass = function (page) {
+    // Sets the active page to a different class.
+    $scope.AssociateScope.GetPageClass = function(page) {
         return $scope.AssociateScope.CurrentPage == page ? "btn-revature" : "";
     }
 
-    $scope.AssociateScope.GetCurrentAssociate = function (associate) {
+    // Gets current associate.
+    $scope.AssociateScope.GetCurrentAssociate = function(associate) {
         $scope.AssociateScope.CurrentAssociate = associate;
     }
 
-    $scope.AssociateScope.EditAssociate = function (associate) {
+    // Sets the selected associate to the update variable, is called on click.
+    $scope.AssociateScope.EditAssociate = function(associate) {
         $scope.AssociateScope.UpdateAssociate = {
             FirstName: associate.FirstName,
             LastName: associate.LastName,
@@ -86,7 +93,8 @@ angular.module("HousingApp")
         };
     }
 
-    $scope.AssociateScope.AddAssociate = function (modal) {
+    // Creates an associate object then sends it to the database.
+    $scope.AssociateScope.AddAssociate = function(modal) {
         var temp = $scope.AssociateScope.NewAssociate;
         var person = {
             FirstName: temp.FirstName,
@@ -101,14 +109,15 @@ angular.module("HousingApp")
             NeedsHousing: temp.NeedsHousing == "yes" ? true : false
         };
         associate.add(person, function(data) {
-            if(data.status == 200) {
+            if (data.status == 200) {
                 $scope.AssociateScope.ResetForms(modal, 1);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
     }
 
-    $scope.AssociateScope.ModAssociate = function () {
+    // Using the update variable, send the updated associate to the database.
+    $scope.AssociateScope.ModAssociate = function() {
         var temp = $scope.AssociateScope.UpdateAssociate;
         var person = {
             FirstName: temp.FirstName,
@@ -123,38 +132,40 @@ angular.module("HousingApp")
             NeedsHousing: temp.NeedsHousing == "yes" ? true : false
         };
         associate.update(person.Email, person, function(data) {
-            if(data.status == 200) {
+            if (data.status == 200) {
                 $scope.AssociateScope.ResetForms(modal, 2);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
     }
 
-    $scope.AssociateScope.RemoveAssociate = function (person) {
-        associate.delete(person, function(data){
-            if(data.status == 200) {
+    // Removes the selected associate from the database.
+    $scope.AssociateScope.RemoveAssociate = function(person) {
+        associate.delete(person, function(data) {
+            if (data.status == 200) {
                 $scope.AssociateScope.ResetForms(modal, 1);
                 $scope.AssociateScope.UpdateAjax();
             }
         });
     }
 
-    $scope.AssociateScope.ResetForms = function (modal, mode) {
+    // Resets all the form fields, errors, and hides the current modal.
+    $scope.AssociateScope.ResetForms = function(modal, mode) {
         var forms = document.getElementsByClassName("inputForms");
         var errors = document.getElementsByClassName("error-message");
         if (mode == 1) {
-            for(var i = 0; i < forms.length; i++) {
+            for (var i = 0; i < forms.length; i++) {
                 forms[i].reset();
             }
         }
-        for(var i = 0; i < errors.length; i++) {
+        for (var i = 0; i < errors.length; i++) {
             errors[i].style.display = "none";
         }
         $(modal).modal('hide');
     }
 
-    var getDateFormat = function(d)
-    {
+    // Changes the date format for sending to the database.
+    var getDateFormat = function(d) {
         var dd = d.getDate() >= 10 ? d.getDate() : "0" + d.getDate();
         var mm = (d.getMonth() + 1) >= 10 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
         var yyyy = d.getFullYear();
@@ -162,8 +173,8 @@ angular.module("HousingApp")
         return yyyy + "-" + mm + "-" + dd + "T00:00:00";
     }
 
-    var reverseDateFormat = function(d)
-    {
+    // Changes the date format for editting.
+    var reverseDateFormat = function(d) {
         var date = new Date(1, 1, 1, 0, 0, 0, 0);
         date.setDate(d.slice(8,10));
         date.setMonth(d.slice(5,7)-1);
@@ -172,13 +183,9 @@ angular.module("HousingApp")
         return date;
     }
 
-    var getLastIndex = function()
-    {
+    // Gets the last index of the pagination.
+    var getLastIndex = function() {
         var pagin = document.getElementById("associate-pagination");
-        if(pagin == null)
-        {
-            console.log(pagin);
-        }
         var pages = pagin.children[0].children[0].children;
         var count = pages.length - 2;
 

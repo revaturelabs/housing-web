@@ -1,6 +1,9 @@
+/*
+This controller handles both independent Housing Complex and Unit pages.
+*/
 angular.module("HousingApp")
 .controller("HousingCtrl", function($scope, $http, $stateParams, associate, batch, housingcomplex, housingdata, housingunit) {
-
+    // Scope variables
     $scope.HousingScope = [];
     $scope.HousingScope.PageSize1 = 3;
     $scope.HousingScope.PageSize2 = 3;
@@ -54,98 +57,90 @@ angular.module("HousingApp")
         Unit: ""
     };
 
-    $scope.HousingScope.UpdateAjax = function() {
-        associate.getAll(function(data){
+    // Function for updating all arrays with current information from the AJAX services.
+    $scope.HousingScope.UpdateAjax = function () {
+        associate.getAll(function (data) {
             $scope.HousingScope.Associates = data;
             $scope.HousingScope.UpdateUnits();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.HousingScope.LastPage2 = getLastIndex();
-                if($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1)
-                {
+                if ($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1) {
                     $scope.HousingScope.CurrentPage2 = $scope.HousingScope.LastPage2;
                 }
             }, 200);
         });
 
-        batch.getAll(function(data){
+        batch.getAll(function (data) {
             $scope.HousingScope.Batches = data;
             $scope.HousingScope.UpdateUnits();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.HousingScope.LastPage2 = getLastIndex();
-                if($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1)
-                {
+                if ($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1) {
                     $scope.HousingScope.CurrentPage2 = $scope.HousingScope.LastPage2;
                 }
             }, 200);
         });
 
-        housingcomplex.getAll(function(data){
+        housingcomplex.getAll(function (data) {
             $scope.HousingScope.Complexes = data;
             $scope.HousingScope.UpdateUnits();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.HousingScope.LastPage1 = getLastIndex();
-                if($scope.HousingScope.LastPage1 < $scope.HousingScope.CurrentPage1 && $scope.HousingScope.CurrentPage1 > 1)
-                {
+                if ($scope.HousingScope.LastPage1 < $scope.HousingScope.CurrentPage1 && $scope.HousingScope.CurrentPage1 > 1) {
                     $scope.HousingScope.CurrentPage1 = $scope.HousingScope.LastPage1;
                 }
             }, 200);
         });
 
-        housingdata.getAll(function(data){
+        housingdata.getAll(function (data) {
             $scope.HousingScope.Data = data;
             $scope.HousingScope.UpdateUnits();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.HousingScope.LastPage2 = getLastIndex();
-                if($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1)
-                {
+                if ($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1) {
                     $scope.HousingScope.CurrentPage2 = $scope.HousingScope.LastPage2;
                 }
             }, 200);
         });
 
-        housingunit.getAll(function(data){
+        housingunit.getAll(function (data) {
             $scope.HousingScope.Units = data;
             $scope.HousingScope.UpdateUnits();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.HousingScope.LastPage2 = getLastIndex();
-                if($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1)
-                {
+                if ($scope.HousingScope.LastPage2 < $scope.HousingScope.CurrentPage2 && $scope.HousingScope.CurrentPage2 > 1) {
                     $scope.HousingScope.CurrentPage2 = $scope.HousingScope.LastPage2;
                 }
             }, 200);
         });
     }
     
+    // Initialize all data from the database.
     $scope.HousingScope.UpdateAjax();
 
-    $scope.HousingScope.GoToPage = function (version, page)
-    {
-        if(version == 1 && (page >= 1 && page <= $scope.HousingScope.LastPage1))
-        {
+    // Changes page to the selected page in pagination.
+    $scope.HousingScope.GoToPage = function (version, page) {
+        if (version == 1 && (page >= 1 && page <= $scope.HousingScope.LastPage1)) {
             $scope.HousingScope.CurrentPage1 = page;
-        }
-        else if(version == 2 && (page >= 1 && page <= $scope.HousingScope.LastPage2))
-        {
+        } else if(version == 2 && (page >= 1 && page <= $scope.HousingScope.LastPage2)) {
             $scope.HousingScope.CurrentPage2 = page;
         }
     }
 
+    // Sets the active page to a different class.
     $scope.HousingScope.GetPageClass = function (version, page) {
-        if(version == 1)
-        {
+        if (version == 1) {
             return $scope.HousingScope.CurrentPage1 == page ? "btn-revature" : "";
-        }
-        else if(version == 2)
-        {
+        } else if (version == 2) {
             return $scope.HousingScope.CurrentPage2 == page ? "btn-revature" : "";
         }
     }
 
+    // Adds more information to the standard unit object.
     $scope.HousingScope.UpdateUnits = function()
     {
-        if($scope.HousingScope.Units.length > 0 && $scope.HousingScope.Data.length > 0 && $scope.HousingScope.Associates.length > 0 && $scope.HousingScope.Batches.length > 0)
-        {
-            $scope.HousingScope.Units.forEach(function(unit) {
+        if ($scope.HousingScope.Units.length > 0 && $scope.HousingScope.Data.length > 0 && $scope.HousingScope.Associates.length > 0 && $scope.HousingScope.Batches.length > 0) {
+            $scope.HousingScope.Units.forEach(function (unit) {
                 var currentCap = 0;
                 var currentCars = 0;
                 var techs = [];
@@ -153,28 +148,24 @@ angular.module("HousingApp")
                 var emails = [];
                 var occupants = [];
 
-                if(unit.HousingComplexName == $scope.HousingScope.CurrentComplex)
-                {
+                if (unit.HousingComplexName == $scope.HousingScope.CurrentComplex) {
                     $scope.HousingScope.Data.forEach(function(data) {
-                        if(data.HousingUnitName == unit.HousingUnitName)
-                        {
+                        if (data.HousingUnitName == unit.HousingUnitName) {
                             emails.push(data.AssociateEmail);
                         }
                     }, this);
 
-                    emails.forEach(function(email) {
-                        $scope.HousingScope.Associates.forEach(function(occupant) {
-                            if(email == occupant.Email)
+                    emails.forEach(function (email) {
+                        $scope.HousingScope.Associates.forEach(function (occupant) {
+                            if (email == occupant.Email)
                             {
                                 currentCap++;
                             
-                                if(occupant.HasCar)
-                                {
+                                if (occupant.HasCar) {
                                     currentCars++;
                                 }
 
-                                if(!inArray(batches, occupant.BatchName))
-                                {
+                                if (!inArray(batches, occupant.BatchName)) {
                                     batches.push(occupant.BatchName);
                                 }
 
@@ -183,12 +174,10 @@ angular.module("HousingApp")
                         }, this);
                     }, this);
 
-                    batches.forEach(function(name) {
-                        $scope.HousingScope.Batches.forEach(function(batch) {
-                            if(batch.Name == name)
-                            {
-                                if(!inArray(techs, batch.Technology))
-                                {
+                    batches.forEach(function (name) {
+                        $scope.HousingScope.Batches.forEach(function (batch) {
+                            if (batch.Name == name) {
+                                if (!inArray(techs, batch.Technology)) {
                                     techs.push(batch.Technology);
                                 }
                             }
@@ -201,11 +190,10 @@ angular.module("HousingApp")
                     unit['Batch'] = batches;
                     unit['Occupants'] = occupants;
 
-                    if($scope.HousingScope.CurrentUnits.length > 0)
-                    {
+                    if ($scope.HousingScope.CurrentUnits.length > 0) {
                         var check = 0;
                         for(var i = 0; i < $scope.HousingScope.CurrentUnits.length; i++) {
-                            if($scope.HousingScope.CurrentUnits[i].HousingUnitName == unit.HousingUnitName) {
+                            if ($scope.HousingScope.CurrentUnits[i].HousingUnitName == unit.HousingUnitName) {
                                 $scope.HousingScope.CurrentUnits[i] = unit;
                                 check++;
                             }
@@ -214,8 +202,7 @@ angular.module("HousingApp")
                         if(check == 0) {
                             $scope.HousingScope.CurrentUnits.push(unit);
                         }
-                    }
-                    else{
+                    } else{
                         $scope.HousingScope.CurrentUnits.push(unit);
                     }
                 }
@@ -223,14 +210,17 @@ angular.module("HousingApp")
         }
     }
 
+    // Gets current housing complex.
     $scope.HousingScope.GetCurrentComplex = function (complex) {
         $scope.HousingScope.CurrentHousing = complex;
     }
 
+    // Gets current housing unit.
     $scope.HousingScope.GetCurrentUnit = function (unit) {
         $scope.HousingScope.CurrentUnit = unit;
     }
 
+    // Sets the selected complex to the update variable, is called on click.
     $scope.HousingScope.EditComplex = function (complex) {
         var addressObj = splitAddress(complex.Address);
         $scope.HousingScope.UpdateComplex = {
@@ -243,6 +233,7 @@ angular.module("HousingApp")
         };
     }
 
+    // Sets the selected unit to the update variable, is called on click.
     $scope.HousingScope.EditUnit = function (unit) {
         $scope.HousingScope.UpdateUnit = {
             HousingUnitName: unit.HousingUnitName,
@@ -254,6 +245,7 @@ angular.module("HousingApp")
         };
     }
 
+    // Creates a complex object then sends it to the database.
     $scope.HousingScope.AddComplex = function (modal) {
         var temp = $scope.HousingScope.NewComplex;
         var complex = {
@@ -262,13 +254,14 @@ angular.module("HousingApp")
             PhoneNumber: temp.PhoneNumber
         };
         housingcomplex.add(complex, function(data) {
-            if(data.status == 200) {
+            if (data.status == 200) {
                 $scope.HousingScope.ResetForms(modal, 1);
                 $scope.HousingScope.UpdateAjax();
             }
         });
     }
 
+    // Using the update variable, send the updated complex to the database.
     $scope.HousingScope.ModComplex = function (modal) {
         var temp = $scope.HousingScope.UpdateComplex;
         var complex = {
@@ -276,14 +269,15 @@ angular.module("HousingApp")
             Address: temp.Street + ", " + temp.City + ", " + temp.State + " " + temp.ZipCode,
             PhoneNumber: temp.PhoneNumber
         };
-        housingcomplex.update(complex.Name, complex, function(data) {
-            if(data.status == 200) {
+        housingcomplex.update(complex.Name, complex, function (data) {
+            if (data.status == 200) {
                 $scope.HousingScope.ResetForms(modal, 2);
                 $scope.HousingScope.UpdateAjax();
             }
         });
     }
 
+    // Creates a unit object then sends it to the database.
     $scope.HousingScope.AddUnit = function (modal) {
         var temp = $scope.HousingScope.NewUnit;
         var unit = {
@@ -294,7 +288,7 @@ angular.module("HousingApp")
             HousingComplexName: $scope.HousingScope.CurrentComplex,
             LeaseEndDate: getDateFormat(temp.LeaseEndDate)
         };
-        housingunit.add(unit, function(data) {
+        housingunit.add(unit, function (data) {
             if(data.status == 200) {
                 $scope.HousingScope.ResetForms(modal, 1);
                 $scope.HousingScope.UpdateAjax();
@@ -302,6 +296,7 @@ angular.module("HousingApp")
         });
     }
 
+    // Using the update variable, send the updated unit to the database.
     $scope.HousingScope.ModUnit = function (modal) {
         var error1 = document.getElementById("error-1");
         var temp = $scope.HousingScope.UpdateUnit;
@@ -314,13 +309,13 @@ angular.module("HousingApp")
             LeaseEndDate: getDateFormat(temp.LeaseEndDate)
         };
         var emails = [];
-        $scope.HousingScope.Data.forEach(function(data) {
+        $scope.HousingScope.Data.forEach(function (data) {
             if(data.HousingUnitName == unit.HousingUnitName) {
                 emails.push(data.AssociateEmail);
             }
         }, this);
         if (unit.MaxCapacity >= emails.length) {
-            housingunit.update(unit.HousingUnitName, unit, function(data) {
+            housingunit.update(unit.HousingUnitName, unit, function (data) {
                 if(data.status == 200) {
                     $scope.HousingScope.ResetForms(modal, 2);
                     $scope.HousingScope.UpdateAjax();
@@ -333,16 +328,17 @@ angular.module("HousingApp")
         }
     }
 
+    // Removes the selected complex from the database.
     $scope.HousingScope.RemoveComplex = function (complex, modal) {
         var error1 = document.getElementById("error-1");
         var check = false;
-        $scope.HousingScope.Units.forEach(function(unit) {
+        $scope.HousingScope.Units.forEach(function (unit) {
             if (unit.HousingComplexName == complex.Name) {
                 check = true;
             }
         }, this);
         if (!check) {
-            housingcomplex.delete(complex.Name, function(data){
+            housingcomplex.delete(complex.Name, function (data){
                 if (data.status == 200) {
                     $scope.HousingScope.ResetForms(modal), 1;
                     $scope.HousingScope.UpdateAjax();
@@ -356,10 +352,11 @@ angular.module("HousingApp")
             
     }
 
+    // Removes the selected unit from the database.
     $scope.HousingScope.RemoveUnit = function (unit, modal) {
         var error1 = document.getElementById("error-1");
         if (unit.Capacity == 0) {
-            housingunit.delete(unit.HousingUnitName, function(data) {
+            housingunit.delete(unit.HousingUnitName, function (data) {
                 if (data.status == 200) {
                     $scope.HousingScope.ResetForms(modal, 1);
                     $scope.HousingScope.UpdateAjax();
@@ -372,6 +369,7 @@ angular.module("HousingApp")
         }
     }
 
+    // Resets all the form fields, errors, and hides the current modal.
     $scope.HousingScope.ResetForms = function (modal, mode) {
         var forms = document.getElementsByClassName("inputForms");
         var errors = document.getElementsByClassName("error-message");
@@ -386,19 +384,17 @@ angular.module("HousingApp")
         $(modal).modal('hide');
     }
 
-    var inArray = function(array, item)
-    {
-        for(var i = 0; i < array.length; i++)
-        {
-            if(array[i] == item)
-            {
+    // Checks to see if an item is in an array.
+    var inArray = function (array, item)  {
+        for(var i = 0; i < array.length; i++) {
+            if (array[i] == item) {
                 return true;
             }
         }
     }
 
-    var splitAddress = function(address)
-    {
+    // Splits the address into an address object for editting.
+    var splitAddress = function(address) {
         var result1 = address.split(", ");
         var result2 = result1[2].split(" ");
 
@@ -412,8 +408,8 @@ angular.module("HousingApp")
         return addressObj;
     }
 
-    var getDateFormat = function(d)
-    {
+    // Changes the date format for sending to the database.
+    var getDateFormat = function(d) {
         var dd = d.getDate() >= 10 ? d.getDate() : "0" + d.getDate();
         var mm = (d.getMonth() + 1) >= 10 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
         var yyyy = d.getFullYear();
@@ -421,8 +417,8 @@ angular.module("HousingApp")
         return yyyy + "-" + mm + "-" + dd + "T00:00:00";
     }
 
-    var reverseDateFormat = function(d)
-    {
+    // Changes the date format for editting.
+    var reverseDateFormat = function(d) {
         var date = new Date(1, 1, 1, 0, 0, 0, 0);
         date.setDate(d.slice(8,10));
         date.setMonth(d.slice(5,7)-1);
@@ -431,13 +427,9 @@ angular.module("HousingApp")
         return date;
     }
 
-    var getLastIndex = function()
-    {
+    // Gets the last index of the pagination.
+    var getLastIndex = function() {
         var pagin = document.getElementById("housing-pagination");
-        if(pagin == null)
-        {
-            console.log(pagin);
-        }
         var pages = pagin.children[0].children[0].children;
         var pageCount = pages.length - 2;
 

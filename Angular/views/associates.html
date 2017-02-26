@@ -41,7 +41,7 @@
                         <p>DOB: {{item.DateOfBirth | changedate}}</p>
                         <p>Needs Housing: {{item.NeedsHousing | bool}}</p>
                         <p>Has a Car: {{item.HasCar | bool}}</p>
-                        <p>Has keys: {{item.HasKeys | bool}}</p>
+                        <p>Has Keys: {{item.HasKeys | bool}}</p>
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#removeModal" ng-click="AssociateScope.GetCurrentAssociate(item)">
@@ -229,7 +229,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="AssociateScope.ResetForms('#addModal', 1)">Cancel</button>
-                    <button type="submit" class="btn btn-default" ng-click="$scope.AssociateScope.AddAssociate('#addModal')">Confirm</button>
+                    <button type="submit" class="btn btn-default" ng-click="AssociateScope.AddAssociate('#addModal')">Confirm</button>
                 </div>
             </div>
         </div>
