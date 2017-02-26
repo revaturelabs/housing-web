@@ -1,3 +1,6 @@
+/*
+This file creates constants of main API URLs for the services to grab.
+*/
 angular.module("HousingApp")
 .constant("HousingComplexURL", "http://34.193.92.187/housinglogic/api/housingcomplex/")
 .constant("HousingDataURL", "http://34.193.92.187/housinglogic/api/housingdata/")

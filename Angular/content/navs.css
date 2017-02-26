@@ -1,0 +1,38 @@
+.navbar.navbar-default {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.navbar-brand img {
+    height: 7vh;
+}
+
+.navbar-revature {
+    padding-top: 2em;
+}
+
+.nav.navbar-nav.navbar-right li {
+    padding: 0 1em;
+}
+
+.nav.navbar-nav.navbar-right li a {
+    transition: all 0s;
+    padding: 1em 0em;
+    padding-bottom: .2em;
+    font-weight: 700;
+    font-size: 1.15em;
+    font-variant: small-caps;
+    color: #555;
+    margin-bottom: .15em;
+}
+
+.nav.navbar-nav.navbar-right li a:hover {
+    border-bottom: .15em solid #f26925;
+    margin-bottom: 0em;
+    cursor: pointer;
+}
+
+.nav.navbar-nav.navbar-right li.logged {
+    visibility: hidden;
+}

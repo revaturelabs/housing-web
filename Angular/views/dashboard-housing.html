@@ -120,7 +120,7 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.FilterMode | pagecount:DashboardScope.HousingPageSize">
+                <li ng-repeat="item in DashboardScope.Units | hfilters:DashboardScope.Filters:DashboardScope.FilterMode | selected:DashboardScope.CurrentUnit | pagecount:DashboardScope.HousingPageSize">
                     <a class="btn btn-default form-control" ng-click="DashboardScope.GoToPage(2, $index + 1)" ng-class="DashboardScope.GetPageClass(2, $index + 1)">
                         {{$index + 1}}
                     </a>

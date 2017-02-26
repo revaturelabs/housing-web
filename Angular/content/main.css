@@ -1,0 +1,144 @@
+@charset "UTF-8";
+
+@import url("animations.css");
+@import url("inputs.css");
+@import url("modals.css");
+@import url("navs.css");
+@import url("panels.css");
+
+html, body {
+    overflow: hidden;
+    height: 100%;
+}
+
+.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .container, .fluid-container {
+    padding-right: 1.90vh;
+    padding-left: 1.90vh;
+}
+
+html, body, button, .btn {
+    font-size: 1.84vh;
+}
+
+.btn-sm {
+    font-size: 1.6vh;
+}
+
+.row {
+    margin-right: -1.90vh;
+    margin-left: -1.90vh;
+}
+
+hr {
+    margin-top: 2.4vh;
+    margin-bottom: 2.4vh;
+}
+
+.no-wrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-md-9 h1 {
+    font-size: 3em;
+    font-variant: small-caps;
+    font-weight: 500;
+}
+
+#dashboard-left{
+    border: 2px solid rgba(0,0,0,.1);
+    padding-top: 1.72vh;
+    border-left: none;
+    height: 100%;
+}
+
+#dashboard-right{
+    border: 2px solid rgba(0,0,0,.1);
+    padding-top: 1.72vh;
+    border-right: none;
+    height: 100%;
+}
+
+.view-content {
+    border-top: 2px solid rgba(0,0,0,.1);
+    border-bottom: 2px solid rgba(0,0,0,.1);
+}
+
+.address {
+    white-space: pre;
+}
+
+#dashboard-housing, #dashboard-associate {
+    height: 3.2em;
+}
+
+#dashboard-housing h1, #dashboard-associate h1 {
+    font-size: 2.5em;
+    font-variant: small-caps;
+    font-weight: 500;
+    margin: 0;
+}
+
+.housing-occupants {
+    display: none;
+}
+
+.housing-occupants.current {
+    display: block;
+}
+
+.col-md-4 #dashboard-associate h1 {
+    font-size: 1.75em;
+}
+
+#housing-content, #associate-content {
+    overflow-y: hidden;
+    height: 32.75em;
+}
+
+#associate-filters, #housing-filters {
+    overflow: hidden;
+    height: 0;
+    margin: 0em 1em;
+}
+
+#housing-filters h3, #associate-filters h3 {
+    font-size: 2vh;
+    font-variant: small-caps;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 0.55em;
+}
+
+#housing-filters .fluid-container, #associate-filters .fluid-container {
+    width: 56em;
+}
+
+#housing-filters .fluid-container .col-md-6, #housing-filters .fluid-container .col-md-12,
+#associate-filters .fluid-container .col-md-6, #associate-filters .fluid-container .col-md-12 {
+    margin-top: 0.15em;
+}
+
+#housing-filters .fluid-container .col-md-4, #housing-filters .fluid-container .col-md-2,
+#associate-filters .fluid-container .col-md-4, #associate-filters .fluid-container .col-md-2 {
+    width: 8.5em;
+}
+
+.row.hr-row {
+    margin-right: 0;
+    margin-left: 0;  
+}
+
+.min-padding {
+    padding: 0 1.84vh;
+}
+
+.max-padding {
+    padding: 1.84vh;
+}
+
+.error-message {
+    color: red;
+    display: none;
+}

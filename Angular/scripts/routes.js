@@ -1,3 +1,6 @@
+/*
+This file creates all the states used in this single page application using UI-Router.
+*/
 angular.module('HousingApp', ['ui.router'])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('');

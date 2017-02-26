@@ -1,6 +1,10 @@
+/*
+This controller handles everything on the dashboard, it is the biggest controller as it's
+essentially Housing and Associate controllers combined, with functions of it's own.
+*/
 angular.module("HousingApp")
-.controller("DashboardCtrl", function($scope, $http, $state, $stateParams, associate, batch, housingcomplex, housingdata, housingunit) {
-
+.controller("DashboardCtrl", function ($scope, $http, $state, associate, batch, housingcomplex, housingdata, housingunit) {
+    // Scope variables
     $scope.DashboardScope = [];
     $scope.DashboardScope.AssociatePageSize = 9;
     $scope.DashboardScope.HousingPageSize = 3;
@@ -30,83 +34,98 @@ angular.module("HousingApp")
         Current: ""
     };
 
+    // Local variables
     var AllAssociates = [];
     var UnassignedAssociates = [];
 
-    $scope.DashboardScope.UpdateAjax = function() {
-        associate.getAll(function(data){
+    // Function for updating all arrays with current information from the AJAX services.
+    $scope.DashboardScope.UpdateAjax = function () {
+        associate.getAll(function (data) {
             AllAssociates = data;
             $scope.DashboardScope.UpdateUnits();
             $scope.DashboardScope.UpdateAssociates();
+            setTimeout(function () {
+                $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
+            }, 200);
         });
 
-        associate.getUnassigned(function(data){
+        associate.getUnassigned(function (data) {
             UnassignedAssociates = data;
             $scope.DashboardScope.Associates = UnassignedAssociates;
             $scope.DashboardScope.UpdateUnits();
             $scope.DashboardScope.UpdateAssociates();
+            setTimeout(function () {
+                $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
+            }, 200);
         });
 
-        batch.getAll(function(data){
+        batch.getAll(function (data) {
             $scope.DashboardScope.Batches = data;
             $scope.DashboardScope.UpdateUnits();
             $scope.DashboardScope.UpdateAssociates();
+            setTimeout(function () {
+                $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
+            }, 200);
         });
 
-        housingcomplex.getAll(function(data){
+        housingcomplex.getAll(function (data) {
             $scope.DashboardScope.Complexes = data;
             $scope.DashboardScope.UpdateUnits();
+            setTimeout(function () {
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
+            }, 200);
         });
 
-        housingdata.getAll(function(data){
+        housingdata.getAll(function (data) {
             $scope.DashboardScope.Data = data;
             $scope.DashboardScope.UpdateUnits();
+            setTimeout(function () {
+                $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
+            }, 200);
         });
 
-        housingunit.getAll(function(data){
+        housingunit.getAll(function (data) {
             $scope.DashboardScope.Units = data;
             $scope.DashboardScope.UpdateUnits();
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
-                if($scope.DashboardScope.HousingLastPage < $scope.DashboardScope.HousingCurrentPage)
-                {
+                if ($scope.DashboardScope.HousingLastPage < $scope.DashboardScope.HousingCurrentPage) {
                     $scope.DashboardScope.HousingCurrentPage = $scope.DashboardScope.HousingLastPage;
                 }
             }, 200);
         });
     }
 
+    // Initialize all data from the database.
     $scope.DashboardScope.UpdateAjax();
 
-    $scope.DashboardScope.UpdatePageList = function (size, mode)
-    {
-        if(mode == 1)
-        {
+    // Updates the page listing using the provided size and mode.
+    $scope.DashboardScope.UpdatePageList = function (size, mode) {
+        if (mode == 1) {
             $scope.DashboardScope.AssociatePageSize = size;
             $scope.DashboardScope.AssociateCurrentPage = 1;
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
             }, 20);
-        }
-        else if(mode == 2)
-        {
+        } else if (mode == 2) {
             $scope.DashboardScope.HousingPageSize = size;
             $scope.DashboardScope.HousingCurrentPage = 1;
-            setTimeout(function() {
+            setTimeout(function () {
                 $scope.DashboardScope.HousingLastPage = getLastIndex("housing-pagination");
             }, 20);
         }
     }
 
-    $scope.DashboardScope.ResetSelection = function ()
-    {
+    // Resets selected elements when assigning associates.
+    $scope.DashboardScope.ResetSelection = function () {
         var list = document.getElementById("associate-list");
         var children = list.children;
 
-        for(var i = 0; i < children.length; i++)
-        {
-            if(children[i].firstElementChild.firstElementChild.classList.contains("selected"))
-            {
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].firstElementChild.firstElementChild.classList.contains("selected")) {
                 children[i].firstElementChild.firstElementChild.classList.remove("selected");
             }
         }
@@ -114,98 +133,80 @@ angular.module("HousingApp")
         $scope.DashboardScope.SelectedAssociates = [];
     }
 
-    $scope.DashboardScope.UpdateContentClass = function (mode, size)
-    {
-        if(mode == 1)
-        {
+    // Sets content formatting based on the size of the pagination.
+    $scope.DashboardScope.UpdateContentClass = function (mode, size) {
+        if (mode == 1) {
             return size == 9 ? "col-md-12" : "col-md-4";
-        }
-        else if(mode == 2)
-        {
+        } else if (mode == 2) {
             return size == 1 ? "col-md-12" : "col-md-4";
         }
     }
 
+    // Changes page to the selected page in pagination.
     $scope.DashboardScope.GoToPage = function (version, page) {
-        if(version == 1 && (page >= 1 && page <= $scope.DashboardScope.AssociateLastPage))
-        {
+        if (version == 1 && (page >= 1 && page <= $scope.DashboardScope.AssociateLastPage)) {
             $scope.DashboardScope.AssociateCurrentPage = page;
-        }
-        else if(version == 2 && (page >= 1 && page <= $scope.DashboardScope.HousingLastPage))
-        {
+        } else if (version == 2 && (page >= 1 && page <= $scope.DashboardScope.HousingLastPage)) {
             $scope.DashboardScope.HousingCurrentPage = page;
         }
     }
 
+    // Sets the active page to a different class.
     $scope.DashboardScope.GetPageClass = function (version, page) {
-        if(version == 1)
-        {
+        if (version == 1) {
             return $scope.DashboardScope.AssociateCurrentPage == page ? "btn-revature" : "";
-        }
-        else if(version == 2)
-        {
+        } else if (version == 2) {
             return $scope.DashboardScope.HousingCurrentPage == page ? "btn-revature" : "";
         }
     }
 
+    // Toggles more details panel for associates.
     $scope.DashboardScope.ToggleDetails = function (event) {
         var panel = event.currentTarget.parentElement.parentElement.parentElement.parentElement;
 
-        if(panel.children[1].style.display == "none")
-        {
+        if (panel.children[1].style.display == "none") {
             panel.children[1].style.display = "block";
             event.currentTarget.children[0].classList.remove("glyphicon-menu-down");
             event.currentTarget.children[0].classList.add("glyphicon-menu-up");
-        }
-        else if(panel.children[1].style.display == "block")
-        {
+        } else if (panel.children[1].style.display == "block") {
             panel.children[1].style.display = "none";
             event.currentTarget.children[0].classList.remove("glyphicon-menu-up");
             event.currentTarget.children[0].classList.add("glyphicon-menu-down");
         }
     }
 
-    $scope.DashboardScope.ToggleFilters = function(id) {
+    // Toggles filters panel.
+    $scope.DashboardScope.ToggleFilters = function (id) {
         var filters = document.getElementById(id + "-filters");
         var list = document.getElementById(id + "-list");
 
-        if(filters != undefined && list != undefined)
-        {
-            if(filters.style.height == "15em")
-            {
+        if (filters != undefined && list != undefined) {
+            if (filters.style.height == "15em") {
                 filters.style.height = "0em";
-            }
-            else if(filters.style.height == "0em")
-            {
+            } else if (filters.style.height == "0em") {
                 filters.style.height = "15em";
             }
         }
     }
 
-    $scope.DashboardScope.SelectPerson = function(event, person)
-    {
+    // Toggles if an associate is selected, setting their class different and adding them to a list of selected associates.
+    $scope.DashboardScope.SelectPerson = function (event, person) {
         var list = document.getElementById("associate-list");
         var target = event.currentTarget.parentElement.parentElement;
         var children = list.children;
         
-        if(children[0].classList.contains("col-md-4"))
-        {
-            if(target.classList.contains("selected"))
-            {
+        if (children[0].classList.contains("col-md-4")) {
+            if (target.classList.contains("selected")) {
                 target.classList.remove("selected");
-            }
-            else
-            {
+                $scope.DashboardScope.SelectedAssociates.remove(person);
+            } else {
                 target.classList.add("selected");
+                $scope.DashboardScope.SelectedAssociates.push(person);
             }
-            $scope.DashboardScope.SelectedAssociates.push(person);
         }
     }
 
-    $scope.DashboardScope.GetCurrentUnit = function (unit) {
-        $scope.DashboardScope.CurrentUnit = unit;
-    }
-
+    // Allows the user to start assigning associates to a unit, changes the display to reflect this.
     $scope.DashboardScope.StartAssigning = function (unit) {
         $scope.DashboardScope.CurrentUnit = unit;
         $scope.DashboardScope.Filters.Current = unit.HousingUnitName;
@@ -222,7 +223,7 @@ angular.module("HousingApp")
         $scope.DashboardScope.FilterMode = 2;
         $scope.DashboardScope.ExpandView();
 
-        if(document.getElementById("housing-filters").style.height == "15em") {
+        if (document.getElementById("housing-filters").style.height == "15em") {
             $scope.DashboardScope.ToggleFilters("housing");
         }
 
@@ -230,20 +231,20 @@ angular.module("HousingApp")
         document.getElementById("aGenderMale").disabled = true;
         document.getElementById("aGenderFemale").disabled = true;
 
-        for(var i = 0; i < filterBtns.length; i++) {
-            if(filterBtns[i].parentElement.parentElement == housingdash) {
+        for (var i = 0; i < filterBtns.length; i++) {
+            if (filterBtns[i].parentElement.parentElement == housingdash) {
                 housingFilterBtn = filterBtns[i];
             } else {
                 associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < assignBtns.length; i++) {
+        for (var i = 0; i < assignBtns.length; i++) {
             assignBtns[i].style.display = "none";
             removeBtns[i].style.display = "none";
         }
 
-        for(var i = 0; i < occupants.length; i++) {
+        for (var i = 0; i < occupants.length; i++) {
             occupants[i].classList.add("current");
         }
 
@@ -253,6 +254,7 @@ angular.module("HousingApp")
         assigningCtrls[1].style.display = "inline-block";
     }
 
+    // Allows the user to stop assigning associates to a unit, changes the display to reflect this.
     $scope.DashboardScope.StopAssigning = function (modal) {
         assignAssociate($scope.DashboardScope.CurrentUnit, modal);
         $scope.DashboardScope.CurrentUnit = {};
@@ -270,7 +272,7 @@ angular.module("HousingApp")
         $scope.DashboardScope.FilterMode = 1;
         $scope.DashboardScope.ExpandView();
 
-        if(document.getElementById("associate-filters").style.height == "15em") {
+        if (document.getElementById("associate-filters").style.height == "15em") {
             $scope.DashboardScope.ToggleFilters("associate");
         }
 
@@ -278,20 +280,20 @@ angular.module("HousingApp")
         document.getElementById("aGenderMale").disabled = false;
         document.getElementById("aGenderFemale").disabled = false;
 
-        for(var i = 0; i < filterBtns.length; i++) {
-            if(filterBtns[i].parentElement.parentElement == housingdash) {
+        for (var i = 0; i < filterBtns.length; i++) {
+            if (filterBtns[i].parentElement.parentElement == housingdash) {
                 housingFilterBtn = filterBtns[i];
             } else {
                 associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < assignBtns.length; i++) {
+        for (var i = 0; i < assignBtns.length; i++) {
             assignBtns[i].style.display = "inline-block";
             removeBtns[i].style.display = "inline-block";
         }
 
-        for(var i = 0; i < occupants.length; i++) {
+        for (var i = 0; i < occupants.length; i++) {
             occupants[i].classList.remove("current");
         }
 
@@ -301,13 +303,14 @@ angular.module("HousingApp")
         assigningCtrls[1].style.display = "none";
     }
 
+    // Allows the user to start removing associates from a unit, changes the display to reflect this.
     $scope.DashboardScope.StartRemoving = function (unit) {
         $scope.DashboardScope.CurrentUnit = unit;
         $scope.DashboardScope.Filters.Current = unit.HousingUnitName;
         $scope.DashboardScope.Associates = unit.Occupants;
-        setTimeout(function() {
+        setTimeout(function () {
             $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
-            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage) {
+            if ($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage) {
                 $scope.DashboardScope.AssociateCurrentPage = $scope.DashboardScope.AssociateLastPage;
             }
         }, 20);
@@ -327,7 +330,7 @@ angular.module("HousingApp")
         $scope.DashboardScope.ExpandView();
         $scope.DashboardScope.DisplayMode = 2;
 
-        if(document.getElementById("housing-filters").style.height == "15em") {
+        if (document.getElementById("housing-filters").style.height == "15em") {
             $scope.DashboardScope.ToggleFilters("housing");
         }
 
@@ -335,26 +338,26 @@ angular.module("HousingApp")
         document.getElementById("aGenderMale").disabled = true;
         document.getElementById("aGenderFemale").disabled = true;
 
-        for(var i = 0; i < filterBtns.length; i++) {
-            if(filterBtns[i].parentElement.parentElement == housingdash) {
+        for (var i = 0; i < filterBtns.length; i++) {
+            if (filterBtns[i].parentElement.parentElement == housingdash) {
                 housingFilterBtn = filterBtns[i];
             } else {
                 associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < removeBtns.length; i++) {
+        for (var i = 0; i < removeBtns.length; i++) {
             assignBtns[i].style.display = "none";
             removeBtns[i].style.display = "none";
         }
 
-        setTimeout(function() {
-            for(var i = 0; i < assigned.length; i++) {
+        setTimeout(function () {
+            for (var i = 0; i < assigned.length; i++) {
                 assigned[i].style.display = "inline-block";
             }
         }, 2);
 
-        for(var i = 0; i < unassigned.length; i++) {
+        for (var i = 0; i < unassigned.length; i++) {
             unassigned[i].style.display = "none";
         }
         
@@ -365,14 +368,15 @@ angular.module("HousingApp")
         title.innerHTML = "Assigned Associates";
     }
 
+    // Allows the user to stop removing associates from a unit, changes the display to reflect this.
     $scope.DashboardScope.StopRemoving = function (modal) {
         removeAssociate($scope.DashboardScope.CurrentUnit, modal);
         $scope.DashboardScope.CurrentUnit = {};
         $scope.DashboardScope.Filters.Current = "";
         $scope.DashboardScope.Associates = UnassignedAssociates;
-        setTimeout(function() {
+        setTimeout(function () {
             $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
-            if($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage) {
+            if ($scope.DashboardScope.AssociateLastPage < $scope.DashboardScope.AssociateCurrentPage) {
                 $scope.DashboardScope.AssociateCurrentPage = $scope.DashboardScope.AssociateLastPage;
             }
         }, 20);
@@ -392,7 +396,7 @@ angular.module("HousingApp")
         $scope.DashboardScope.ExpandView();
         $scope.DashboardScope.DisplayMode = 1;
 
-        if(document.getElementById("associate-filters").style.height == "15em") {
+        if (document.getElementById("associate-filters").style.height == "15em") {
             $scope.DashboardScope.ToggleFilters("associate");
         }
 
@@ -400,24 +404,24 @@ angular.module("HousingApp")
         document.getElementById("aGenderMale").disabled = false;
         document.getElementById("aGenderFemale").disabled = false;
 
-        for(var i = 0; i < filterBtns.length; i++) {
-            if(filterBtns[i].parentElement.parentElement == housingdash) {
+        for (var i = 0; i < filterBtns.length; i++) {
+            if (filterBtns[i].parentElement.parentElement == housingdash) {
                 housingFilterBtn = filterBtns[i];
             } else {
                 associateFilterBtn = filterBtns[i];
             }
         }
 
-        for(var i = 0; i < removeBtns.length; i++) {
+        for (var i = 0; i < removeBtns.length; i++) {
             assignBtns[i].style.display = "inline-block";
             removeBtns[i].style.display = "inline-block";
         }
 
-        for(var i = 0; i < assigned.length; i++) {
+        for (var i = 0; i < assigned.length; i++) {
             assigned[i].style.display = "none";
         }
 
-        for(var i = 0; i < unassigned.length; i++) {
+        for (var i = 0; i < unassigned.length; i++) {
             unassigned[i].style.display = "inline-block";
         }
 
@@ -428,10 +432,10 @@ angular.module("HousingApp")
         title.innerHTML = "Unassigned Associates";
     }
 
-    $scope.DashboardScope.UpdateUnits = function() {
-        if($scope.DashboardScope.Units.length > 0 && $scope.DashboardScope.Data.length > 0 && $scope.DashboardScope.Associates.length > 0 && $scope.DashboardScope.Batches.length > 0)
-        {
-            $scope.DashboardScope.Units.forEach(function(unit) {
+    // Adds more information to the standard unit object.
+    $scope.DashboardScope.UpdateUnits = function () {
+        if ($scope.DashboardScope.Units.length > 0 && $scope.DashboardScope.Data.length > 0 && AllAssociates.length > 0 && $scope.DashboardScope.Batches.length > 0) {
+            $scope.DashboardScope.Units.forEach(function (unit) {
                 var currentCap = 0;
                 var currentCars = 0;
                 var techs = [];
@@ -439,26 +443,22 @@ angular.module("HousingApp")
                 var emails = [];
                 var occupants = [];
 
-                $scope.DashboardScope.Data.forEach(function(data) {
-                    if(data.HousingUnitName == unit.HousingUnitName)
-                    {
+                $scope.DashboardScope.Data.forEach(function (data) {
+                    if (data.HousingUnitName == unit.HousingUnitName) {
                         emails.push(data.AssociateEmail);
                     }
                 }, this);
-
-                emails.forEach(function(email) {
-                    AllAssociates.forEach(function(occupant) {
-                        if(email == occupant.Email)
-                        {
+                
+                emails.forEach(function (email) {
+                    AllAssociates.forEach(function (occupant) {
+                        if (email == occupant.Email) {
                             currentCap++;
                         
-                            if(occupant.HasCar)
-                            {
+                            if (occupant.HasCar) {
                                 currentCars++;
                             }
 
-                            if(!inArray(batches, occupant.BatchName))
-                            {
+                            if (!inArray(batches, occupant.BatchName)) {
                                 batches.push(occupant.BatchName);
                             }
 
@@ -467,12 +467,10 @@ angular.module("HousingApp")
                     }, this);
                 }, this);
 
-                batches.forEach(function(name) {
-                    $scope.DashboardScope.Batches.forEach(function(batch) {
-                        if(batch.Name == name)
-                        {
-                            if(!inArray(techs, batch.Technology))
-                            {
+                batches.forEach(function (name) {
+                    $scope.DashboardScope.Batches.forEach(function (batch) {
+                        if (batch.Name == name) {
+                            if (!inArray(techs, batch.Technology)) {
                                 techs.push(batch.Technology);
                             }
                         }
@@ -488,11 +486,12 @@ angular.module("HousingApp")
         }
     }
 
-    $scope.DashboardScope.UpdateAssociates = function() {
-        if($scope.DashboardScope.Batches.length > 0 && $scope.DashboardScope.Associates.length > 0){
-            $scope.DashboardScope.Associates.forEach(function(associate) {
-                $scope.DashboardScope.Batches.forEach(function(batch) {
-                    if(associate.BatchName == batch.Name){
+    // Adds more information to the standard associate object.
+    $scope.DashboardScope.UpdateAssociates = function () {
+        if ($scope.DashboardScope.Batches.length > 0 && $scope.DashboardScope.Associates.length > 0) {
+            $scope.DashboardScope.Associates.forEach(function (associate) {
+                $scope.DashboardScope.Batches.forEach(function (batch) {
+                    if (associate.BatchName == batch.Name) {
                         associate['Batch'] = batch;
                     }
                 }, this);
@@ -500,23 +499,19 @@ angular.module("HousingApp")
         }
     }
 
-    $scope.DashboardScope.ExpandView = function() {
+    // Toggles the expanded content area between housing units and associates.
+    $scope.DashboardScope.ExpandView = function () {
         var sections = document.getElementsByTagName("section");
         var section1;
         var section2;
         
-        for(var i = 0; i < sections.length; i++)
-        {
-            if(sections[i].id.includes("dashboard-left") || sections[i].id.includes("dashboard-right"))
-            {
-                if(sections[i].classList.contains("expanded"))
-                {
+        for (var i = 0; i < sections.length; i++) {
+            if (sections[i].id.includes("dashboard-left") || sections[i].id.includes("dashboard-right")) {
+                if (sections[i].classList.contains("expanded")) {
                     section1 = sections[i];
                     $scope.DashboardScope.HousingPageSize = 3;
                     $scope.DashboardScope.AssociatePageSize = 9;
-                }
-                else
-                {
+                } else {
                     section2 = sections[i];
                     $scope.DashboardScope.HousingPageSize = 1;
                     $scope.DashboardScope.AssociatePageSize = 24;
@@ -532,13 +527,10 @@ angular.module("HousingApp")
         section2.classList.add("expanded");
         section1.classList.add("col-md-4");
 
-        var checkParent = function (child, parent)
-        {
+        var checkParent = function (child, parent) {
             var newParent = child.parentNode;
-            while (newParent != null)
-            {
-                if (newParent == parent)
-                {
+            while (newParent != null) {
+                if (newParent == parent) {
                     return true;
                 }
                 newParent = newParent.parentNode;
@@ -552,17 +544,13 @@ angular.module("HousingApp")
         var housinglist = document.getElementById("housing-list");
         var associatelist = document.getElementById("associate-list");
 
-        for(var i = 0; i < divcolumns.length; i++)
-        {
-            if (divcolumns[i].classList.contains("col-md-4") && (checkParent(divcolumns[i], housinglist) || checkParent(divcolumns[i], associatelist)))
-            {
+        for (var i = 0; i < divcolumns.length; i++) {
+            if (divcolumns[i].classList.contains("col-md-4") && (checkParent(divcolumns[i], housinglist) || checkParent(divcolumns[i], associatelist))) {
                 divcolumns[i].classList.remove("col-md-4");
                 divcolumns[i].classList.remove("ng-scope");
                 divcolumns[i].classList.add("col-md-12");
                 divcolumns[i].classList.add("ng-scope");
-            }
-            else if (divcolumns[i].classList.contains("col-md-12") && (checkParent(divcolumns[i], housinglist) || checkParent(divcolumns[i], associatelist)))
-            {
+            } else if (divcolumns[i].classList.contains("col-md-12") && (checkParent(divcolumns[i], housinglist) || checkParent(divcolumns[i], associatelist))) {
                 divcolumns[i].classList.remove("col-md-12");
                 divcolumns[i].classList.remove("ng-scope");
                 divcolumns[i].classList.add("col-md-4");
@@ -570,62 +558,53 @@ angular.module("HousingApp")
             }
         }
         
-        if (hfilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
-        {
+        if (hfilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6")) {
             hfilters.childNodes[1].style.width = "25.5em";
             hfilters.childNodes[1].style.margin = "0em 1em";
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-12");
-            for (var i = 0; i < 3; i++)
-            {
+            for (var i = 0; i < 3; i++) {
                 hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-2");
                 hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-4");
             }
-        }
-        else
-        {
+        } else {
             hfilters.childNodes[1].style.width = "56em";
             hfilters.childNodes[1].style.margin = "0em 1em";
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-12");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-6");
             hfilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-offset-6");
-            for (var i = 0; i < 3; i++)
-            {
+            for (var i = 0; i < 3; i++) {
                 hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-4");
                 hfilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-2");
             }
         }
         
-        if (afilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6"))
-        {
+        if (afilters.childNodes[1].childNodes[1].childNodes[1].classList.contains("col-md-offset-6")) {
             afilters.childNodes[1].style.width = "25.5em";
             afilters.childNodes[1].style.margin = "0em 1em";
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-offset-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-12");
-            for (var i = 0; i < 3; i++)
-            {
+            for (var i = 0; i < 3; i++) {
                 afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-2");
                 afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-4");
             }
-        }
-        else
-        {
+        } else {
             afilters.childNodes[1].style.width = "56em";
             afilters.childNodes[1].style.margin = "0em 1em";
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.remove("col-md-12");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-6");
             afilters.childNodes[1].childNodes[1].childNodes[1].classList.add("col-md-offset-6");
-            for (var i = 0; i < 3; i++)
-            {
+            for (var i = 0; i < 3; i++) {
                 afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.remove("col-md-4");
                 afilters.childNodes[1].childNodes[3].childNodes[(i * 2 + 1)].classList.add("col-md-2");
             }
         }
     }
 
-    var assignAssociate = function(unit, modal) {
+    // Assigns all selected associates to the current unit.
+    var assignAssociate = function (unit, modal) {
         var error1 = document.getElementById("error-1");
         var error2 = document.getElementById("error-2");
         $scope.DashboardScope.SelectedAssociates.forEach(function (associate) {
@@ -649,7 +628,7 @@ angular.module("HousingApp")
                     HousingDataAltId: null
                 };
 
-                housingdata.add(temp, function(data) {
+                housingdata.add(temp, function (data) {
                     if (data.status == 200) {
                         $scope.DashboardScope.ResetForms(modal);
                         $scope.DashboardScope.UpdateAjax();
@@ -668,12 +647,13 @@ angular.module("HousingApp")
         $scope.DashboardScope.ResetSelection();
     }
 
-    var removeAssociate = function(unit, modal) {
-        $scope.DashboardScope.SelectedAssociates.forEach(function(associate) {
-            $scope.DashboardScope.Data.forEach(function(data) {
-                if(data.AssociateEmail == associate.Email && data.HousingUnitName == unit.HousingUnitName) {
-                    housingdata.delete(data.HousingDataAltId, function(data){
-                        if(data.status == 200) {
+    // Removes all selected associates to the current unit.
+    var removeAssociate = function (unit, modal) {
+        $scope.DashboardScope.SelectedAssociates.forEach(function (associate) {
+            $scope.DashboardScope.Data.forEach(function (data) {
+                if (data.AssociateEmail == associate.Email && data.HousingUnitName == unit.HousingUnitName) {
+                    housingdata.delete(data.HousingDataAltId, function (data) {
+                        if (data.status == 200) {
                             $scope.DashboardScope.ResetForms(modal);
                             $scope.DashboardScope.UpdateAjax();
                         }
@@ -685,31 +665,30 @@ angular.module("HousingApp")
         $scope.DashboardScope.ResetSelection();
     }
 
+    // Resets all the form fields, errors, and hides the current modal.
     $scope.DashboardScope.ResetForms = function (modal) {
         var forms = document.getElementsByClassName("inputForms");
         var errors = document.getElementsByClassName("error-message");
-        for(var i = 0; i < forms.length; i++) {
+        for (var i = 0; i < forms.length; i++) {
             forms[i].reset();
         }
-        for(var i = 0; i < errors.length; i++) {
+        for (var i = 0; i < errors.length; i++) {
             errors[i].style.display = "none";
         }
         $(modal).modal('hide');
     }
 
-    var inArray = function(array, item)
-    {
-        for(var i = 0; i < array.length; i++)
-        {
-            if(array[i] == item)
-            {
+    // Checks to see if an item is in an array.
+    var inArray = function (array, item) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] == item) {
                 return true;
             }
         }
     }
 
-    var getDateFormat = function(d)
-    {
+    // Changes the date format for sending to the database.
+    var getDateFormat = function (d) {
         var dd = d.getDate() >= 10 ? d.getDate() : "0" + d.getDate();
         var mm = (d.getMonth() + 1) >= 10 ? (d.getMonth() + 1) : "0" + (d.getMonth() + 1);
         var yyyy = d.getFullYear();
@@ -717,17 +696,12 @@ angular.module("HousingApp")
         return yyyy + "-" + mm + "-" + dd + "T00:00:00";
     }
 
-    var getLastIndex = function(id)
-    {
+    // Gets the last index of the pagination.
+    var getLastIndex = function (id) {
         var pagin = document.getElementById(id);
         var pages = pagin.children[0].children[0].children;
         var count = pages.length - 2;
 
         return count;
     }
-
-    setTimeout(function() {
-        $scope.DashboardScope.AssociateLastPage = getLastIndex("associate-pagination");
-        $scope.DashboardScope.AssociateLastPage = getLastIndex("housing-pagination");
-    }, 20);
 });

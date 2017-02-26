@@ -43,20 +43,28 @@
                         </div>
                     </div>
                     <div class="panel-body panel-unit">
-                        <p>{{item.GenderName | lettercap}}</p>
-                        <p>Batches: {{item.Batch | array}}</p>
-                        <ul>
-                            <li ng-repeat="batch in item.Batch">{{batch}}</li>
-                        </ul>
-                        <p>Techs: {{item.Tech | array}}</p>
-                        <ul>
-                            <li ng-repeat="tech in item.Tech">{{tech}}</li>
-                        </ul>
-                        <p>Cars: {{item.Cars}}</p>
                         <p>Lease End Date: {{item.LeaseEndDate | changedate}}</p>
+                        <p>Gender: {{item.GenderName | lettercap}}</p>
+                        <p>Cars: {{item.Cars}}</p>
                         <p>Occupancy: 
                             <progress class="progress" value="{{item.Capacity}}" max="{{item.MaxCapacity}}"></progress>
                         </p>
+                        <p>Techs:</p>
+                        <div class="fluid-container" style="margin-bottom: 10px;">
+                            <div class="row">
+                                <div class="col-md-4" ng-repeat="tech in item.Tech | array">
+                                    <div class="row">{{tech}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Batches:</p>
+                        <div class="fluid-container" style="margin-bottom: 10px;">
+                            <div class="row">
+                                <div class="col-md-6" ng-repeat="batch in item.Batch | array">
+                                    <div class="row">{{batch}}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-footer">
                         <button type="button" class="btn btn-default btn-sm"  data-toggle="modal" data-target="#removeModal" ng-click="HousingScope.GetCurrentUnit(item)">

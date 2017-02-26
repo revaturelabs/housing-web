@@ -1,0 +1,39 @@
+
+
+.modal {
+     overflow: hidden;
+}
+
+body.modal-open {
+    margin: 0;
+}
+
+@media (min-width:992px) {
+    .modal-lg {
+        width: 900px;
+    }
+}
+
+@media (min-width:792px) {
+    .modal-md-lg {
+        width: 700px;
+    }
+}
+
+.modal-body label {
+    width: 100%;
+}
+
+.modal-body .row .row {
+    padding: 0 1.72vh;
+}
+
+.modal-header-revature {
+    background-color: rgba(242, 106, 37, 1);
+    font-weight: 700;
+    color: white;
+}
+
+.modal-footer {
+    background-color: #f5f5f5;
+}
